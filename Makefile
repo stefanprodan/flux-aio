@@ -25,6 +25,10 @@ gen: vet ## Print the CUE generated objects
 ls: ## List the CUE generated objects
 	@cue ls
 
+.PHONY: publish
+publish:
+	@cue publish
+
 .PHONY: import-k8s
 import-k8s:
 	go get -u k8s.io/api/...

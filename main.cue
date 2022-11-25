@@ -1,11 +1,8 @@
 package main
 
 import (
-	kubernetes "k8s.io/apimachinery/pkg/runtime"
 	distribution "github.com/stefanprodan/flux-aio/distribution"
 )
-
-resources: [ID=_]: kubernetes.#Object
 
 aio: distribution.#Flux & {
 	spec: {
@@ -20,4 +17,4 @@ aio: distribution.#Flux & {
 	}
 }
 
-resources: aio.resources
+artifact: image: "ghcr.io/stefanprodan/manifests/flux-aio"
