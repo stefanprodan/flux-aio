@@ -69,10 +69,34 @@ command: publish: {
 			"flux",
 			"push",
 			"artifact",
-			"oci://\(artifact.image):\(aio.spec.version)",
+			"oci://\(auto.spec.image):\(aio.spec.version)",
 			"--path=./dist",
 			"--source=https://github.com/fluxcd/flux2",
 			"--revision=\(aio.spec.version)",
+		]
+	}
+}
+
+command: automate: {
+	apply: exec.Run & {
+		stdin: yaml.MarshalStream([ for r in auto.resources {r}])
+		cmd: [
+			"kubectl",
+			"apply",
+			"--server-side",
+			"-f-",
+		]
+	}
+	waitSync: exec.Run & {
+		$after: apply
+		cmd: [
+			"kubectl",
+			"-n=\(auto.spec.namespace)",
+			"wait",
+			"ks",
+			"\(auto.spec.name)-sync",
+			"--for=condition=ready",
+			"--timeout=90s",
 		]
 	}
 }

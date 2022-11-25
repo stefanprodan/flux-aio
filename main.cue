@@ -17,4 +17,10 @@ aio: distribution.#Flux & {
 	}
 }
 
-artifact: image: "ghcr.io/stefanprodan/manifests/flux-aio"
+auto: distribution.#FluxAutoSync & {
+	spec: {
+		name:   "flux"
+		image:  "ghcr.io/stefanprodan/manifests/flux-aio"
+		semver: "*"
+	}
+}

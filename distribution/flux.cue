@@ -3,6 +3,7 @@ package distribution
 import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	corev1 "k8s.io/api/core/v1"
+	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
 customresourcedefinition: [string]: apiextensions.#CustomResourceDefinition
@@ -67,6 +68,7 @@ customresourcedefinition: [string]: apiextensions.#CustomResourceDefinition
 		#NotificationController & {_spec: spec},
 	]
 
+	resources: [ID=_]: runtime.#Object
 	resources: {
 		"\(spec.name)-namespace":          #Namespace & {_spec:          spec}
 		"\(spec.name)-serviceaccount":     #ServiceAccount & {_spec:     spec}
