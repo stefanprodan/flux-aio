@@ -1,5 +1,9 @@
 # flux-aio
 
+[![test](https://github.com/stefanprodan/flux-aio/workflows/test/badge.svg)](https://github.com/stefanprodan/flux-aio/actions)
+[![license](https://img.shields.io/github/license/stefanprodan/flux-aio.svg)](https://github.com/stefanprodan/flux-aio/blob/main/LICENSE)
+[![release](https://img.shields.io/github/release/stefanprodan/flux-aio/all.svg)](https://github.com/stefanprodan/flux-aio/releases)
+
 Flux All-In-One is an experimental distribution made with [cuelang](https://cuelang.org/)
 for running [Flux](https://fluxcd.io) on Kubernetes clusters without a CNI plugin being
 installed in advanced.

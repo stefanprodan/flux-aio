@@ -1,7 +1,7 @@
 # Flux All-In-One distribution
 
 .ONESHELL:
-.SHELLFLAGS += -eo pipefail
+.SHELLFLAGS += -e
 
 VERSION:=main
 
