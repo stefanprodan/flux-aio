@@ -25,8 +25,11 @@ import (
 		selector: matchLabels: "app.kubernetes.io/name": _spec.name
 		template: {
 			metadata: {
-				labels: "app.kubernetes.io/name":    _spec.name
-				annotations: "prometheus.io/scrape": "true"
+				labels: "app.kubernetes.io/name": _spec.name
+				annotations: {
+					"cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+					"prometheus.io/scrape":                           "true"
+				}
 			}
 			spec: corev1.#PodSpec & {
 				terminationGracePeriodSeconds: 120

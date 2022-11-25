@@ -13,6 +13,14 @@ tools: ## Install cue, kind, kubectl, kustomize, FLux CLI and other tools with H
 install: ## Generate manifests and Install Flux
 	@cue install
 
+.PHONY: uninstall
+uninstall: ## Uninstall Flux
+	@flux uninstall --silent
+
+.PHONY: automate
+automate: ## Configure Flux to automatically upgrade itself
+	@cue automate
+
 .PHONY: vet
 vet: ## Format and vet all CUE definitions
 	@cue fmt ./... && cue vet --all-errors --concrete ./...

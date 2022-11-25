@@ -25,43 +25,20 @@ git clone https://github.com/stefanprodan/flux-aio.git
 cd flux-aio
 ```
 
-Install cue, kind, kubectl, flux and other CLI tools with Homebrew:
+Install cue, kubectl and flux with Homebrew:
 
 ```shell
-make tools
+brew bundle
 ```
 
 The complete list of tools can be found in the `Brewfile`.
 
 ### Install Flux
 
-List the CUE generated resources with `make ls`:
+Deploy Flux AIO on your cluster with `cue install`:
 
 ```console
-$ make ls
-
-RESOURCE                                                                 API VERSION
-Namespace/flux-system                                                    v1
-ServiceAccount/flux-system/flux                                          v1
-ClusterRoleBinding/flux                                                  rbac.authorization.k8s.io/v1
-Service/flux-system/webhook-receiver                                     v1
-Deployment/flux-system/flux                                              apps/v1
-CustomResourceDefinition/alerts.notification.toolkit.fluxcd.io           apiextensions.k8s.io/v1
-CustomResourceDefinition/buckets.source.toolkit.fluxcd.io                apiextensions.k8s.io/v1
-CustomResourceDefinition/gitrepositories.source.toolkit.fluxcd.io        apiextensions.k8s.io/v1
-CustomResourceDefinition/helmcharts.source.toolkit.fluxcd.io             apiextensions.k8s.io/v1
-CustomResourceDefinition/helmreleases.helm.toolkit.fluxcd.io             apiextensions.k8s.io/v1
-CustomResourceDefinition/helmrepositories.source.toolkit.fluxcd.io       apiextensions.k8s.io/v1
-CustomResourceDefinition/kustomizations.kustomize.toolkit.fluxcd.io      apiextensions.k8s.io/v1
-CustomResourceDefinition/ocirepositories.source.toolkit.fluxcd.io        apiextensions.k8s.io/v1
-CustomResourceDefinition/providers.notification.toolkit.fluxcd.io        apiextensions.k8s.io/v1
-CustomResourceDefinition/receivers.notification.toolkit.fluxcd.io        apiextensions.k8s.io/v1
-```
-
-Deploy Flux AIO on your cluster with `make install`:
-
-```console
-$ make install 
+$ cue install 
 
 namespace/flux-system serverside-applied
 serviceaccount/flux serverside-applied
@@ -81,3 +58,21 @@ customresourcedefinition.apiextensions.k8s.io/receivers.notification.toolkit.flu
 Waiting for deployment "flux" rollout to finish: 0 of 1 updated replicas are available...
 deployment "flux" successfully rolled out
 ```
+
+### Configure Flux self-update
+
+Configure Flux to update itself from
+[ghcr.io/stefanprodan/manifests/flux-aio](https://github.com/users/stefanprodan/packages/container/package/manifests%2Fflux-aio)
+with `cue automate`:
+
+```console
+$ cue automate
+
+ocirepository.source.toolkit.fluxcd.io/flux-source serverside-applied
+kustomization.kustomize.toolkit.fluxcd.io/flux-sync serverside-applied
+kustomization.kustomize.toolkit.fluxcd.io/flux-sync condition met
+```
+
+### Uninstall Flux
+
+To remove Flux from your cluster, without affecting any reconciled workloads, run `flux uninstall`.
