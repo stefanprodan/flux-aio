@@ -1,1 +1,3 @@
 bin/
+dist/
+Brewfile.lock.json
