@@ -6,7 +6,7 @@
 
 Flux All-In-One is an experimental distribution made with [cuelang](https://cuelang.org/)
 for running [Flux](https://fluxcd.io) on Kubernetes clusters without a CNI plugin being
-installed in advanced.
+installed in advance.
 
 The main difference to the upstream distribution, is that Flux AIO bundles
 all the controllers into a single Kubernetes Deployment.
