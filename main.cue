@@ -7,12 +7,12 @@ import (
 aio: distribution.#Flux & {
 	spec: {
 		name:    "flux"
-		version: "v0.38.0"
+		version: "v0.38.1"
 		controllers: {
 			source:       "ghcr.io/fluxcd/source-controller:v0.33.0"
 			kustomize:    "ghcr.io/fluxcd/kustomize-controller:v0.32.0"
 			helm:         "ghcr.io/fluxcd/helm-controller:v0.28.0"
-			notification: "ghcr.io/fluxcd/notification-controller:v0.30.0"
+			notification: "ghcr.io/fluxcd/notification-controller:v0.30.1"
 		}
 	}
 }
