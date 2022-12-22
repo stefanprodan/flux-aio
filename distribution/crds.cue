@@ -6785,7 +6785,6 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 								type:      "string"
 							}
 							interval: {
-								default:     "600s"
 								description: "Interval at which to reconcile the Provider with its Secret references."
 
 								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
@@ -7231,7 +7230,6 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 								type: "array"
 							}
 							interval: {
-								default:     "600s"
 								description: "Interval at which to reconcile the Receiver with its Secret references."
 
 								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
