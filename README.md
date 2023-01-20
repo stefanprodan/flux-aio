@@ -59,6 +59,13 @@ Waiting for deployment "flux" rollout to finish: 0 of 1 updated replicas are ava
 deployment "flux" successfully rolled out
 ```
 
+The Flux pod binds to the following ports on the host network:
+
+- `9292` notification-controller webhook receiver endpoint
+- `9690` notification-controller events receiver endpoint
+- `9790` source-controller storage endpoint
+- `9791-9799` metrics, liveness and readiness endpoints
+
 ### Configure Flux self-update
 
 Configure Flux to update itself from

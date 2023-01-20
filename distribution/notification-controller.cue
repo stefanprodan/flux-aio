@@ -12,20 +12,20 @@ import (
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _spec.securityContext
 	ports: [{
-		containerPort: 9080
-		name:          "http"
+		containerPort: 9690
+		name:          "http-nc"
 		protocol:      "TCP"
 	}, {
-		containerPort: 9292
-		name:          "http-webhook"
+		containerPort: 9797
+		name:          "http-webhook-nc"
 		protocol:      "TCP"
 	}, {
-		containerPort: 8083
-		name:          "http-prom"
+		containerPort: 9798
+		name:          "http-prom-nc"
 		protocol:      "TCP"
 	}, {
-		containerPort: 9443
-		name:          "healthz"
+		containerPort: 9799
+		name:          "healthz-nc"
 		protocol:      "TCP"
 	}]
 	env: [{
@@ -34,20 +34,20 @@ import (
 	}]
 	readinessProbe: httpGet: {
 		path: "/readyz"
-		port: "healthz"
+		port: "healthz-nc"
 	}
 	livenessProbe: httpGet: {
 		path: "/healthz"
-		port: "healthz"
+		port: "healthz-nc"
 	}
 	args: [
 		"--watch-all-namespaces",
 		"--log-level=\(_spec.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election",
-		"--metrics-addr=:8083",
-		"--health-addr=:9443",
-		"--events-addr=:9080",
+		"--metrics-addr=:9798",
+		"--health-addr=:9799",
+		"--events-addr=:9690",
 	]
 	resources: _spec.resources
 	volumeMounts: [{

@@ -73,7 +73,8 @@ customresourcedefinition: [string]: apiextensions.#CustomResourceDefinition
 		"\(spec.name)-namespace":          #Namespace & {_spec:          spec}
 		"\(spec.name)-serviceaccount":     #ServiceAccount & {_spec:     spec}
 		"\(spec.name)-clusterrolebinding": #ClusterRoleBinding & {_spec: spec}
-		"\(spec.name)-service":            #WebhookReceiver & {_spec:    spec}
+		"\(spec.name)-webhookreceiver":    #WebhookReceiver & {_spec:    spec}
+		"\(spec.name)-sourceserver":       #SourceServer & {_spec:       spec}
 		"\(spec.name)-deployment":         #Deployment & {
 			_spec:       spec
 			_containers: containers
