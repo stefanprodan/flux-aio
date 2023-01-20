@@ -7,7 +7,7 @@ import (
 aio: distribution.#Flux & {
 	spec: {
 		name:    "flux"
-		version: "v0.38.2"
+		version: "v0.38.3"
 		controllers: {
 			source:       "ghcr.io/fluxcd/source-controller:v0.33.0"
 			kustomize:    "ghcr.io/fluxcd/kustomize-controller:v0.32.0"
