@@ -22,9 +22,15 @@ jobs:
         run: make tools
       - name: Run CUE validation
         run: make vet
-      - name: Create Kind cluster
-        run: kind create cluster --wait=5m
+      - name: Create cluster without CNI
+        run: kind create cluster --config ./test/cni/kind.yaml
       - name: Install Flux
         run: make install
-      - name: Verify installation
+      - name: Verify Flux installation
         run: flux check
+      - name: Install Cilium with Flux
+        run: kubectl apply -f ./test/cni/cilium.yaml
+      - name: Verify Cilium installation
+        run: kubectl -n kube-system wait helmrelease/cilium --for=condition=ready --timeout=5m
+      - name: Verify CoreDNS availability
+        run: kubectl -n kube-system rollout status deploy/coredns --timeout=5m
