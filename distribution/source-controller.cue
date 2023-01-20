@@ -12,16 +12,16 @@ import (
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _spec.securityContext
 	ports: [{
-		containerPort: 9090
-		name:          "http"
+		containerPort: 9790
+		name:          "http-sc"
 		protocol:      "TCP"
 	}, {
-		containerPort: 8080
-		name:          "http-prom"
+		containerPort: 9791
+		name:          "http-prom-sc"
 		protocol:      "TCP"
 	}, {
-		containerPort: 9440
-		name:          "healthz"
+		containerPort: 9792
+		name:          "healthz-sc"
 		protocol:      "TCP"
 	}]
 	env: [{
@@ -36,16 +36,19 @@ import (
 		"--log-level=\(_spec.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election=true",
+		"--metrics-addr=:9791",
+		"--health-addr=:9792",
+		"--storage-addr=:9790",
 		"--storage-path=/data",
 		"--storage-adv-addr=\(_spec.name).$(RUNTIME_NAMESPACE).svc.cluster.local.",
-		"--events-addr=http://localhost:9080",
+		"--events-addr=http://localhost:9690",
 	]
 	livenessProbe: httpGet: {
-		port: "healthz"
+		port: "healthz-sc"
 		path: "/healthz"
 	}
 	readinessProbe: httpGet: {
-		port: "http"
+		port: "http-sc"
 		path: "/"
 	}
 	resources: _spec.resources

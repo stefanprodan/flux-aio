@@ -12,17 +12,17 @@ import (
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _spec.securityContext
 	ports: [{
-		containerPort: 8082
-		name:          "http-prom"
+		containerPort: 9795
+		name:          "http-prom-hc"
 		protocol:      "TCP"
 	}, {
-		containerPort: 9442
-		name:          "healthz"
+		containerPort: 9796
+		name:          "healthz-hc"
 		protocol:      "TCP"
 	}]
 	env: [{
 		name:  "SOURCE_CONTROLLER_LOCALHOST"
-		value: "localhost:9090"
+		value: "localhost:9790"
 	}, {
 		name: "RUNTIME_NAMESPACE"
 		valueFrom: fieldRef: fieldPath: "metadata.namespace"
@@ -32,17 +32,17 @@ import (
 		"--log-level=\(_spec.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election=true",
-		"--metrics-addr=:8082",
-		"--health-addr=:9442",
-		"--events-addr=http://localhost:9080",
+		"--metrics-addr=:9795",
+		"--health-addr=:9796",
+		"--events-addr=http://localhost:9690",
 	]
 	readinessProbe: httpGet: {
 		path: "/readyz"
-		port: "healthz"
+		port: "healthz-hc"
 	}
 	livenessProbe: httpGet: {
 		path: "/healthz"
-		port: "healthz"
+		port: "healthz-hc"
 	}
 	resources: _spec.resources
 	volumeMounts: [{
