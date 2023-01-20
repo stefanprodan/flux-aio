@@ -1,0 +1,30 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: cilium
+  namespace: kube-system
+spec:
+  interval: 24h
+  url: https://helm.cilium.io/
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cilium
+  namespace: kube-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: cilium
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: cilium
+      interval: 12h
+  values:
+    ipam:
+      mode: kubernetes
+    operator:
+      replicas: 1
