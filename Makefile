@@ -3,7 +3,7 @@
 .ONESHELL:
 .SHELLFLAGS += -e
 
-VERSION:=main
+VERSION:=$(shell grep 'version:' main.cue | awk '{ print $$2 }' | tr -d '"')
 
 .PHONY: tools
 tools: ## Install cue, kind, kubectl, kustomize, FLux CLI and other tools with Homebrew
@@ -21,6 +21,10 @@ uninstall: ## Uninstall Flux
 automate: ## Configure Flux to automatically upgrade itself
 	@cue automate
 
+.PHONY: deautomate
+deautomate: ## Disable Flux automatically upgrade
+	@cue deautomate
+
 .PHONY: vet
 vet: ## Format and vet all CUE definitions
 	@cue fmt ./... && cue vet --all-errors --concrete ./...
@@ -34,7 +38,7 @@ ls: ## List the CUE generated objects
 	@cue ls
 
 .PHONY: publish
-publish:
+publish: ## Push the distribution manifests to the container registry
 	@cue publish
 
 .PHONY: import-k8s
@@ -53,7 +57,8 @@ import-crds:
 
 .PHONY: list-images
 list-images:
-	@flux install --export | grep 'image:'| awk '$2 != "" { print $2}' | sort -u
+	@echo "ghcr.io/fluxcd/flux-cli:$$(flux version --client | awk '$$2 != "" { print $$2}')"
+	@flux install --export | grep 'image:' | awk '$$2 != "" { print $$2}' | sort -u
 
 .PHONY: help
 help:  ## Display this help menu

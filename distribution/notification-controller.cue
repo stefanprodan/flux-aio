@@ -48,6 +48,9 @@ import (
 		"--metrics-addr=:9798",
 		"--health-addr=:9799",
 		"--events-addr=:9690",
+		if _spec.securityProfile == "restricted" {
+			"--no-cross-namespace-refs"
+		},
 	]
 	resources: _spec.resources
 	volumeMounts: [{

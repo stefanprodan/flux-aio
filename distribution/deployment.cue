@@ -36,9 +36,6 @@ import (
 				securityContext: fsGroup: 1337
 				serviceAccountName: _spec.name
 				hostNetwork:        true
-				tolerations: [{
-					operator: "Exists"
-				}]
 				volumes: [{
 					emptyDir: {}
 					name: "data"
@@ -47,6 +44,9 @@ import (
 					name: "tmp"
 				}]
 				containers: _containers
+				if _spec.tolerations != _|_ {
+					tolerations: _spec.tolerations
+				}
 				if _spec.affinity != _|_ {
 					affinity: _spec.affinity
 				}

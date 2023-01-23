@@ -31,6 +31,6 @@ jobs:
       - name: Install Cilium with Flux
         run: kubectl apply -f ./test/cni/cilium.yaml
       - name: Verify Cilium installation
-        run: kubectl -n kube-system wait helmrelease/cilium --for=condition=ready --timeout=5m
+        run: kubectl -n flux-system wait helmrelease/cilium --for=condition=ready --timeout=5m
       - name: Verify CoreDNS availability
         run: kubectl -n kube-system rollout status deploy/coredns --timeout=5m

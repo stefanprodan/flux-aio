@@ -14,6 +14,8 @@ aio: distribution.#Flux & {
 			helm:         "ghcr.io/fluxcd/helm-controller:v0.28.1"
 			notification: "ghcr.io/fluxcd/notification-controller:v0.30.2"
 		}
+		// Enable the multi-tenancy lockdown by setting the securityProfile to 'restricted'
+		securityProfile: "privileged"
 	}
 }
 
