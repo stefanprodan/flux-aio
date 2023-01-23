@@ -35,6 +35,15 @@ import (
 		"--metrics-addr=:9793",
 		"--health-addr=:9794",
 		"--events-addr=http://localhost:9690",
+		if _spec.securityProfile == "restricted" {
+			"--no-cross-namespace-refs"
+		},
+		if _spec.securityProfile == "restricted" {
+			"--no-remote-bases"
+		},
+		if _spec.securityProfile == "restricted" {
+			"--default-service-account=\(_spec.name)"
+		},
 	]
 	readinessProbe: httpGet: {
 		path: "/readyz"

@@ -18,6 +18,7 @@ customresourcedefinition: [string]: apiextensions.#CustomResourceDefinition
 		helm:         string
 		notification: string
 	}
+	securityProfile: "restricted" | "privileged"
 
 	labels: *{
 			"app.kubernetes.io/name":    name
@@ -47,6 +48,10 @@ customresourcedefinition: [string]: apiextensions.#CustomResourceDefinition
 		seccompProfile: type: "RuntimeDefault"
 	} | corev1.#PodSecurityContext
 
+	tolerations: *[{
+		operator: "Exists"
+	}] | corev1.#Toleration
+
 	affinity?: nodeAffinity: requiredDuringSchedulingIgnoredDuringExecution: nodeSelectorTerms: [{
 		matchExpressions: [{
 			key:      "kubernetes.io/os"
@@ -54,8 +59,6 @@ customresourcedefinition: [string]: apiextensions.#CustomResourceDefinition
 			values: ["linux"]
 		}]
 	}] | corev1.#Affinity
-
-	tolerations?: [ ...corev1.#Toleration]
 }
 
 #Flux: {

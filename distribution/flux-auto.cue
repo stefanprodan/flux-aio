@@ -61,9 +61,10 @@ import (
 		annotations: _spec.annotations
 	}
 	spec: {
-		interval:      "24h"
-		timeout:       "2m"
-		retryInterval: "1m"
+		interval:           "24h"
+		timeout:            "5m"
+		retryInterval:      "1m"
+		serviceAccountName: "\(_spec.name)"
 		sourceRef: {
 			kind: "OCIRepository"
 			name: "\(_spec.name)-source"

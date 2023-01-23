@@ -100,3 +100,35 @@ command: automate: {
 		]
 	}
 }
+
+command: deautomate: {
+	suspend: exec.Run & {
+		cmd: [
+			"flux",
+			"suspend",
+			"kustomization",
+			"\(auto.spec.name)-sync",
+		]
+	}
+	delete: exec.Run & {
+		$after: suspend
+		cmd: [
+			"flux",
+			"delete",
+			"kustomization",
+			"\(auto.spec.name)-sync",
+			"--silent",
+		]
+	}
+	deleteSource: exec.Run & {
+		$after: suspend
+		cmd: [
+			"flux",
+			"delete",
+			"source",
+			"oci",
+			"\(auto.spec.name)-source",
+			"--silent",
+		]
+	}
+}
