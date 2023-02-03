@@ -1565,7 +1565,7 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 								type: "object"
 							}
 							secretRef: {
-								description: "SecretRef specifies the Secret containing authentication credentials for the GitRepository. For HTTPS repositories the Secret must contain 'username' and 'password' fields. For SSH repositories the Secret must contain 'identity' and 'known_hosts' fields."
+								description: "SecretRef specifies the Secret containing authentication credentials for the GitRepository. For HTTPS repositories the Secret must contain 'username' and 'password' fields for basic auth or 'bearerToken' field for token auth. For SSH repositories the Secret must contain 'identity' and 'known_hosts' fields."
 
 								properties: name: {
 									description: "Name of the referent."
@@ -3581,7 +3581,7 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 								type: "boolean"
 							}
 							secretRef: {
-								description: "The name of the secret containing authentication credentials for the Helm repository. For HTTP/S basic auth the secret must contain username and password fields. For TLS the secret must contain a certFile and keyFile, and/or caCert fields."
+								description: "The name of the secret containing authentication credentials for the Helm repository. For HTTP/S basic auth the secret must contain username and password fields. For TLS the secret must contain a certFile and keyFile, and/or caFile fields."
 
 								properties: name: {
 									description: "Name of the referent."
@@ -3824,7 +3824,7 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 								type: "string"
 							}
 							secretRef: {
-								description: "SecretRef specifies the Secret containing authentication credentials for the HelmRepository. For HTTP/S basic auth the secret must contain 'username' and 'password' fields. For TLS the secret must contain a 'certFile' and 'keyFile', and/or 'caCert' fields."
+								description: "SecretRef specifies the Secret containing authentication credentials for the HelmRepository. For HTTP/S basic auth the secret must contain 'username' and 'password' fields. For TLS the secret must contain a 'certFile' and 'keyFile', and/or 'caFile' fields."
 
 								properties: name: {
 									description: "Name of the referent."

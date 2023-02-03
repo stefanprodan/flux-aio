@@ -2627,7 +2627,8 @@ import (
 	//
 	// This field is immutable.
 	//
-	// +listType=set
+	// +listType=map
+	// +listMapKey=name
 	// +featureGate=DynamicResourceAllocation
 	// +optional
 	claims?: [...#ResourceClaim] @go(Claims,[]ResourceClaim) @protobuf(3,bytes,opt)
@@ -4242,7 +4243,7 @@ import (
 // IP address information for entries in the (plural) PodIPs field.
 // Each entry includes:
 //
-// IP: An IP address allocated to the pod. Routable at least within the cluster.
+//	IP: An IP address allocated to the pod. Routable at least within the cluster.
 #PodIP: {
 	// ip is an IP address (IPv4 or IPv6) assigned to the pod
 	ip?: string @go(IP) @protobuf(1,bytes,opt)
@@ -5320,17 +5321,17 @@ import (
 
 // Endpoints is a collection of endpoints that implement the actual service. Example:
 //
-//  Name: "mysvc",
-//  Subsets: [
-//    {
-//      Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-//      Ports: [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]
-//    },
-//    {
-//      Addresses: [{"ip": "10.10.3.3"}],
-//      Ports: [{"name": "a", "port": 93}, {"name": "b", "port": 76}]
-//    },
-// ]
+//	 Name: "mysvc",
+//	 Subsets: [
+//	   {
+//	     Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+//	     Ports: [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]
+//	   },
+//	   {
+//	     Addresses: [{"ip": "10.10.3.3"}],
+//	     Ports: [{"name": "a", "port": 93}, {"name": "b", "port": 76}]
+//	   },
+//	]
 #Endpoints: {
 	metav1.#TypeMeta
 
@@ -5354,15 +5355,15 @@ import (
 // expanded set of endpoints is the Cartesian product of Addresses x Ports.
 // For example, given:
 //
-// {
-//   Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-//   Ports:     [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]
-// }
+//	{
+//	  Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+//	  Ports:     [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]
+//	}
 //
 // The resulting set of endpoints can be viewed as:
 //
-// a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],
-// b: [ 10.10.1.1:309, 10.10.2.2:309 ]
+//	a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],
+//	b: [ 10.10.1.1:309, 10.10.2.2:309 ]
 #EndpointSubset: {
 	// IP addresses which offer the related ports that are marked as ready. These endpoints
 	// should be considered safe for load balancers and clients to utilize.

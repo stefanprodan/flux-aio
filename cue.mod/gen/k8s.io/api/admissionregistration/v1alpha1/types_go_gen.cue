@@ -150,8 +150,8 @@ import (
 	// - '-' escapes to '__dash__'
 	// - '/' escapes to '__slash__'
 	// - Property names that exactly match a CEL RESERVED keyword escape to '__{keyword}__'. The keywords are:
-	//   "true", "false", "null", "in", "as", "break", "const", "continue", "else", "for", "function", "if",
-	//   "import", "let", "loop", "package", "namespace", "return".
+	//	  "true", "false", "null", "in", "as", "break", "const", "continue", "else", "for", "function", "if",
+	//	  "import", "let", "loop", "package", "namespace", "return".
 	// Examples:
 	//   - Expression accessing a property named "namespace": {"Expression": "object.__namespace__ > 0"}
 	//   - Expression accessing a property named "x-prop": {"Expression": "object.x__dash__prop > 0"}
