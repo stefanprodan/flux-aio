@@ -43,10 +43,12 @@ publish: ## Push the distribution manifests to the container registry
 
 .PHONY: import-k8s
 import-k8s:
+	go mod init
 	go get -u k8s.io/api/...
 	go get -u k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
 	cue get go k8s.io/api/...
 	cue get go k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
+	rm go.mod go.sum
 
 .PHONY: import-crds
 import-crds:
