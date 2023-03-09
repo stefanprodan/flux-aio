@@ -2822,7 +2822,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								description: "KubeConfig for reconciling the HelmRelease on a remote cluster. When used in combination with HelmReleaseSpec.ServiceAccountName, forces the controller to act on behalf of that Service Account at the target cluster. If the --default-service-account flag is set, its value will be used as a controller level fallback for when HelmReleaseSpec.ServiceAccountName is empty."
 
 								properties: secretRef: {
-									description: "SecretRef holds the name to a secret that contains a key with the kubeconfig file as the value. If no key is specified the key will default to 'value'. The secret must be in the same namespace as the HelmRelease. It is recommended that the kubeconfig is self-contained, and the secret is regularly updated if credentials such as a cloud-access-token expire. Cloud specific `cmd-path` auth helpers will not function without adding binaries and credentials to the Pod that is responsible for reconciling the HelmRelease."
+									description: "SecretRef holds the name of a secret that contains a key with the kubeconfig file as the value. If no key is set, the key will default to 'value'. It is recommended that the kubeconfig is self-contained, and the secret is regularly updated if credentials such as a cloud-access-token expire. Cloud specific `cmd-path` auth helpers will not function without adding binaries and credentials to the Pod that is responsible for reconciling Kubernetes resources."
 
 									properties: {
 										key: {
@@ -2840,6 +2840,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									]
 									type: "object"
 								}
+								required: [
+									"secretRef",
+								]
 								type: "object"
 							}
 							maxHistory: {
@@ -6499,7 +6502,7 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 								type: "object"
 							}
 							lastAppliedRevision: {
-								description: "The last successfully applied revision. The revision format for Git sources is <branch|tag>/<commit-sha>."
+								description: "The last successfully applied revision. Equals the Revision of the applied Artifact from the referenced Source."
 
 								type: "string"
 							}
