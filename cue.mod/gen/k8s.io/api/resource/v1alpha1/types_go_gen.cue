@@ -99,7 +99,8 @@ import (
 	// There can be at most 32 such reservations. This may get increased in
 	// the future, but not reduced.
 	//
-	// +listType=set
+	// +listType=map
+	// +listMapKey=uid
 	// +optional
 	reservedFor?: [...#ResourceClaimConsumerReference] @go(ReservedFor,[]ResourceClaimConsumerReference) @protobuf(3,bytes,opt)
 

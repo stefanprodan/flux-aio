@@ -2625,7 +2625,7 @@ import (
 	// This is an alpha field and requires enabling the
 	// DynamicResourceAllocation feature gate.
 	//
-	// This field is immutable.
+	// This field is immutable. It can only be set for containers.
 	//
 	// +listType=map
 	// +listMapKey=name
