@@ -278,11 +278,11 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 
 									properties: {
 										apiVersion: {
-											description: "API version of the referent."
+											description: "API version of the referent"
 											type:        "string"
 										}
 										kind: {
-											description: "Kind of the referent."
+											description: "Kind of the referent"
 											enum: [
 												"Bucket",
 												"GitRepository",
@@ -299,24 +299,26 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 										}
 										matchLabels: {
 											additionalProperties: type: "string"
-											description: "MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+											description: "MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed. MatchLabels requires the name to be set to `*`."
 
 											type: "object"
 										}
 										name: {
-											description: "Name of the referent."
-											maxLength:   53
-											minLength:   1
-											type:        "string"
+											description: "Name of the referent If multiple resources are targeted `*` may be set."
+
+											maxLength: 53
+											minLength: 1
+											type:      "string"
 										}
 										namespace: {
-											description: "Namespace of the referent."
+											description: "Namespace of the referent"
 											maxLength:   53
 											minLength:   1
 											type:        "string"
 										}
 									}
 									required: [
+										"kind",
 										"name",
 									]
 									type: "object"
@@ -859,11 +861,6 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							artifact: {
 								description: "Artifact represents the last successful Bucket reconciliation."
 								properties: {
-									checksum: {
-										description: "Checksum is the SHA256 checksum of the Artifact file. Deprecated: use Artifact.Digest instead."
-
-										type: "string"
-									}
 									digest: {
 										description: "Digest is the digest of the file in the form of '<algorithm>:<checksum>'."
 										pattern:     "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
@@ -902,7 +899,9 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 									}
 								}
 								required: [
+									"lastUpdateTime",
 									"path",
+									"revision",
 									"url",
 								]
 								type: "object"
@@ -1031,6 +1030,440 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 				name:     "URL"
 				type:     "string"
 			}, {
+				jsonPath: ".metadata.creationTimestamp"
+				name:     "Age"
+				type:     "date"
+			}, {
+				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				name:     "Ready"
+				type:     "string"
+			}, {
+				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				name:     "Status"
+				type:     "string"
+			}]
+			name: "v1"
+			schema: openAPIV3Schema: {
+				description: "GitRepository is the Schema for the gitrepositories API."
+				properties: {
+					apiVersion: {
+						description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+
+						type: "string"
+					}
+					kind: {
+						description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+
+						type: "string"
+					}
+					metadata: type: "object"
+					spec: {
+						description: "GitRepositorySpec specifies the required configuration to produce an Artifact for a Git repository."
+
+						properties: {
+							ignore: {
+								description: "Ignore overrides the set of excluded patterns in the .sourceignore format (which is the same as .gitignore). If not provided, a default will be used, consult the documentation for your version to find out what those are."
+
+								type: "string"
+							}
+							include: {
+								description: "Include specifies a list of GitRepository resources which Artifacts should be included in the Artifact produced for this GitRepository."
+
+								items: {
+									description: "GitRepositoryInclude specifies a local reference to a GitRepository which Artifact (sub-)contents must be included, and where they should be placed."
+
+									properties: {
+										fromPath: {
+											description: "FromPath specifies the path to copy contents from, defaults to the root of the Artifact."
+
+											type: "string"
+										}
+										repository: {
+											description: "GitRepositoryRef specifies the GitRepository which Artifact contents must be included."
+
+											properties: name: {
+												description: "Name of the referent."
+												type:        "string"
+											}
+											required: [
+												"name",
+											]
+											type: "object"
+										}
+										toPath: {
+											description: "ToPath specifies the path to copy contents to, defaults to the name of the GitRepositoryRef."
+
+											type: "string"
+										}
+									}
+									required: [
+										"repository",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							interval: {
+								description: "Interval at which to check the GitRepository for updates."
+								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:        "string"
+							}
+							recurseSubmodules: {
+								description: "RecurseSubmodules enables the initialization of all submodules within the GitRepository as cloned from the URL, using their default settings."
+
+								type: "boolean"
+							}
+							ref: {
+								description: "Reference specifies the Git reference to resolve and monitor for changes, defaults to the 'master' branch."
+
+								properties: {
+									branch: {
+										description: "Branch to check out, defaults to 'master' if no other field is defined."
+
+										type: "string"
+									}
+									commit: {
+										description: """
+		Commit SHA to check out, takes precedence over all reference fields. 
+		 This can be combined with Branch to shallow clone the branch, in which the commit is expected to exist.
+		"""
+
+										type: "string"
+									}
+									name: {
+										description: """
+		Name of the reference to check out; takes precedence over Branch, Tag and SemVer. 
+		 It must be a valid Git reference: https://git-scm.com/docs/git-check-ref-format#_description Examples: \"refs/heads/main\", \"refs/tags/v0.1.0\", \"refs/pull/420/head\", \"refs/merge-requests/1/head\"
+		"""
+
+										type: "string"
+									}
+									semver: {
+										description: "SemVer tag expression to check out, takes precedence over Tag."
+
+										type: "string"
+									}
+									tag: {
+										description: "Tag to check out, takes precedence over Branch."
+										type:        "string"
+									}
+								}
+								type: "object"
+							}
+							secretRef: {
+								description: "SecretRef specifies the Secret containing authentication credentials for the GitRepository. For HTTPS repositories the Secret must contain 'username' and 'password' fields for basic auth or 'bearerToken' field for token auth. For SSH repositories the Secret must contain 'identity' and 'known_hosts' fields."
+
+								properties: name: {
+									description: "Name of the referent."
+									type:        "string"
+								}
+								required: [
+									"name",
+								]
+								type: "object"
+							}
+							suspend: {
+								description: "Suspend tells the controller to suspend the reconciliation of this GitRepository."
+
+								type: "boolean"
+							}
+							timeout: {
+								default:     "60s"
+								description: "Timeout for Git operations like cloning, defaults to 60s."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								type:    "string"
+							}
+							url: {
+								description: "URL specifies the Git repository URL, it can be an HTTP/S or SSH address."
+
+								pattern: "^(http|https|ssh)://.*$"
+								type:    "string"
+							}
+							verify: {
+								description: "Verification specifies the configuration to verify the Git commit signature(s)."
+
+								properties: {
+									mode: {
+										description: "Mode specifies what Git object should be verified, currently ('head')."
+
+										enum: [
+											"head",
+										]
+										type: "string"
+									}
+									secretRef: {
+										description: "SecretRef specifies the Secret containing the public keys of trusted Git authors."
+
+										properties: name: {
+											description: "Name of the referent."
+											type:        "string"
+										}
+										required: [
+											"name",
+										]
+										type: "object"
+									}
+								}
+								required: [
+									"mode",
+									"secretRef",
+								]
+								type: "object"
+							}
+						}
+						required: [
+							"interval",
+							"url",
+						]
+						type: "object"
+					}
+					status: {
+						default: observedGeneration: -1
+						description: "GitRepositoryStatus records the observed state of a Git repository."
+						properties: {
+							artifact: {
+								description: "Artifact represents the last successful GitRepository reconciliation."
+
+								properties: {
+									digest: {
+										description: "Digest is the digest of the file in the form of '<algorithm>:<checksum>'."
+										pattern:     "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
+										type:        "string"
+									}
+									lastUpdateTime: {
+										description: "LastUpdateTime is the timestamp corresponding to the last update of the Artifact."
+
+										format: "date-time"
+										type:   "string"
+									}
+									metadata: {
+										additionalProperties: type: "string"
+										description: "Metadata holds upstream information such as OCI annotations."
+										type:        "object"
+									}
+									path: {
+										description: "Path is the relative file path of the Artifact. It can be used to locate the file in the root of the Artifact storage on the local file system of the controller managing the Source."
+
+										type: "string"
+									}
+									revision: {
+										description: "Revision is a human-readable identifier traceable in the origin source system. It can be a Git commit SHA, Git tag, a Helm chart version, etc."
+
+										type: "string"
+									}
+									size: {
+										description: "Size is the number of bytes in the file."
+										format:      "int64"
+										type:        "integer"
+									}
+									url: {
+										description: "URL is the HTTP address of the Artifact as exposed by the controller managing the Source. It can be used to retrieve the Artifact for consumption, e.g. by another controller applying the Artifact contents."
+
+										type: "string"
+									}
+								}
+								required: [
+									"lastUpdateTime",
+									"path",
+									"revision",
+									"url",
+								]
+								type: "object"
+							}
+							conditions: {
+								description: "Conditions holds the conditions for the GitRepository."
+								items: {
+									description: """
+		Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions.  For example, 
+		 type FooStatus struct{ // Represents the observations of a foo's current state. // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\" // +patchMergeKey=type // +patchStrategy=merge // +listType=map // +listMapKey=type Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"` 
+		 // other fields }
+		"""
+
+									properties: {
+										lastTransitionTime: {
+											description: "lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable."
+
+											format: "date-time"
+											type:   "string"
+										}
+										message: {
+											description: "message is a human readable message indicating details about the transition. This may be an empty string."
+
+											maxLength: 32768
+											type:      "string"
+										}
+										observedGeneration: {
+											description: "observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance."
+
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											description: "reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty."
+
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											description: "status of the condition, one of True, False, Unknown."
+											enum: [
+												"True",
+												"False",
+												"Unknown",
+											]
+											type: "string"
+										}
+										type: {
+											description: "type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)"
+
+											maxLength: 316
+											pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type:      "string"
+										}
+									}
+									required: [
+										"lastTransitionTime",
+										"message",
+										"reason",
+										"status",
+										"type",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							includedArtifacts: {
+								description: "IncludedArtifacts contains a list of the last successfully included Artifacts as instructed by GitRepositorySpec.Include."
+
+								items: {
+									description: "Artifact represents the output of a Source reconciliation."
+									properties: {
+										digest: {
+											description: "Digest is the digest of the file in the form of '<algorithm>:<checksum>'."
+
+											pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
+											type:    "string"
+										}
+										lastUpdateTime: {
+											description: "LastUpdateTime is the timestamp corresponding to the last update of the Artifact."
+
+											format: "date-time"
+											type:   "string"
+										}
+										metadata: {
+											additionalProperties: type: "string"
+											description: "Metadata holds upstream information such as OCI annotations."
+
+											type: "object"
+										}
+										path: {
+											description: "Path is the relative file path of the Artifact. It can be used to locate the file in the root of the Artifact storage on the local file system of the controller managing the Source."
+
+											type: "string"
+										}
+										revision: {
+											description: "Revision is a human-readable identifier traceable in the origin source system. It can be a Git commit SHA, Git tag, a Helm chart version, etc."
+
+											type: "string"
+										}
+										size: {
+											description: "Size is the number of bytes in the file."
+											format:      "int64"
+											type:        "integer"
+										}
+										url: {
+											description: "URL is the HTTP address of the Artifact as exposed by the controller managing the Source. It can be used to retrieve the Artifact for consumption, e.g. by another controller applying the Artifact contents."
+
+											type: "string"
+										}
+									}
+									required: [
+										"lastUpdateTime",
+										"path",
+										"revision",
+										"url",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							lastHandledReconcileAt: {
+								description: "LastHandledReconcileAt holds the value of the most recent reconcile request value, so a change of the annotation value can be detected."
+
+								type: "string"
+							}
+							observedGeneration: {
+								description: "ObservedGeneration is the last observed generation of the GitRepository object."
+
+								format: "int64"
+								type:   "integer"
+							}
+							observedIgnore: {
+								description: "ObservedIgnore is the observed exclusion patterns used for constructing the source artifact."
+
+								type: "string"
+							}
+							observedInclude: {
+								description: "ObservedInclude is the observed list of GitRepository resources used to produce the current Artifact."
+
+								items: {
+									description: "GitRepositoryInclude specifies a local reference to a GitRepository which Artifact (sub-)contents must be included, and where they should be placed."
+
+									properties: {
+										fromPath: {
+											description: "FromPath specifies the path to copy contents from, defaults to the root of the Artifact."
+
+											type: "string"
+										}
+										repository: {
+											description: "GitRepositoryRef specifies the GitRepository which Artifact contents must be included."
+
+											properties: name: {
+												description: "Name of the referent."
+												type:        "string"
+											}
+											required: [
+												"name",
+											]
+											type: "object"
+										}
+										toPath: {
+											description: "ToPath specifies the path to copy contents to, defaults to the name of the GitRepositoryRef."
+
+											type: "string"
+										}
+									}
+									required: [
+										"repository",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							observedRecurseSubmodules: {
+								description: "ObservedRecurseSubmodules is the observed resource submodules configuration used to produce the current Artifact."
+
+								type: "boolean"
+							}
+						}
+						type: "object"
+					}
+				}
+				type: "object"
+			}
+			served:  true
+			storage: true
+			subresources: status: {}
+		}, {
+			additionalPrinterColumns: [{
+				jsonPath: ".spec.url"
+				name:     "URL"
+				type:     "string"
+			}, {
 				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
 				name:     "Ready"
 				type:     "string"
@@ -1043,7 +1476,9 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}]
-			name: "v1beta1"
+			deprecated:         true
+			deprecationWarning: "v1beta1 GitRepository is deprecated, upgrade to v1"
+			name:               "v1beta1"
 			schema: openAPIV3Schema: {
 				description: "GitRepository is the Schema for the gitrepositories API"
 				properties: {
@@ -1417,7 +1852,9 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 				name:     "Status"
 				type:     "string"
 			}]
-			name: "v1beta2"
+			deprecated:         true
+			deprecationWarning: "v1beta2 GitRepository is deprecated, upgrade to v1"
+			name:               "v1beta2"
 			schema: openAPIV3Schema: {
 				description: "GitRepository is the Schema for the gitrepositories API."
 				properties: {
@@ -1616,6 +2053,7 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 								}
 								required: [
 									"mode",
+									"secretRef",
 								]
 								type: "object"
 							}
@@ -1634,11 +2072,6 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 								description: "Artifact represents the last successful GitRepository reconciliation."
 
 								properties: {
-									checksum: {
-										description: "Checksum is the SHA256 checksum of the Artifact file. Deprecated: use Artifact.Digest instead."
-
-										type: "string"
-									}
 									digest: {
 										description: "Digest is the digest of the file in the form of '<algorithm>:<checksum>'."
 										pattern:     "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
@@ -1677,7 +2110,9 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 									}
 								}
 								required: [
+									"lastUpdateTime",
 									"path",
+									"revision",
 									"url",
 								]
 								type: "object"
@@ -1761,11 +2196,6 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 								items: {
 									description: "Artifact represents the output of a Source reconciliation."
 									properties: {
-										checksum: {
-											description: "Checksum is the SHA256 checksum of the Artifact file. Deprecated: use Artifact.Digest instead."
-
-											type: "string"
-										}
 										digest: {
 											description: "Digest is the digest of the file in the form of '<algorithm>:<checksum>'."
 
@@ -1806,7 +2236,9 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 										}
 									}
 									required: [
+										"lastUpdateTime",
 										"path",
+										"revision",
 										"url",
 									]
 									type: "object"
@@ -1883,7 +2315,7 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 				type: "object"
 			}
 			served:  true
-			storage: true
+			storage: false
 			subresources: status: {}
 		}]
 	}
@@ -2374,11 +2806,6 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 								description: "Artifact represents the output of the last successful reconciliation."
 
 								properties: {
-									checksum: {
-										description: "Checksum is the SHA256 checksum of the Artifact file. Deprecated: use Artifact.Digest instead."
-
-										type: "string"
-									}
 									digest: {
 										description: "Digest is the digest of the file in the form of '<algorithm>:<checksum>'."
 										pattern:     "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
@@ -2417,7 +2844,9 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 									}
 								}
 								required: [
+									"lastUpdateTime",
 									"path",
+									"revision",
 									"url",
 								]
 								type: "object"
@@ -2580,120 +3009,141 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							chart: {
 								description: "Chart defines the template of the v1beta2.HelmChart that should be created for this HelmRelease."
 
-								properties: spec: {
-									description: "Spec holds the template for the v1beta2.HelmChartSpec for this HelmRelease."
+								properties: {
+									metadata: {
+										description: "ObjectMeta holds the template for metadata like labels and annotations."
 
-									properties: {
-										chart: {
-											description: "The name or path the Helm chart is available at in the SourceRef."
+										properties: {
+											annotations: {
+												additionalProperties: type: "string"
+												description: "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/"
 
-											type: "string"
-										}
-										interval: {
-											description: "Interval at which to check the v1beta2.Source for updates. Defaults to 'HelmReleaseSpec.Interval'."
-
-											pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-											type:    "string"
-										}
-										reconcileStrategy: {
-											default:     "ChartVersion"
-											description: "Determines what enables the creation of a new artifact. Valid values are ('ChartVersion', 'Revision'). See the documentation of the values for an explanation on their behavior. Defaults to ChartVersion when omitted."
-
-											enum: [
-												"ChartVersion",
-												"Revision",
-											]
-											type: "string"
-										}
-										sourceRef: {
-											description: "The name and namespace of the v1beta2.Source the chart is available at."
-
-											properties: {
-												apiVersion: {
-													description: "APIVersion of the referent."
-													type:        "string"
-												}
-												kind: {
-													description: "Kind of the referent."
-													enum: [
-														"HelmRepository",
-														"GitRepository",
-														"Bucket",
-													]
-													type: "string"
-												}
-												name: {
-													description: "Name of the referent."
-													maxLength:   253
-													minLength:   1
-													type:        "string"
-												}
-												namespace: {
-													description: "Namespace of the referent."
-													maxLength:   63
-													minLength:   1
-													type:        "string"
-												}
+												type: "object"
 											}
-											required: [
-												"name",
-											]
-											type: "object"
+											labels: {
+												additionalProperties: type: "string"
+												description: "Map of string keys and values that can be used to organize and categorize (scope and select) objects. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/"
+
+												type: "object"
+											}
 										}
-										valuesFile: {
-											description: "Alternative values file to use as the default chart values, expected to be a relative path in the SourceRef. Deprecated in favor of ValuesFiles, for backwards compatibility the file defined here is merged before the ValuesFiles items. Ignored when omitted."
+										type: "object"
+									}
+									spec: {
+										description: "Spec holds the template for the v1beta2.HelmChartSpec for this HelmRelease."
 
-											type: "string"
-										}
-										valuesFiles: {
-											description: "Alternative list of values files to use as the chart values (values.yaml is not included by default), expected to be a relative path in the SourceRef. Values files are merged in the order of this list with the last file overriding the first. Ignored when omitted."
+										properties: {
+											chart: {
+												description: "The name or path the Helm chart is available at in the SourceRef."
 
-											items: type: "string"
-											type: "array"
-										}
-										verify: {
-											description: "Verify contains the secret name containing the trusted public keys used to verify the signature and specifies which provider to use to check whether OCI image is authentic. This field is only supported for OCI sources. Chart dependencies, which are not bundled in the umbrella chart artifact, are not verified."
+												type: "string"
+											}
+											interval: {
+												description: "Interval at which to check the v1beta2.Source for updates. Defaults to 'HelmReleaseSpec.Interval'."
 
-											properties: {
-												provider: {
-													default:     "cosign"
-													description: "Provider specifies the technology used to sign the OCI Helm chart."
+												pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+												type:    "string"
+											}
+											reconcileStrategy: {
+												default:     "ChartVersion"
+												description: "Determines what enables the creation of a new artifact. Valid values are ('ChartVersion', 'Revision'). See the documentation of the values for an explanation on their behavior. Defaults to ChartVersion when omitted."
 
-													enum: [
-														"cosign",
-													]
-													type: "string"
-												}
-												secretRef: {
-													description: "SecretRef specifies the Kubernetes Secret containing the trusted public keys."
+												enum: [
+													"ChartVersion",
+													"Revision",
+												]
+												type: "string"
+											}
+											sourceRef: {
+												description: "The name and namespace of the v1beta2.Source the chart is available at."
 
-													properties: name: {
-														description: "Name of the referent."
+												properties: {
+													apiVersion: {
+														description: "APIVersion of the referent."
 														type:        "string"
 													}
-													required: [
-														"name",
-													]
-													type: "object"
+													kind: {
+														description: "Kind of the referent."
+														enum: [
+															"HelmRepository",
+															"GitRepository",
+															"Bucket",
+														]
+														type: "string"
+													}
+													name: {
+														description: "Name of the referent."
+														maxLength:   253
+														minLength:   1
+														type:        "string"
+													}
+													namespace: {
+														description: "Namespace of the referent."
+														maxLength:   63
+														minLength:   1
+														type:        "string"
+													}
 												}
+												required: [
+													"name",
+												]
+												type: "object"
 											}
-											required: [
-												"provider",
-											]
-											type: "object"
-										}
-										version: {
-											default:     "*"
-											description: "Version semver expression, ignored for charts from v1beta2.GitRepository and v1beta2.Bucket sources. Defaults to latest when omitted."
+											valuesFile: {
+												description: "Alternative values file to use as the default chart values, expected to be a relative path in the SourceRef. Deprecated in favor of ValuesFiles, for backwards compatibility the file defined here is merged before the ValuesFiles items. Ignored when omitted."
 
-											type: "string"
+												type: "string"
+											}
+											valuesFiles: {
+												description: "Alternative list of values files to use as the chart values (values.yaml is not included by default), expected to be a relative path in the SourceRef. Values files are merged in the order of this list with the last file overriding the first. Ignored when omitted."
+
+												items: type: "string"
+												type: "array"
+											}
+											verify: {
+												description: "Verify contains the secret name containing the trusted public keys used to verify the signature and specifies which provider to use to check whether OCI image is authentic. This field is only supported for OCI sources. Chart dependencies, which are not bundled in the umbrella chart artifact, are not verified."
+
+												properties: {
+													provider: {
+														default:     "cosign"
+														description: "Provider specifies the technology used to sign the OCI Helm chart."
+
+														enum: [
+															"cosign",
+														]
+														type: "string"
+													}
+													secretRef: {
+														description: "SecretRef specifies the Kubernetes Secret containing the trusted public keys."
+
+														properties: name: {
+															description: "Name of the referent."
+															type:        "string"
+														}
+														required: [
+															"name",
+														]
+														type: "object"
+													}
+												}
+												required: [
+													"provider",
+												]
+												type: "object"
+											}
+											version: {
+												default:     "*"
+												description: "Version semver expression, ignored for charts from v1beta2.GitRepository and v1beta2.Bucket sources. Defaults to latest when omitted."
+
+												type: "string"
+											}
 										}
+										required: [
+											"chart",
+											"sourceRef",
+										]
+										type: "object"
 									}
-									required: [
-										"chart",
-										"sourceRef",
-									]
-									type: "object"
 								}
 								required: [
 									"spec",
@@ -2850,6 +3300,15 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 
 								type: "integer"
 							}
+							persistentClient: {
+								description: """
+		PersistentClient tells the controller to use a persistent Kubernetes client for this release. When enabled, the client will be reused for the duration of the reconciliation, instead of being created and destroyed for each (step of a) Helm action. 
+		 This can improve performance, but may cause issues with some Helm charts that for example do create Custom Resource Definitions during installation outside Helm's CRD lifecycle hooks, which are then not observed to be available by e.g. post-install hooks. 
+		 If not set, it defaults to true.
+		"""
+
+								type: "boolean"
+							}
 							postRenderers: {
 								description: "PostRenderers holds an array of Helm PostRenderers, which will be applied in order of their definition."
 
@@ -2945,6 +3404,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 															type: "object"
 														}
 													}
+													required: [
+														"patch",
+													]
 													type: "object"
 												}
 												type: "array"
@@ -3868,11 +4330,6 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 								description: "Artifact represents the last successful HelmRepository reconciliation."
 
 								properties: {
-									checksum: {
-										description: "Checksum is the SHA256 checksum of the Artifact file. Deprecated: use Artifact.Digest instead."
-
-										type: "string"
-									}
 									digest: {
 										description: "Digest is the digest of the file in the form of '<algorithm>:<checksum>'."
 										pattern:     "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
@@ -3911,7 +4368,9 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 									}
 								}
 								required: [
+									"lastUpdateTime",
 									"path",
+									"revision",
 									"url",
 								]
 								type: "object"
@@ -5295,6 +5754,545 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 		scope: "Namespaced"
 		versions: [{
 			additionalPrinterColumns: [{
+				jsonPath: ".metadata.creationTimestamp"
+				name:     "Age"
+				type:     "date"
+			}, {
+				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				name:     "Ready"
+				type:     "string"
+			}, {
+				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				name:     "Status"
+				type:     "string"
+			}]
+			name: "v1"
+			schema: openAPIV3Schema: {
+				description: "Kustomization is the Schema for the kustomizations API."
+				properties: {
+					apiVersion: {
+						description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+
+						type: "string"
+					}
+					kind: {
+						description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+
+						type: "string"
+					}
+					metadata: type: "object"
+					spec: {
+						description: "KustomizationSpec defines the configuration to calculate the desired state from a Source using Kustomize."
+
+						properties: {
+							commonMetadata: {
+								description: "CommonMetadata specifies the common labels and annotations that are applied to all resources. Any existing label or annotation will be overridden if its key matches a common one."
+
+								properties: {
+									annotations: {
+										additionalProperties: type: "string"
+										description: "Annotations to be added to the object's metadata."
+										type:        "object"
+									}
+									labels: {
+										additionalProperties: type: "string"
+										description: "Labels to be added to the object's metadata."
+										type:        "object"
+									}
+								}
+								type: "object"
+							}
+							components: {
+								description: "Components specifies relative paths to specifications of other Components."
+
+								items: type: "string"
+								type: "array"
+							}
+							decryption: {
+								description: "Decrypt Kubernetes secrets before applying them on the cluster."
+
+								properties: {
+									provider: {
+										description: "Provider is the name of the decryption engine."
+										enum: [
+											"sops",
+										]
+										type: "string"
+									}
+									secretRef: {
+										description: "The secret name containing the private OpenPGP keys used for decryption."
+
+										properties: name: {
+											description: "Name of the referent."
+											type:        "string"
+										}
+										required: [
+											"name",
+										]
+										type: "object"
+									}
+								}
+								required: [
+									"provider",
+								]
+								type: "object"
+							}
+							dependsOn: {
+								description: "DependsOn may contain a meta.NamespacedObjectReference slice with references to Kustomization resources that must be ready before this Kustomization can be reconciled."
+
+								items: {
+									description: "NamespacedObjectReference contains enough information to locate the referenced Kubernetes resource object in any namespace."
+
+									properties: {
+										name: {
+											description: "Name of the referent."
+											type:        "string"
+										}
+										namespace: {
+											description: "Namespace of the referent, when not specified it acts as LocalObjectReference."
+
+											type: "string"
+										}
+									}
+									required: [
+										"name",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							force: {
+								default:     false
+								description: "Force instructs the controller to recreate resources when patching fails due to an immutable field change."
+
+								type: "boolean"
+							}
+							healthChecks: {
+								description: "A list of resources to be included in the health assessment."
+								items: {
+									description: "NamespacedObjectKindReference contains enough information to locate the typed referenced Kubernetes resource object in any namespace."
+
+									properties: {
+										apiVersion: {
+											description: "API version of the referent, if not specified the Kubernetes preferred version will be used."
+
+											type: "string"
+										}
+										kind: {
+											description: "Kind of the referent."
+											type:        "string"
+										}
+										name: {
+											description: "Name of the referent."
+											type:        "string"
+										}
+										namespace: {
+											description: "Namespace of the referent, when not specified it acts as LocalObjectReference."
+
+											type: "string"
+										}
+									}
+									required: [
+										"kind",
+										"name",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							images: {
+								description: "Images is a list of (image name, new name, new tag or digest) for changing image names, tags or digests. This can also be achieved with a patch, but this operator is simpler to specify."
+
+								items: {
+									description: "Image contains an image name, a new name, a new tag or digest, which will replace the original name and tag."
+
+									properties: {
+										digest: {
+											description: "Digest is the value used to replace the original image tag. If digest is present NewTag value is ignored."
+
+											type: "string"
+										}
+										name: {
+											description: "Name is a tag-less image name."
+											type:        "string"
+										}
+										newName: {
+											description: "NewName is the value used to replace the original name."
+
+											type: "string"
+										}
+										newTag: {
+											description: "NewTag is the value used to replace the original tag."
+
+											type: "string"
+										}
+									}
+									required: [
+										"name",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							interval: {
+								description: "The interval at which to reconcile the Kustomization."
+								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:        "string"
+							}
+							kubeConfig: {
+								description: "The KubeConfig for reconciling the Kustomization on a remote cluster. When used in combination with KustomizationSpec.ServiceAccountName, forces the controller to act on behalf of that Service Account at the target cluster. If the --default-service-account flag is set, its value will be used as a controller level fallback for when KustomizationSpec.ServiceAccountName is empty."
+
+								properties: secretRef: {
+									description: "SecretRef holds the name of a secret that contains a key with the kubeconfig file as the value. If no key is set, the key will default to 'value'. It is recommended that the kubeconfig is self-contained, and the secret is regularly updated if credentials such as a cloud-access-token expire. Cloud specific `cmd-path` auth helpers will not function without adding binaries and credentials to the Pod that is responsible for reconciling Kubernetes resources."
+
+									properties: {
+										key: {
+											description: "Key in the Secret, when not specified an implementation-specific default key is used."
+
+											type: "string"
+										}
+										name: {
+											description: "Name of the Secret."
+											type:        "string"
+										}
+									}
+									required: [
+										"name",
+									]
+									type: "object"
+								}
+								required: [
+									"secretRef",
+								]
+								type: "object"
+							}
+							patches: {
+								description: "Strategic merge and JSON patches, defined as inline YAML objects, capable of targeting objects based on kind, label and annotation selectors."
+
+								items: {
+									description: "Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should be applied to."
+
+									properties: {
+										patch: {
+											description: "Patch contains an inline StrategicMerge patch or an inline JSON6902 patch with an array of operation objects."
+
+											type: "string"
+										}
+										target: {
+											description: "Target points to the resources that the patch document should be applied to."
+
+											properties: {
+												annotationSelector: {
+													description: "AnnotationSelector is a string that follows the label selection expression https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api It matches with the resource annotations."
+
+													type: "string"
+												}
+												group: {
+													description: "Group is the API group to select resources from. Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources. https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md"
+
+													type: "string"
+												}
+												kind: {
+													description: "Kind of the API Group to select resources from. Together with Group and Version it is capable of unambiguously identifying and/or selecting resources. https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md"
+
+													type: "string"
+												}
+												labelSelector: {
+													description: "LabelSelector is a string that follows the label selection expression https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api It matches with the resource labels."
+
+													type: "string"
+												}
+												name: {
+													description: "Name to match resources with."
+													type:        "string"
+												}
+												namespace: {
+													description: "Namespace to select resources from."
+													type:        "string"
+												}
+												version: {
+													description: "Version of the API Group to select resources from. Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources. https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md"
+
+													type: "string"
+												}
+											}
+											type: "object"
+										}
+									}
+									required: [
+										"patch",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							path: {
+								description: "Path to the directory containing the kustomization.yaml file, or the set of plain YAMLs a kustomization.yaml should be generated for. Defaults to 'None', which translates to the root path of the SourceRef."
+
+								type: "string"
+							}
+							postBuild: {
+								description: "PostBuild describes which actions to perform on the YAML manifest generated by building the kustomize overlay."
+
+								properties: {
+									substitute: {
+										additionalProperties: type: "string"
+										description: "Substitute holds a map of key/value pairs. The variables defined in your YAML manifests that match any of the keys defined in the map will be substituted with the set value. Includes support for bash string replacement functions e.g. ${var:=default}, ${var:position} and ${var/substring/replacement}."
+
+										type: "object"
+									}
+									substituteFrom: {
+										description: "SubstituteFrom holds references to ConfigMaps and Secrets containing the variables and their values to be substituted in the YAML manifests. The ConfigMap and the Secret data keys represent the var names, and they must match the vars declared in the manifests for the substitution to happen."
+
+										items: {
+											description: "SubstituteReference contains a reference to a resource containing the variables name and value."
+
+											properties: {
+												kind: {
+													description: "Kind of the values referent, valid values are ('Secret', 'ConfigMap')."
+
+													enum: [
+														"Secret",
+														"ConfigMap",
+													]
+													type: "string"
+												}
+												name: {
+													description: "Name of the values referent. Should reside in the same namespace as the referring resource."
+
+													maxLength: 253
+													minLength: 1
+													type:      "string"
+												}
+												optional: {
+													default:     false
+													description: "Optional indicates whether the referenced resource must exist, or whether to tolerate its absence. If true and the referenced resource is absent, proceed as if the resource was present but empty, without any variables defined."
+
+													type: "boolean"
+												}
+											}
+											required: [
+												"kind",
+												"name",
+											]
+											type: "object"
+										}
+										type: "array"
+									}
+								}
+								type: "object"
+							}
+							prune: {
+								description: "Prune enables garbage collection."
+								type:        "boolean"
+							}
+							retryInterval: {
+								description: "The interval at which to retry a previously failed reconciliation. When not specified, the controller uses the KustomizationSpec.Interval value to retry failures."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							serviceAccountName: {
+								description: "The name of the Kubernetes service account to impersonate when reconciling this Kustomization."
+
+								type: "string"
+							}
+							sourceRef: {
+								description: "Reference of the source where the kustomization file is."
+
+								properties: {
+									apiVersion: {
+										description: "API version of the referent."
+										type:        "string"
+									}
+									kind: {
+										description: "Kind of the referent."
+										enum: [
+											"OCIRepository",
+											"GitRepository",
+											"Bucket",
+										]
+										type: "string"
+									}
+									name: {
+										description: "Name of the referent."
+										type:        "string"
+									}
+									namespace: {
+										description: "Namespace of the referent, defaults to the namespace of the Kubernetes resource object that contains the reference."
+
+										type: "string"
+									}
+								}
+								required: [
+									"kind",
+									"name",
+								]
+								type: "object"
+							}
+							suspend: {
+								description: "This flag tells the controller to suspend subsequent kustomize executions, it does not apply to already started executions. Defaults to false."
+
+								type: "boolean"
+							}
+							targetNamespace: {
+								description: "TargetNamespace sets or overrides the namespace in the kustomization.yaml file."
+
+								maxLength: 63
+								minLength: 1
+								type:      "string"
+							}
+							timeout: {
+								description: "Timeout for validation, apply and health checking operations. Defaults to 'Interval' duration."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							wait: {
+								description: "Wait instructs the controller to check the health of all the reconciled resources. When enabled, the HealthChecks are ignored. Defaults to false."
+
+								type: "boolean"
+							}
+						}
+						required: [
+							"interval",
+							"prune",
+							"sourceRef",
+						]
+						type: "object"
+					}
+					status: {
+						default: observedGeneration: -1
+						description: "KustomizationStatus defines the observed state of a kustomization."
+						properties: {
+							conditions: {
+								items: {
+									description: """
+		Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions.  For example, 
+		 type FooStatus struct{ // Represents the observations of a foo's current state. // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\" // +patchMergeKey=type // +patchStrategy=merge // +listType=map // +listMapKey=type Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"` 
+		 // other fields }
+		"""
+
+									properties: {
+										lastTransitionTime: {
+											description: "lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable."
+
+											format: "date-time"
+											type:   "string"
+										}
+										message: {
+											description: "message is a human readable message indicating details about the transition. This may be an empty string."
+
+											maxLength: 32768
+											type:      "string"
+										}
+										observedGeneration: {
+											description: "observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance."
+
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											description: "reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty."
+
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											description: "status of the condition, one of True, False, Unknown."
+											enum: [
+												"True",
+												"False",
+												"Unknown",
+											]
+											type: "string"
+										}
+										type: {
+											description: "type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)"
+
+											maxLength: 316
+											pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type:      "string"
+										}
+									}
+									required: [
+										"lastTransitionTime",
+										"message",
+										"reason",
+										"status",
+										"type",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							inventory: {
+								description: "Inventory contains the list of Kubernetes resource object references that have been successfully applied."
+
+								properties: entries: {
+									description: "Entries of Kubernetes resource object references."
+									items: {
+										description: "ResourceRef contains the information necessary to locate a resource within a cluster."
+
+										properties: {
+											id: {
+												description: "ID is the string representation of the Kubernetes resource object's metadata, in the format '<namespace>_<name>_<group>_<kind>'."
+
+												type: "string"
+											}
+											v: {
+												description: "Version is the API version of the Kubernetes resource object's kind."
+
+												type: "string"
+											}
+										}
+										required: [
+											"id",
+											"v",
+										]
+										type: "object"
+									}
+									type: "array"
+								}
+								required: [
+									"entries",
+								]
+								type: "object"
+							}
+							lastAppliedRevision: {
+								description: "The last successfully applied revision. Equals the Revision of the applied Artifact from the referenced Source."
+
+								type: "string"
+							}
+							lastAttemptedRevision: {
+								description: "LastAttemptedRevision is the revision of the last reconciliation attempt."
+
+								type: "string"
+							}
+							lastHandledReconcileAt: {
+								description: "LastHandledReconcileAt holds the value of the most recent reconcile request value, so a change of the annotation value can be detected."
+
+								type: "string"
+							}
+							observedGeneration: {
+								description: "ObservedGeneration is the last reconciled generation."
+								format:      "int64"
+								type:        "integer"
+							}
+						}
+						type: "object"
+					}
+				}
+				type: "object"
+			}
+			served:  true
+			storage: true
+			subresources: status: {}
+		}, {
+			additionalPrinterColumns: [{
 				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
 				name:     "Ready"
 				type:     "string"
@@ -5307,7 +6305,9 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}]
-			name: "v1beta1"
+			deprecated:         true
+			deprecationWarning: "v1beta1 Kustomization is deprecated, upgrade to v1"
+			name:               "v1beta1"
 			schema: openAPIV3Schema: {
 				description: "Kustomization is the Schema for the kustomizations API."
 				properties: {
@@ -5525,6 +6525,9 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 											type: "object"
 										}
 									}
+									required: [
+										"patch",
+									]
 									type: "object"
 								}
 								type: "array"
@@ -5911,7 +6914,9 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 				name:     "Status"
 				type:     "string"
 			}]
-			name: "v1beta2"
+			deprecated:         true
+			deprecationWarning: "v1beta2 Kustomization is deprecated, upgrade to v1"
+			name:               "v1beta2"
 			schema: openAPIV3Schema: {
 				description: "Kustomization is the Schema for the kustomizations API."
 				properties: {
@@ -5930,8 +6935,25 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 						description: "KustomizationSpec defines the configuration to calculate the desired state from a Source using Kustomize."
 
 						properties: {
+							commonMetadata: {
+								description: "CommonMetadata specifies the common labels and annotations that are applied to all resources. Any existing label or annotation will be overridden if its key matches a common one."
+
+								properties: {
+									annotations: {
+										additionalProperties: type: "string"
+										description: "Annotations to be added to the object's metadata."
+										type:        "object"
+									}
+									labels: {
+										additionalProperties: type: "string"
+										description: "Labels to be added to the object's metadata."
+										type:        "object"
+									}
+								}
+								type: "object"
+							}
 							components: {
-								description: "Components specifies relative paths to specifications of other Components"
+								description: "Components specifies relative paths to specifications of other Components."
 
 								items: type: "string"
 								type: "array"
@@ -6147,6 +7169,9 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 											type: "object"
 										}
 									}
+									required: [
+										"patch",
+									]
 									type: "object"
 								}
 								type: "array"
@@ -6528,7 +7553,7 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 				type: "object"
 			}
 			served:  true
-			storage: true
+			storage: false
 			subresources: status: {}
 		}]
 	}
@@ -6755,11 +7780,6 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 								description: "Artifact represents the output of the last successful OCI Repository sync."
 
 								properties: {
-									checksum: {
-										description: "Checksum is the SHA256 checksum of the Artifact file. Deprecated: use Artifact.Digest instead."
-
-										type: "string"
-									}
 									digest: {
 										description: "Digest is the digest of the file in the form of '<algorithm>:<checksum>'."
 										pattern:     "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
@@ -6798,7 +7818,9 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 									}
 								}
 								required: [
+									"lastUpdateTime",
 									"path",
+									"revision",
 									"url",
 								]
 								type: "object"
@@ -7397,7 +8419,250 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 				name:     "Status"
 				type:     "string"
 			}]
-			name: "v1beta1"
+			name: "v1"
+			schema: openAPIV3Schema: {
+				description: "Receiver is the Schema for the receivers API."
+				properties: {
+					apiVersion: {
+						description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+
+						type: "string"
+					}
+					kind: {
+						description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+
+						type: "string"
+					}
+					metadata: type: "object"
+					spec: {
+						description: "ReceiverSpec defines the desired state of the Receiver."
+						properties: {
+							events: {
+								description: "Events specifies the list of event types to handle, e.g. 'push' for GitHub or 'Push Hook' for GitLab."
+
+								items: type: "string"
+								type: "array"
+							}
+							interval: {
+								default:     "10m"
+								description: "Interval at which to reconcile the Receiver with its Secret references."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							resources: {
+								description: "A list of resources to be notified about changes."
+								items: {
+									description: "CrossNamespaceObjectReference contains enough information to let you locate the typed referenced object at cluster level"
+
+									properties: {
+										apiVersion: {
+											description: "API version of the referent"
+											type:        "string"
+										}
+										kind: {
+											description: "Kind of the referent"
+											enum: [
+												"Bucket",
+												"GitRepository",
+												"Kustomization",
+												"HelmRelease",
+												"HelmChart",
+												"HelmRepository",
+												"ImageRepository",
+												"ImagePolicy",
+												"ImageUpdateAutomation",
+												"OCIRepository",
+											]
+											type: "string"
+										}
+										matchLabels: {
+											additionalProperties: type: "string"
+											description: "MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed. MatchLabels requires the name to be set to `*`."
+
+											type: "object"
+										}
+										name: {
+											description: "Name of the referent If multiple resources are targeted `*` may be set."
+
+											maxLength: 53
+											minLength: 1
+											type:      "string"
+										}
+										namespace: {
+											description: "Namespace of the referent"
+											maxLength:   53
+											minLength:   1
+											type:        "string"
+										}
+									}
+									required: [
+										"kind",
+										"name",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							secretRef: {
+								description: "SecretRef specifies the Secret containing the token used to validate the payload authenticity."
+
+								properties: name: {
+									description: "Name of the referent."
+									type:        "string"
+								}
+								required: [
+									"name",
+								]
+								type: "object"
+							}
+							suspend: {
+								description: "Suspend tells the controller to suspend subsequent events handling for this receiver."
+
+								type: "boolean"
+							}
+							type: {
+								description: "Type of webhook sender, used to determine the validation procedure and payload deserialization."
+
+								enum: [
+									"generic",
+									"generic-hmac",
+									"github",
+									"gitlab",
+									"bitbucket",
+									"harbor",
+									"dockerhub",
+									"quay",
+									"gcr",
+									"nexus",
+									"acr",
+								]
+								type: "string"
+							}
+						}
+						required: [
+							"resources",
+							"secretRef",
+							"type",
+						]
+						type: "object"
+					}
+					status: {
+						default: observedGeneration: -1
+						description: "ReceiverStatus defines the observed state of the Receiver."
+						properties: {
+							conditions: {
+								description: "Conditions holds the conditions for the Receiver."
+								items: {
+									description: """
+		Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions.  For example, 
+		 type FooStatus struct{ // Represents the observations of a foo's current state. // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\" // +patchMergeKey=type // +patchStrategy=merge // +listType=map // +listMapKey=type Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"` 
+		 // other fields }
+		"""
+
+									properties: {
+										lastTransitionTime: {
+											description: "lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable."
+
+											format: "date-time"
+											type:   "string"
+										}
+										message: {
+											description: "message is a human readable message indicating details about the transition. This may be an empty string."
+
+											maxLength: 32768
+											type:      "string"
+										}
+										observedGeneration: {
+											description: "observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance."
+
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											description: "reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty."
+
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											description: "status of the condition, one of True, False, Unknown."
+											enum: [
+												"True",
+												"False",
+												"Unknown",
+											]
+											type: "string"
+										}
+										type: {
+											description: "type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)"
+
+											maxLength: 316
+											pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type:      "string"
+										}
+									}
+									required: [
+										"lastTransitionTime",
+										"message",
+										"reason",
+										"status",
+										"type",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							lastHandledReconcileAt: {
+								description: "LastHandledReconcileAt holds the value of the most recent reconcile request value, so a change of the annotation value can be detected."
+
+								type: "string"
+							}
+							observedGeneration: {
+								description: "ObservedGeneration is the last observed generation of the Receiver object."
+
+								format: "int64"
+								type:   "integer"
+							}
+							url: {
+								description: "URL is the generated incoming webhook address in the format of '/hook/sha256sum(token+name+namespace)'. Deprecated: Replaced by WebhookPath."
+
+								type: "string"
+							}
+							webhookPath: {
+								description: "WebhookPath is the generated incoming webhook address in the format of '/hook/sha256sum(token+name+namespace)'."
+
+								type: "string"
+							}
+						}
+						type: "object"
+					}
+				}
+				type: "object"
+			}
+			served:  true
+			storage: true
+			subresources: status: {}
+		}, {
+			additionalPrinterColumns: [{
+				jsonPath: ".metadata.creationTimestamp"
+				name:     "Age"
+				type:     "date"
+			}, {
+				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				name:     "Ready"
+				type:     "string"
+			}, {
+				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				name:     "Status"
+				type:     "string"
+			}]
+			deprecated:         true
+			deprecationWarning: "v1beta1 Receiver is deprecated, upgrade to v1"
+			name:               "v1beta1"
 			schema: openAPIV3Schema: {
 				description: "Receiver is the Schema for the receivers API"
 				properties: {
@@ -7615,7 +8880,9 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 				name:     "Status"
 				type:     "string"
 			}]
-			name: "v1beta2"
+			deprecated:         true
+			deprecationWarning: "v1beta2 Receiver is deprecated, upgrade to v1"
+			name:               "v1beta2"
 			schema: openAPIV3Schema: {
 				description: "Receiver is the Schema for the receivers API."
 				properties: {
@@ -7652,11 +8919,11 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 
 									properties: {
 										apiVersion: {
-											description: "API version of the referent."
+											description: "API version of the referent"
 											type:        "string"
 										}
 										kind: {
-											description: "Kind of the referent."
+											description: "Kind of the referent"
 											enum: [
 												"Bucket",
 												"GitRepository",
@@ -7673,24 +8940,26 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 										}
 										matchLabels: {
 											additionalProperties: type: "string"
-											description: "MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+											description: "MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed. MatchLabels requires the name to be set to `*`."
 
 											type: "object"
 										}
 										name: {
-											description: "Name of the referent."
-											maxLength:   53
-											minLength:   1
-											type:        "string"
+											description: "Name of the referent If multiple resources are targeted `*` may be set."
+
+											maxLength: 53
+											minLength: 1
+											type:      "string"
 										}
 										namespace: {
-											description: "Namespace of the referent."
+											description: "Namespace of the referent"
 											maxLength:   53
 											minLength:   1
 											type:        "string"
 										}
 									}
 									required: [
+										"kind",
 										"name",
 									]
 									type: "object"
@@ -7836,7 +9105,7 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 				type: "object"
 			}
 			served:  true
-			storage: true
+			storage: false
 			subresources: status: {}
 		}]
 	}

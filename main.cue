@@ -7,12 +7,12 @@ import (
 aio: distribution.#Flux & {
 	spec: {
 		name:    "flux"
-		version: "v0.41.0"
+		version: "v2.0.0-rc.1"
 		controllers: {
-			source:       "ghcr.io/fluxcd/source-controller:v0.36.0"
-			kustomize:    "ghcr.io/fluxcd/kustomize-controller:v0.35.0"
-			helm:         "ghcr.io/fluxcd/helm-controller:v0.31.0"
-			notification: "ghcr.io/fluxcd/notification-controller:v0.33.0"
+			source:       "ghcr.io/fluxcd/source-controller:v1.0.0-rc.1"
+			kustomize:    "ghcr.io/fluxcd/kustomize-controller:v1.0.0-rc.1"
+			helm:         "ghcr.io/fluxcd/helm-controller:v0.32.1"
+			notification: "ghcr.io/fluxcd/notification-controller:v1.0.0-rc.1"
 		}
 		// Enable the multi-tenancy lockdown by setting the securityProfile to 'restricted'
 		securityProfile: "privileged"
