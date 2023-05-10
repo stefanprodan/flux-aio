@@ -32,6 +32,7 @@ import (
 				}
 			}
 			spec: corev1.#PodSpec & {
+				priorityClassName: "system-cluster-critical"
 				terminationGracePeriodSeconds: 120
 				securityContext: fsGroup: 1337
 				serviceAccountName: _spec.name
