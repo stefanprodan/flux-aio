@@ -331,6 +331,12 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 								items: type: "string"
 								type: "array"
 							}
+							inclusionList: {
+								description: "InclusionList specifies a list of Golang regular expressions to be used for including messages."
+
+								items: type: "string"
+								type: "array"
+							}
 							providerRef: {
 								description: "ProviderRef specifies which Provider this Alert should use."
 
@@ -8626,11 +8632,6 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 
 								format: "int64"
 								type:   "integer"
-							}
-							url: {
-								description: "URL is the generated incoming webhook address in the format of '/hook/sha256sum(token+name+namespace)'. Deprecated: Replaced by WebhookPath."
-
-								type: "string"
 							}
 							webhookPath: {
 								description: "WebhookPath is the generated incoming webhook address in the format of '/hook/sha256sum(token+name+namespace)'."
