@@ -260,6 +260,12 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 						description: "AlertSpec defines an alerting rule for events involving a list of objects."
 
 						properties: {
+							eventMetadata: {
+								additionalProperties: type: "string"
+								description: "EventMetadata is an optional field for adding metadata to events emitted by the controller. Metadata fields added by the controller have priority over the fields added here, and the fields added here have priority over fields originally present in the event."
+
+								type: "object"
+							}
 							eventSeverity: {
 								default:     "info"
 								description: "EventSeverity specifies how to filter events based on severity. If set to 'info' no events will be filtered."
