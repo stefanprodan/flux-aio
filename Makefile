@@ -39,6 +39,14 @@ push-mod: ## Push the Timoni module to GHCR
 		-a 'org.opencontainers.image.description=A timoni.sh module for deploying Flux AIO.' \
 		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
 
+.PHONY: push-manifests
+push-manifests: ## Build and push the Flux manifests to GHCR
+	@timoni -n flux-system build flux ./modules/flux-aio | flux push artifact \
+		oci://ghcr.io/stefanprodan/manifests/flux-aio:$(VERSION) \
+		--source=https://github.com/fluxcd/flux2 \
+		--revision=$(VERSION) \
+		-f-
+
 .PHONY: import-k8s
 import-k8s: ## Update Kubernetes API CUE definitions
 	@cd modules/flux-aio

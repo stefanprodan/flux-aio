@@ -26,3 +26,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish Timoni module
         run: make push-mod
+      - name: Publish Flux default manifests
+        run: make push-manifests
