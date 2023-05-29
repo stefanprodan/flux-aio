@@ -99,6 +99,7 @@ import (
 
 	objects: {
 		"\(config.metadata.name)-namespace":          #Namespace & {_spec:          config}
+		"\(config.metadata.name)-resourcequota":      #ResourceQuota & {_spec:      config}
 		"\(config.metadata.name)-serviceaccount":     #ServiceAccount & {_spec:     config}
 		"\(config.metadata.name)-clusterrolebinding": #ClusterRoleBinding & {_spec: config}
 		"\(config.metadata.name)-webhookreceiver":    #WebhookReceiver & {_spec:    config}
