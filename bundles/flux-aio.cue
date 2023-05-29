@@ -5,7 +5,7 @@ bundle: {
 		flux: {
 			module: {
 				url:     "oci://ghcr.io/stefanprodan/modules/flux-aio"
-				version: "latest"
+				version: "2.0.0-rc.4"
 			}
 			namespace: "flux-system"
 			values: {
