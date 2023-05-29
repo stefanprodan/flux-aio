@@ -9,15 +9,15 @@ permissions:
   packages: write
 
 jobs:
-  e2e:
+  timoni:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Timoni
         uses: stefanprodan/timoni/actions/setup@main
-        with:
-          version: latest
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@main
       - name: Login to GHCR
         uses: docker/login-action@v2
         with:
