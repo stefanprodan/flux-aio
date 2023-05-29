@@ -44,56 +44,68 @@ The Flux pod binds to the following ports on the host network:
 
 ### Configure Flux
 
-To install or upgrade to a specific Flux version:
-
-```console
-$ timoni -n flux-system apply flux oci://ghcr.io/stefanprodan/modules/flux-aio -v 2.0.0-rc.3
-
-pulling oci://ghcr.io/stefanprodan/modules/flux-aio:2.0.0-rc.3
-using module timoni.sh/flux-aio version 2.0.0-rc.3
-installing flux in namespace flux-system
-Namespace/flux-system created
-CustomResourceDefinition/alerts.notification.toolkit.fluxcd.io created
-CustomResourceDefinition/buckets.source.toolkit.fluxcd.io created
-CustomResourceDefinition/gitrepositories.source.toolkit.fluxcd.io created
-CustomResourceDefinition/helmcharts.source.toolkit.fluxcd.io created
-CustomResourceDefinition/helmreleases.helm.toolkit.fluxcd.io created
-CustomResourceDefinition/helmrepositories.source.toolkit.fluxcd.io created
-CustomResourceDefinition/imagepolicies.image.toolkit.fluxcd.io created
-CustomResourceDefinition/imagerepositories.image.toolkit.fluxcd.io created
-CustomResourceDefinition/imageupdateautomations.image.toolkit.fluxcd.io created
-CustomResourceDefinition/kustomizations.kustomize.toolkit.fluxcd.io created
-CustomResourceDefinition/ocirepositories.source.toolkit.fluxcd.io created
-CustomResourceDefinition/providers.notification.toolkit.fluxcd.io created
-CustomResourceDefinition/receivers.notification.toolkit.fluxcd.io created
-Namespace/flux-system configured
-ServiceAccount/flux-system/flux created
-ClusterRoleBinding/flux created
-Service/flux-system/source-controller created
-Service/flux-system/webhook-receiver created
-Deployment/flux-system/flux created
-waiting for 19 resource(s) to become ready...
-resources are ready
-```
-
-To change the [default configuration](modules/flux-aio/README.md#configuration),
-create one or more `values.cue` files and apply them to the instance.
-
-For example, to enable Flux multi-tenancy lockdown,
-create a file `flux-values.cue` with the following content:
+To pin Flux to a particular version or/and to change the
+[default configuration](modules/flux-aio/README.md#configuration),
+create a Timoni bundle file. For example, to enable Flux multi-tenancy lockdown,
+create a file `flux-aio.cue` with the following content:
 
 ```cue
-values: {
-	securityProfile: "restricted"
+bundle: {
+	apiVersion: "v1alpha1"
+	name:       "flux-aio"
+	instances: {
+		flux: {
+			module: {
+				url:     "oci://ghcr.io/stefanprodan/modules/flux-aio"
+				version: "v2.0.0-rc.3"
+			}
+			namespace: "flux-system"
+			values: {
+				hostNetwork:     true
+				securityProfile: "restricted"
+			}
+		}
+	}
 }
 ```
 
-And apply the values with:
+And apply the bundle with:
 
 ```shell
-timoni -n flux-system apply flux oci://ghcr.io/stefanprodan/modules/flux-aio \
---values ./flux-values.cue
+timoni bundle apply -f ./flux-aio.cue
 ```
+
+### Workload Identity
+
+To grant Flux access to cloud resources such as container registries (for pulling OCI artifacts)
+or KMS (for secretes decryption), you can use Kubernetes Workload Identity to bind the `flux`
+service account from the `flux-system` namespace to an IAM role.
+
+For example, on an EKS cluster with IRSA enabled, grant Flux access to ACR by specified an AWS role ARN:
+
+```cue
+bundle: {
+	apiVersion: "v1alpha1"
+	name:       "flux-aio"
+	instances: {
+		flux: {
+			module: url: "oci://ghcr.io/stefanprodan/modules/flux-aio"
+			namespace: "flux-system"
+			values: {
+				hostNetwork: false
+				workload: {
+					identity: "arn:aws:iam::111122223333:role/my-role"
+					provider: "aws"
+				}
+			}
+		}
+	}
+}
+```
+
+For Azure Workload Identity, the type must be set to `azure` and the identity set to the Azure Client ID.
+
+For Google Cloud, the type must be set to `gcp` and the identity set to the GCP Identity Name.
 
 ### Uninstall Flux
 
