@@ -12,7 +12,10 @@ import (
 	apiVersion: "apps/v1"
 	kind:       "Deployment"
 	metadata:   _spec.metadata
-	spec:       appsv1.#DeploymentSpec & {
+	if _spec.workload.provider == "azure" {
+		metadata: labels: "azure.workload.identity/use": "true"
+	}
+	spec: appsv1.#DeploymentSpec & {
 		replicas: 1
 		strategy: {
 			type: "Recreate"
@@ -21,6 +24,9 @@ import (
 		template: {
 			metadata: {
 				labels: "app.kubernetes.io/name": _spec.metadata.name
+				if _spec.workload.provider == "azure" {
+					labels: "azure.workload.identity/use": "true"
+				}
 				annotations: {
 					"cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
 					"prometheus.io/scrape":                           "true"
@@ -31,7 +37,7 @@ import (
 				terminationGracePeriodSeconds: 120
 				securityContext: fsGroup: 1337
 				serviceAccountName: _spec.metadata.name
-				hostNetwork:        true
+				hostNetwork:        _spec.hostNetwork
 				volumes: [{
 					emptyDir: {}
 					name: "data"

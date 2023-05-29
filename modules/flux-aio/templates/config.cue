@@ -38,6 +38,13 @@ import (
 
 	logLevel: *"info" | string
 
+	hostNetwork: *true | bool
+
+	workload: {
+		provider: *"" | "aws" | "azure" | "gcp"
+		identity: *"" | string
+	}
+
 	resources: *{
 		requests: {
 			cpu:    "100m"
