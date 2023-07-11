@@ -1,6 +1,6 @@
 # flux-aio
 
-[![flux](https://img.shields.io/badge/flux-v2.0.0-9cf)](https://fluxcd.io)
+[![flux](https://img.shields.io/badge/flux-v2.0.1-9cf)](https://fluxcd.io)
 [![test](https://github.com/stefanprodan/flux-aio/workflows/test/badge.svg)](https://github.com/stefanprodan/flux-aio/actions)
 [![license](https://img.shields.io/github/license/stefanprodan/flux-aio.svg)](https://github.com/stefanprodan/flux-aio/blob/main/LICENSE)
 [![release](https://img.shields.io/github/release/stefanprodan/flux-aio/all.svg)](https://github.com/stefanprodan/flux-aio/releases)
@@ -58,7 +58,7 @@ bundle: {
 		flux: {
 			module: {
 				url:     "oci://ghcr.io/stefanprodan/modules/flux-aio"
-				version: "2.0.0"
+				version: "2.0.1"
 			}
 			namespace: "flux-system"
 			values: {
