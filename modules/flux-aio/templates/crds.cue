@@ -812,9 +812,10 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 								type:        "boolean"
 							}
 							interval: {
-								description: "Interval at which to check the Endpoint for updates."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-								type:        "string"
+								description: "Interval at which the Bucket Endpoint is checked for updates. This interval is approximate and may be subject to jitter to ensure efficient use of resources."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
 							}
 							provider: {
 								default:     "generic"
@@ -1113,9 +1114,22 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 								type: "array"
 							}
 							interval: {
-								description: "Interval at which to check the GitRepository for updates."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-								type:        "string"
+								description: "Interval at which the GitRepository URL is checked for updates. This interval is approximate and may be subject to jitter to ensure efficient use of resources."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							proxySecretRef: {
+								description: "ProxySecretRef specifies the Secret containing the proxy configuration to use while communicating with the Git server."
+
+								properties: name: {
+									description: "Name of the referent."
+									type:        "string"
+								}
+								required: [
+									"name",
+								]
+								type: "object"
 							}
 							recurseSubmodules: {
 								description: "RecurseSubmodules enables the initialization of all submodules within the GitRepository as cloned from the URL, using their default settings."
@@ -1194,10 +1208,17 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 
 								properties: {
 									mode: {
-										description: "Mode specifies what Git object should be verified, currently ('head')."
+										default: "HEAD"
+										description: """
+		Mode specifies which Git object(s) should be verified. 
+		 The variants \"head\" and \"HEAD\" both imply the same thing, i.e. verify the commit that the HEAD of the Git repository points to. The variant \"head\" solely exists to ensure backwards compatibility.
+		"""
 
 										enum: [
 											"head",
+											"HEAD",
+											"Tag",
+											"TagAndHEAD",
 										]
 										type: "string"
 									}
@@ -1215,7 +1236,6 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 									}
 								}
 								required: [
-									"mode",
 									"secretRef",
 								]
 								type: "object"
@@ -1457,6 +1477,11 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 								description: "ObservedRecurseSubmodules is the observed resource submodules configuration used to produce the current Artifact."
 
 								type: "boolean"
+							}
+							sourceVerificationMode: {
+								description: "SourceVerificationMode is the last used verification mode indicating which Git object(s) have been verified."
+
+								type: "string"
 							}
 						}
 						type: "object"
@@ -2701,7 +2726,7 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 								type: "string"
 							}
 							interval: {
-								description: "Interval is the interval at which to check the Source for updates."
+								description: "Interval at which the HelmChart SourceRef is checked for updates. This interval is approximate and may be subject to jitter to ensure efficient use of resources."
 
 								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 								type:    "string"
@@ -3271,9 +3296,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								type: "object"
 							}
 							interval: {
-								description: "Interval at which to reconcile the Helm release."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-								type:        "string"
+								description: "Interval at which to reconcile the Helm release. This interval is approximate and may be subject to jitter to ensure efficient use of resources."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
 							}
 							kubeConfig: {
 								description: "KubeConfig for reconciling the HelmRelease on a remote cluster. When used in combination with HelmReleaseSpec.ServiceAccountName, forces the controller to act on behalf of that Service Account at the target cluster. If the --default-service-account flag is set, its value will be used as a controller level fallback for when HelmReleaseSpec.ServiceAccountName is empty."
@@ -4272,10 +4298,28 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 								]
 								type: "object"
 							}
+							certSecretRef: {
+								description: """
+		CertSecretRef can be given the name of a Secret containing either or both of 
+		 - a PEM-encoded client certificate (`tls.crt`) and private key (`tls.key`); - a PEM-encoded CA certificate (`ca.crt`) 
+		 and whichever are supplied, will be used for connecting to the registry. The client cert and key are useful if you are authenticating with a certificate; the CA cert is useful if you are using a self-signed server certificate. The Secret must be of type `Opaque` or `kubernetes.io/tls`. 
+		 It takes precedence over the values specified in the Secret referred to by `.spec.secretRef`.
+		"""
+
+								properties: name: {
+									description: "Name of the referent."
+									type:        "string"
+								}
+								required: [
+									"name",
+								]
+								type: "object"
+							}
 							interval: {
-								description: "Interval at which to check the URL for updates."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-								type:        "string"
+								description: "Interval at which the HelmRepository URL is checked for updates. This interval is approximate and may be subject to jitter to ensure efficient use of resources."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
 							}
 							passCredentials: {
 								description: "PassCredentials allows the credentials from the SecretRef to be passed on to a host that does not match the host as defined in URL. This may be required if the host of the advertised chart URLs in the index differ from the defined URL. Enabling this should be done with caution, as it can potentially result in credentials getting stolen in a MITM-attack."
@@ -4295,7 +4339,7 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 								type: "string"
 							}
 							secretRef: {
-								description: "SecretRef specifies the Secret containing authentication credentials for the HelmRepository. For HTTP/S basic auth the secret must contain 'username' and 'password' fields. For TLS the secret must contain a 'certFile' and 'keyFile', and/or 'caFile' fields."
+								description: "SecretRef specifies the Secret containing authentication credentials for the HelmRepository. For HTTP/S basic auth the secret must contain 'username' and 'password' fields. Support for TLS auth using the 'certFile' and 'keyFile', and/or 'caFile' keys is deprecated. Please use `.spec.certSecretRef` instead."
 
 								properties: name: {
 									description: "Name of the referent."
@@ -5210,9 +5254,10 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 							}
 							certSecretRef: {
 								description: """
-		CertSecretRef can be given the name of a secret containing either or both of 
-		 - a PEM-encoded client certificate (`certFile`) and private key (`keyFile`); - a PEM-encoded CA certificate (`caFile`) 
-		 and whichever are supplied, will be used for connecting to the registry. The client cert and key are useful if you are authenticating with a certificate; the CA cert is useful if you are using a self-signed server certificate.
+		CertSecretRef can be given the name of a Secret containing either or both of 
+		 - a PEM-encoded client certificate (`tls.crt`) and private key (`tls.key`); - a PEM-encoded CA certificate (`ca.crt`) 
+		 and whichever are supplied, will be used for connecting to the registry. The client cert and key are useful if you are authenticating with a certificate; the CA cert is useful if you are using a self-signed server certificate. The Secret must be of type `Opaque` or `kubernetes.io/tls`. 
+		 Note: Support for the `caFile`, `certFile` and `keyFile` keys has been deprecated.
 		"""
 
 								properties: name: {
@@ -5550,14 +5595,24 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 									push: {
 										description: "Push specifies how and where to push commits made by the automation. If missing, commits are pushed (back) to `.spec.checkout.branch` or its default."
 
-										properties: branch: {
-											description: "Branch specifies that commits should be pushed to the branch named. The branch is created using `.spec.checkout.branch` as the starting point, if it doesn't already exist."
+										properties: {
+											branch: {
+												description: "Branch specifies that commits should be pushed to the branch named. The branch is created using `.spec.checkout.branch` as the starting point, if it doesn't already exist."
 
-											type: "string"
+												type: "string"
+											}
+											options: {
+												additionalProperties: type: "string"
+												description: "Options specifies the push options that are sent to the Git server when performing a push operation. For details, see: https://git-scm.com/docs/git-push#Documentation/git-push.txt---push-optionltoptiongt"
+
+												type: "object"
+											}
+											refspec: {
+												description: "Refspec specifies the Git Refspec to use for a push operation. If both Branch and Refspec are provided, then the commit is pushed to the branch and also using the specified refspec. For more details about Git Refspecs, see: https://git-scm.com/book/en/v2/Git-Internals-The-Refspec"
+
+												type: "string"
+											}
 										}
-										required: [
-											"branch",
-										]
 										type: "object"
 									}
 								}
@@ -5948,9 +6003,10 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 								type: "array"
 							}
 							interval: {
-								description: "The interval at which to reconcile the Kustomization."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-								type:        "string"
+								description: "The interval at which to reconcile the Kustomization. This interval is approximate and may be subject to jitter to ensure efficient use of resources."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
 							}
 							kubeConfig: {
 								description: "The KubeConfig for reconciling the Kustomization on a remote cluster. When used in combination with KustomizationSpec.ServiceAccountName, forces the controller to act on behalf of that Service Account at the target cluster. If the --default-service-account flag is set, its value will be used as a controller level fallback for when KustomizationSpec.ServiceAccountName is empty."
@@ -7628,9 +7684,10 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 						properties: {
 							certSecretRef: {
 								description: """
-		CertSecretRef can be given the name of a secret containing either or both of 
-		 - a PEM-encoded client certificate (`certFile`) and private key (`keyFile`); - a PEM-encoded CA certificate (`caFile`) 
-		 and whichever are supplied, will be used for connecting to the registry. The client cert and key are useful if you are authenticating with a certificate; the CA cert is useful if you are using a self-signed server certificate.
+		CertSecretRef can be given the name of a Secret containing either or both of 
+		 - a PEM-encoded client certificate (`tls.crt`) and private key (`tls.key`); - a PEM-encoded CA certificate (`ca.crt`) 
+		 and whichever are supplied, will be used for connecting to the registry. The client cert and key are useful if you are authenticating with a certificate; the CA cert is useful if you are using a self-signed server certificate. The Secret must be of type `Opaque` or `kubernetes.io/tls`. 
+		 Note: Support for the `caFile`, `certFile` and `keyFile` keys have been deprecated.
 		"""
 
 								properties: name: {
@@ -7653,9 +7710,10 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 								type: "boolean"
 							}
 							interval: {
-								description: "The interval at which to check for image updates."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-								type:        "string"
+								description: "Interval at which the OCIRepository URL is checked for updates. This interval is approximate and may be subject to jitter to ensure efficient use of resources."
+
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
 							}
 							layerSelector: {
 								description: "LayerSelector specifies which layer should be extracted from the OCI artifact. When not specified, the first layer found in the artifact is selected."
@@ -8217,7 +8275,10 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 								type:      "string"
 							}
 							certSecretRef: {
-								description: "CertSecretRef specifies the Secret containing a PEM-encoded CA certificate (`caFile`)."
+								description: """
+		CertSecretRef specifies the Secret containing a PEM-encoded CA certificate (in the `ca.crt` key). 
+		 Note: Support for the `caFile` key has been deprecated.
+		"""
 
 								properties: name: {
 									description: "Name of the referent."
@@ -8295,6 +8356,7 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 									"grafana",
 									"githubdispatch",
 									"pagerduty",
+									"datadog",
 								]
 								type: "string"
 							}
