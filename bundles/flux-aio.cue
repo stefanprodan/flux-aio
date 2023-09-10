@@ -4,13 +4,13 @@ bundle: {
 	instances: {
 		flux: {
 			module: {
-				url:     "oci://ghcr.io/stefanprodan/modules/flux-aio"
-				version: "2.0.0-rc.4"
+				url:     "oci://ghcr.io/stefanprodan/modules/flux-aio" @timoni(runtime:string:FLUX_MODULE_URL)
+				version: "latest"                                      @timoni(runtime:string:FLUX_MODULE_VERSION)
 			}
 			namespace: "flux-system"
 			values: {
 				hostNetwork:     true
-				securityProfile: "restricted"
+				securityProfile: "privileged"
 			}
 		}
 	}
