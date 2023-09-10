@@ -19,13 +19,14 @@ uninstall: ## Uninstall Flux
 
 .PHONY: vet
 vet: ## Format and vet all CUE definitions
+	@timoni mod lint modules/flux-aio
 	@cd modules/flux-aio
-	@cue fmt ./... && cue vet --all-errors --concrete ./...
+	@cue fmt ./...
 
 .PHONY: gen
 gen: vet ## Print the CUE generated objects
 	@cd modules/flux-aio
-	@cue gen
+	@cue cmd -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 build
 
 .PHONY: ls
 ls: ## List the CUE generated objects
