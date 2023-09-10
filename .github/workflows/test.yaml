@@ -10,9 +10,18 @@ on:
 permissions:
   contents: read
 
+env:
+  FLUX_MODULE_URL: "oci://localhost:5000/flux-aio"
+  FLUX_MODULE_VERSION: "0.0.0-devel"
+
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,8 +33,10 @@ jobs:
         run: make vet
       - name: Create cluster without CNI
         run: kind create cluster --config ./test/cni/kind.yaml
-      - name: Install Flux
-        run: make install
+      - name: Push module
+        run: timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+      - name: Apply bundle
+        run: timoni bundle apply -f bundles/flux-aio.cue --runtime-from-env
       - name: Verify Flux installation
         run: flux check
       - name: Install Cilium with Flux
