@@ -10,6 +10,10 @@ import (
 
 // Config defines the schema and defaults for the Instance values.
 #Config: {
+	// Timoni runtime version info
+	moduleVersion!: string
+	kubeVersion!:   string
+
 	// Metadata (common to all resources)
 	metadata: metav1.#ObjectMeta
 	metadata: name:      *"flux" | string & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$" & strings.MaxRunes(63)
