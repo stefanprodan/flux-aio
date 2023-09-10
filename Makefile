@@ -30,11 +30,12 @@ gen: vet ## Print the CUE generated objects
 .PHONY: ls
 ls: ## List the CUE generated objects
 	@cd modules/flux-aio
-	@cue ls
+	@cue cmd -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 ls
 
 .PHONY: push-mod
 push-mod: ## Push the Timoni module to GHCR
 	@timoni mod push ./modules/flux-aio oci://ghcr.io/stefanprodan/modules/flux-aio -v=$(VERSION:v%=%) --latest \
+		--sign cosign \
 		--source https://github.com/stefanprodan/flux-aio  \
 		-a 'org.opencontainers.image.description=A timoni.sh module for deploying Flux AIO.' \
 		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
