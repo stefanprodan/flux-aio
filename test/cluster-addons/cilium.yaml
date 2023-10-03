@@ -2,29 +2,32 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: metrics-server
+  name: cilium
   namespace: flux-system
 spec:
   interval: 24h
-  url: https://kubernetes-sigs.github.io/metrics-server/
+  url: https://helm.cilium.io/
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: metrics-server
+  name: cilium
   namespace: flux-system
 spec:
-  interval: 30m
+  releaseName: cilium
   targetNamespace: kube-system
   storageNamespace: kube-system
+  interval: 30m
   chart:
     spec:
-      chart: metrics-server
+      chart: cilium
       version: "*"
       sourceRef:
         kind: HelmRepository
-        name: metrics-server
+        name: cilium
       interval: 12h
   values:
-    args:
-      - --kubelet-insecure-tls
+    ipam:
+      mode: kubernetes
+    operator:
+      replicas: 1

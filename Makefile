@@ -34,11 +34,18 @@ ls: ## List the CUE generated objects
 	@cue cmd -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 ls
 
 .PHONY: push-mod
-push-mod: ## Push the Timoni module to GHCR
+push-mod: ## Push the Timoni modules to GHCR
 	@timoni mod push ./modules/flux-aio oci://ghcr.io/stefanprodan/modules/flux-aio -v=$(VERSION:v%=%) --latest \
 		--sign cosign \
-		--source https://github.com/stefanprodan/flux-aio  \
+		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
+		-a 'org.opencontainers.image.licenses=Apache-2.0' \
 		-a 'org.opencontainers.image.description=A timoni.sh module for deploying Flux AIO.' \
+		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
+	@timoni mod push ./modules/flux-git-sync oci://ghcr.io/stefanprodan/modules/flux-git-sync -v=$(VERSION:v%=%) --latest \
+		--sign cosign \
+		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
+		-a 'org.opencontainers.image.licenses=Apache-2.0' \
+		-a 'org.opencontainers.image.description=A timoni.sh module for configuring Flux Git reconciliation.' \
 		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
 
 .PHONY: push-manifests
@@ -49,26 +56,22 @@ push-manifests: ## Build and push the Flux manifests to GHCR
 		--revision=$(VERSION) \
 		-f-
 
-.PHONY: import-k8s
-import-k8s: ## Update Kubernetes API CUE definitions
-	@cd modules/flux-aio
-	@go mod init
-	@go get -u k8s.io/api/...
-	@go get -u k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
-	@cue get go k8s.io/api/core/v1
-	@cue get go k8s.io/api/apps/v1
-	@cue get go  k8s.io/api/rbac/v1
-	@cue get go k8s.io/apimachinery/pkg/apis/meta/v1
-	@cue get go k8s.io/apimachinery/pkg/runtime
-	@cue get go k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
-	@rm go.mod go.sum
-
 .PHONY: import-crds
 import-crds: ## Update Flux API CUE definitions
 	@cd modules/flux-aio/templates
 	@kubectl kustomize https://github.com/fluxcd/flux2/manifests/crds?ref=$(VERSION) > crds.yaml
 	@cue import -f -o crds.cue -l 'strings.ToLower(kind)' -l 'metadata.name' -p templates crds.yaml
 	@rm crds.yaml
+
+.PHONY: vendor-crds
+vendor-crds: ## Update Flux CRDs for Git sync
+	@cd modules/flux-git-sync
+	@timoni mod vendor crds -f https://github.com/fluxcd/flux2/releases/download/$(VERSION)/install.yaml
+	@cd cue.mod/gen
+	@rm -rf image.toolkit.fluxcd.io helm.toolkit.fluxcd.io notification.toolkit.fluxcd.io
+	@rm -rf kustomize.toolkit.fluxcd.io/kustomization/v1beta1 kustomize.toolkit.fluxcd.io/kustomization/v1beta2
+	@rm -rf source.toolkit.fluxcd.io/gitrepository/v1beta1 source.toolkit.fluxcd.io/gitrepository/v1beta2
+	@rm -rf source.toolkit.fluxcd.io/bucket source.toolkit.fluxcd.io/ocirepository source.toolkit.fluxcd.io/helmrepository source.toolkit.fluxcd.io/helmchart
 
 .PHONY: list-images
 list-images:
