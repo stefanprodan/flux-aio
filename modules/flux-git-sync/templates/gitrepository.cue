@@ -24,7 +24,7 @@ import (
 	kind:       "Secret"
 	metadata:   _config.metadata
 	stringData: {
-		user:     "git"
+		username: "git"
 		password: _config.git.token
 	}
 }
