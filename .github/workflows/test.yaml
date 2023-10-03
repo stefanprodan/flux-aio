@@ -12,6 +12,7 @@ permissions:
 
 env:
   FLUX_MODULE_URL: "oci://localhost:5000/flux-aio"
+  FLUX_SYNC_MODULE_URL: "oci://localhost:5000/flux-git-sync"
   FLUX_MODULE_VERSION: "0.0.0-devel"
 
 jobs:
@@ -32,16 +33,30 @@ jobs:
       - name: Run CUE validation
         run: make vet
       - name: Create cluster without CNI
-        run: kind create cluster --config ./test/cni/kind.yaml
-      - name: Push module
-        run: timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+        run: kind create cluster --config ./test/cluster/kind.yaml
+      - name: Push modules
+        run: |
+          timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+          timoni mod push ./modules/flux-git-sync ${FLUX_SYNC_MODULE_URL} -v ${FLUX_MODULE_VERSION}
       - name: Apply bundle
-        run: timoni bundle apply -f bundles/flux-aio.cue --runtime-from-env
+        run: |
+          PR_NUMBER=${{ github.event.number }}
+          if [ -z "$PR_NUMBER" ]
+          then
+            export FLUX_SYNC_REF=${GITHUB_REF}
+          else
+            export FLUX_SYNC_REF="refs/pull/${PR_NUMBER}/head"
+          fi
+          
+          timoni bundle apply -f bundles/flux-aio.cue --runtime-from-env
       - name: Verify Flux installation
         run: flux check
-      - name: Install Cilium with Flux
-        run: kubectl apply -f ./test/cni/cilium.yaml
-      - name: Verify Cilium installation
-        run: kubectl -n flux-system wait helmrelease/cilium --for=condition=ready --timeout=5m
       - name: Verify CoreDNS availability
         run: kubectl -n kube-system rollout status deploy/coredns --timeout=5m
+      - name: Debug failure
+        if: failure()
+        run: |
+          kubectl -n flux-system get pods
+          kubectl -n flux-system get gitrepository -oyaml
+          kubectl -n flux-system get kustomization -oyaml
+          flux get all --all-namespaces

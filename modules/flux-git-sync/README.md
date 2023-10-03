@@ -22,12 +22,12 @@ timoni -n flux-system delete my-repo-sync
 
 ## Configuration
 
-| Key                      | Type                  | Default | Description                                                                               |
-|--------------------------|-----------------------|---------|-------------------------------------------------------------------------------------------|
-| `git: url:`              | `string`              | `""`    | Git repository HTTPS URL                                                                  |
-| `git: branch:`           | `string`              | `main`  | Git branch                                                                                |
-| `git: token:`            | `string`              | `""`    | Git token (e.g. GitHub PAT or GitLab Deploy Token) for connection to a private repository |
-| `git: path:`             | `string`              | `""`    | Path to the directory containing Kubernetes YAMLs                                         |
-| `git: interval:`         | `int`                 | `"1"`   | Interval in minutes to check for changes upstream                                         |
-| `metadata: labels:`      | `{[ string]: string}` | `{}`    | Common labels for all resources                                                           |
-| `metadata: annotations:` | `{[ string]: string}` | `{}`    | Common annotations for all resources                                                      |
+| Key                      | Type                  | Default           | Description                                                                               |
+|--------------------------|-----------------------|-------------------|-------------------------------------------------------------------------------------------|
+| `git: url:`              | `string`              | `""`              | Git repository HTTPS URL                                                                  |
+| `git: ref:`              | `string`              | `refs/heads/main` | Git [reference](https://fluxcd.io/flux/components/source/gitrepositories/#name-example)   |
+| `git: token:`            | `string`              | `""`              | Git token (e.g. GitHub PAT or GitLab Deploy Token) for connection to a private repository |
+| `git: path:`             | `string`              | `""`              | Path to the directory containing Kubernetes YAMLs                                         |
+| `git: interval:`         | `int`                 | `"1"`             | Interval in minutes to check for changes upstream                                         |
+| `metadata: labels:`      | `{[ string]: string}` | `{}`              | Common labels for all resources                                                           |
+| `metadata: annotations:` | `{[ string]: string}` | `{}`              | Common annotations for all resources                                                      |

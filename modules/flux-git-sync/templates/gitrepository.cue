@@ -11,7 +11,7 @@ import (
 	spec:     sourcev1.#GitRepositorySpec & {
 		interval: "\(_config.git.interval)m"
 		url:      _config.git.url
-		ref: branch: _config.git.branch
+		ref: name: _config.git.ref
 		if _config.git.token != "" {
 			secretRef: name: _config.metadata.name
 		}

@@ -16,7 +16,7 @@ import (
 	git: {
 		url!:     string & =~"^https.*$"
 		path!:    string
-		branch:   *"main" | string
+		ref:      *"refs/heads/main" | string
 		interval: *1 | int
 		token:    *"" | string
 	}
