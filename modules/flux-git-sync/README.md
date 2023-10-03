@@ -29,5 +29,8 @@ timoni -n flux-system delete my-repo-sync
 | `git: token:`            | `string`              | `""`              | Git token (e.g. GitHub PAT or GitLab Deploy Token) for connection to a private repository |
 | `git: path:`             | `string`              | `""`              | Path to the directory containing Kubernetes YAMLs                                         |
 | `git: interval:`         | `int`                 | `"1"`             | Interval in minutes to check for changes upstream                                         |
-| `metadata: labels:`      | `{[ string]: string}` | `{}`              | Common labels for all resources                                                           |
-| `metadata: annotations:` | `{[ string]: string}` | `{}`              | Common annotations for all resources                                                      |
+| `sync: prune:`           | `bool`                | `true`            | Prune stale resources                                                                     |
+| `sync: wait:`            | `bool`                | `false`           | Wait for resources to become ready                                                        |
+| `sync: timeout:`         | `int`                 | `3`               | Wait timeout in minutes                                                                   |
+| `metadata: labels:`      | `{[ string]: string}` | `{}`              | Custom labels                                                                             |
+| `metadata: annotations:` | `{[ string]: string}` | `{}`              | Custom annotations                                                                        |

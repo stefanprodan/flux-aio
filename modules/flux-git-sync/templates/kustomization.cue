@@ -13,12 +13,11 @@ import (
 			kind: sourcev1.#GitRepository.kind
 			name: _config.metadata.name
 		}
-		path:          _config.git.path
-		interval:      "10m"
-		wait:          true
-		timeout:       "3m"
+		interval:      "60m"
 		retryInterval: "2m"
-		prune:         true
-		force:         false
+		path:          _config.git.path
+		prune:         _config.sync.pruneß
+		wait:          _config.sync.wait
+		timeout:       "\(_config.sync.timeout)m"
 	}
 }

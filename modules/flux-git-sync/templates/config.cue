@@ -13,12 +13,20 @@ import (
 	// Metadata (common to all resources)
 	metadata: timoniv1.#Metadata & {#Version: moduleVersion}
 
+	// Git over HTTPS settings
 	git: {
 		url!:     string & =~"^https.*$"
 		path!:    string
 		ref:      *"refs/heads/main" | string
 		interval: *1 | int
 		token:    *"" | string
+	}
+
+	// Cluster reconciler settings
+	sync: {
+		prune:   *true | bool
+		wait:    *true | bool
+		timeout: *3 | int
 	}
 }
 
