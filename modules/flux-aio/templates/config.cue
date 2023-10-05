@@ -54,6 +54,12 @@ import (
 		requeue:    *30 | int
 	}
 
+	persistence: {
+		enabled:      *false | bool
+		storageClass: *"standard" | string
+		size:         *"8Gi" | string
+	}
+
 	resources: corev1.#ResourceRequirements
 	resources: requests: cpu:    *"100m" | string
 	resources: requests: memory: *"64Mi" | string
@@ -114,5 +120,9 @@ import (
 			_spec:       config
 			_containers: containers
 		}
+	}
+
+	if config.persistence.enabled {
+		objects: "\(config.metadata.name)-pvc": #PVC & {_spec: config}
 	}
 }
