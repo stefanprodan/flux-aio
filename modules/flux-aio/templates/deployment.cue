@@ -39,8 +39,13 @@ import (
 				serviceAccountName: _spec.metadata.name
 				hostNetwork:        _spec.hostNetwork
 				volumes: [{
-					emptyDir: {}
 					name: "data"
+					if !_spec.persistence.enabled {
+						emptyDir: {}
+					}
+					if _spec.persistence.enabled {
+						persistentVolumeClaim: claimName: _spec.metadata.name
+					}
 				}, {
 					emptyDir: {}
 					name: "tmp"
