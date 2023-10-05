@@ -31,10 +31,13 @@ import (
 		"--watch-all-namespaces",
 		"--log-level=\(_spec.logLevel)",
 		"--log-encoding=json",
-		"--enable-leader-election=true",
+		"--enable-leader-election=false",
 		"--metrics-addr=:9793",
 		"--health-addr=:9794",
 		"--events-addr=http://localhost:9690",
+		"--watch-label-selector=!sharding.fluxcd.io/key",
+		"--concurrent=\(_spec.reconcile.concurrent)",
+		"--requeue-dependency=\(_spec.reconcile.requeue)s",
 		if _spec.securityProfile == "restricted" {
 			"--no-cross-namespace-refs"
 		},
