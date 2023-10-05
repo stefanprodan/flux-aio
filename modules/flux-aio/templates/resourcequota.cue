@@ -5,10 +5,10 @@ import (
 )
 
 #ResourceQuota: corev1.#ResourceQuota & {
-	_spec:      #Config
+	_config:    #Config
 	apiVersion: "v1"
 	kind:       "ResourceQuota"
-	metadata:   _spec.metadata
+	metadata:   _config.metadata
 	spec: {
 		hard: pods: "1000"
 		scopeSelector: matchExpressions: [{

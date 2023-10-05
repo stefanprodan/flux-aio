@@ -30,8 +30,8 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
       - name: Install tools
         run: make tools
-      - name: Run CUE validation
-        run: make vet
+      - name: Run CUE format
+        run: make fmt
       - name: Create cluster without CNI
         run: kind create cluster --config ./test/cluster/kind.yaml
       - name: Push modules

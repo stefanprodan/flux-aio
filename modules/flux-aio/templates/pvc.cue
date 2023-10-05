@@ -5,13 +5,13 @@ import (
 )
 
 #PVC: corev1.#PersistentVolumeClaim & {
-	_spec:      #Config
+	_config:    #Config
 	apiVersion: "v1"
 	kind:       "PersistentVolumeClaim"
-	metadata:   _spec.metadata
+	metadata:   _config.metadata
 	spec:       corev1.#PersistentVolumeClaimSpec & {
-		storageClassName: _spec.persistence.storageClass
-		resources: requests: storage: _spec.persistence.size
+		storageClassName: _config.persistence.storageClass
+		resources: requests: storage: _config.persistence.size
 		accessModes: ["ReadWriteOnce"]
 	}
 }

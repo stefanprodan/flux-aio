@@ -5,12 +5,12 @@ import (
 )
 
 #KustomizeController: corev1.#Container & {
-	_spec: #Config
+	_config: #Config
 
 	name:            "kustomize-controller"
-	image:           _spec.controllers.kustomize
+	image:           _config.controllers.kustomize
 	imagePullPolicy: "IfNotPresent"
-	securityContext: _spec.securityContext
+	securityContext: _config.securityContext
 	ports: [{
 		containerPort: 9793
 		name:          "http-prom-kc"
@@ -29,23 +29,23 @@ import (
 	}]
 	args: [
 		"--watch-all-namespaces",
-		"--log-level=\(_spec.logLevel)",
+		"--log-level=\(_config.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election=false",
 		"--metrics-addr=:9793",
 		"--health-addr=:9794",
 		"--events-addr=http://localhost:9690",
 		"--watch-label-selector=!sharding.fluxcd.io/key",
-		"--concurrent=\(_spec.reconcile.concurrent)",
-		"--requeue-dependency=\(_spec.reconcile.requeue)s",
-		if _spec.securityProfile == "restricted" {
+		"--concurrent=\(_config.reconcile.concurrent)",
+		"--requeue-dependency=\(_config.reconcile.requeue)s",
+		if _config.securityProfile == "restricted" {
 			"--no-cross-namespace-refs"
 		},
-		if _spec.securityProfile == "restricted" {
+		if _config.securityProfile == "restricted" {
 			"--no-remote-bases"
 		},
-		if _spec.securityProfile == "restricted" {
-			"--default-service-account=\(_spec.metadata.name)"
+		if _config.securityProfile == "restricted" {
+			"--default-service-account=\(_config.metadata.name)"
 		},
 	]
 	readinessProbe: httpGet: {
@@ -56,7 +56,7 @@ import (
 		path: "/healthz"
 		port: "healthz-kc"
 	}
-	resources: _spec.resources
+	resources: _config.resources
 	volumeMounts: [{
 		name:      "tmp"
 		mountPath: "/tmp"

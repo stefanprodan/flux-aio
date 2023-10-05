@@ -38,6 +38,12 @@ import (
 		notification: string
 	}
 
+	expose: {
+		webhookReceiver:    *false | bool
+		notificationServer: *false | bool
+		sourceServer:       *false | bool
+	}
+
 	securityProfile: "restricted" | "privileged"
 
 	logLevel: *"info" | string
@@ -57,13 +63,13 @@ import (
 	persistence: {
 		enabled:      *false | bool
 		storageClass: *"standard" | string
-		size:         *"8Gi" | string
+		size:         *"8Gi" | string & =~"^([0-9]*)?(Gi)?$"
 	}
 
 	resources: corev1.#ResourceRequirements
-	resources: requests: cpu:    *"100m" | string
-	resources: requests: memory: *"64Mi" | string
-	resources: limits: memory:   *"1Gi" | string
+	resources: requests: cpu:    *"100m" | string & =~"^([0-9]*)?(m)?$"
+	resources: requests: memory: *"64Mi" | string & =~"^([0-9]*)?(Mi|Gi)?$"
+	resources: limits: memory:   *"1Gi" | string & =~"^([0-9]*)?(Mi|Gi)?$"
 
 	imagePullSecrets?: [...corev1.LocalObjectReference]
 
@@ -79,7 +85,7 @@ import (
 		operator: "Exists"
 	}] | corev1.#Toleration
 
-	affinity?: nodeAffinity: requiredDuringSchedulingIgnoredDuringExecution: nodeSelectorTerms: [{
+	affinity: nodeAffinity: requiredDuringSchedulingIgnoredDuringExecution: nodeSelectorTerms: [{
 		matchExpressions: [{
 			key:      "kubernetes.io/os"
 			operator: "In"
@@ -93,10 +99,10 @@ import (
 	config: #Config
 
 	containers: [
-		#SourceController & {_spec:       config},
-		#KustomizeController & {_spec:    config},
-		#HelmController & {_spec:         config},
-		#NotificationController & {_spec: config},
+		#SourceController & {_config:       config},
+		#KustomizeController & {_config:    config},
+		#HelmController & {_config:         config},
+		#NotificationController & {_config: config},
 	]
 
 	objects: [ID=_]: runtime.#Object
@@ -110,19 +116,29 @@ import (
 	}
 
 	objects: {
-		"\(config.metadata.name)-namespace":          #Namespace & {_spec:          config}
-		"\(config.metadata.name)-resourcequota":      #ResourceQuota & {_spec:      config}
-		"\(config.metadata.name)-serviceaccount":     #ServiceAccount & {_spec:     config}
-		"\(config.metadata.name)-clusterrolebinding": #ClusterRoleBinding & {_spec: config}
-		"\(config.metadata.name)-webhookreceiver":    #WebhookReceiver & {_spec:    config}
-		"\(config.metadata.name)-sourceserver":       #SourceServer & {_spec:       config}
-		"\(config.metadata.name)-deployment":         #Deployment & {
-			_spec:       config
+		namespace:          #Namespace & {_config:          config}
+		resourcequota:      #ResourceQuota & {_config:      config}
+		serviceaccount:     #ServiceAccount & {_config:     config}
+		clusterrolebinding: #ClusterRoleBinding & {_config: config}
+		deployment:         #Deployment & {
+			_config:     config
 			_containers: containers
 		}
 	}
 
+	if config.expose.webhookReceiver {
+		objects: webhookreceiver: #WebhookService & {_config: config}
+	}
+
+	if config.expose.notificationServer {
+		objects: notificationserver: #NotificationService & {_config: config}
+	}
+
+	if config.expose.sourceServer {
+		objects: sourceserver: #SourceService & {_config: config}
+	}
+
 	if config.persistence.enabled {
-		objects: "\(config.metadata.name)-pvc": #PVC & {_spec: config}
+		objects: pvc: #PVC & {_config: config}
 	}
 }

@@ -6,13 +6,13 @@ import (
 )
 
 #Deployment: appsv1.#Deployment & {
-	_spec: #Config
+	_config: #Config
 	_containers: [ ...corev1.#Container]
 
 	apiVersion: "apps/v1"
 	kind:       "Deployment"
-	metadata:   _spec.metadata
-	if _spec.workload.provider == "azure" {
+	metadata:   _config.metadata
+	if _config.workload.provider == "azure" {
 		metadata: labels: "azure.workload.identity/use": "true"
 	}
 	spec: appsv1.#DeploymentSpec & {
@@ -20,11 +20,11 @@ import (
 		strategy: {
 			type: "Recreate"
 		}
-		selector: matchLabels: "app.kubernetes.io/name": _spec.metadata.name
+		selector: matchLabels: "app.kubernetes.io/name": _config.metadata.name
 		template: {
 			metadata: {
-				labels: "app.kubernetes.io/name": _spec.metadata.name
-				if _spec.workload.provider == "azure" {
+				labels: "app.kubernetes.io/name": _config.metadata.name
+				if _config.workload.provider == "azure" {
 					labels: "azure.workload.identity/use": "true"
 				}
 				annotations: {
@@ -36,29 +36,29 @@ import (
 				priorityClassName:             "system-cluster-critical"
 				terminationGracePeriodSeconds: 120
 				securityContext: fsGroup: 1337
-				serviceAccountName: _spec.metadata.name
-				hostNetwork:        _spec.hostNetwork
+				serviceAccountName: _config.metadata.name
+				hostNetwork:        _config.hostNetwork
 				volumes: [{
 					name: "data"
-					if !_spec.persistence.enabled {
+					if !_config.persistence.enabled {
 						emptyDir: {}
 					}
-					if _spec.persistence.enabled {
-						persistentVolumeClaim: claimName: _spec.metadata.name
+					if _config.persistence.enabled {
+						persistentVolumeClaim: claimName: _config.metadata.name
 					}
 				}, {
 					emptyDir: {}
 					name: "tmp"
 				}]
 				containers: _containers
-				if _spec.tolerations != _|_ {
-					tolerations: _spec.tolerations
+				if _config.tolerations != _|_ {
+					tolerations: _config.tolerations
 				}
-				if _spec.affinity != _|_ {
-					affinity: _spec.affinity
+				if _config.affinity != _|_ {
+					affinity: _config.affinity
 				}
-				if _spec.imagePullSecrets != _|_ {
-					imagePullSecrets: _spec.imagePullSecrets
+				if _config.imagePullSecrets != _|_ {
+					imagePullSecrets: _config.imagePullSecrets
 				}
 			}
 		}

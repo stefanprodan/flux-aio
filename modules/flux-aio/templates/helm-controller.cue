@@ -5,12 +5,12 @@ import (
 )
 
 #HelmController: corev1.#Container & {
-	_spec: #Config
+	_config: #Config
 
 	name:            "helm-controller"
-	image:           _spec.controllers.helm
+	image:           _config.controllers.helm
 	imagePullPolicy: "IfNotPresent"
-	securityContext: _spec.securityContext
+	securityContext: _config.securityContext
 	ports: [{
 		containerPort: 9795
 		name:          "http-prom-hc"
@@ -29,20 +29,20 @@ import (
 	}]
 	args: [
 		"--watch-all-namespaces",
-		"--log-level=\(_spec.logLevel)",
+		"--log-level=\(_config.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election=false",
 		"--metrics-addr=:9795",
 		"--health-addr=:9796",
 		"--events-addr=http://localhost:9690",
 		"--watch-label-selector=!sharding.fluxcd.io/key",
-		"--concurrent=\(_spec.reconcile.concurrent)",
-		"--requeue-dependency=\(_spec.reconcile.requeue)s",
-		if _spec.securityProfile == "restricted" {
+		"--concurrent=\(_config.reconcile.concurrent)",
+		"--requeue-dependency=\(_config.reconcile.requeue)s",
+		if _config.securityProfile == "restricted" {
 			"--no-cross-namespace-refs"
 		},
-		if _spec.securityProfile == "restricted" {
-			"--default-service-account=\(_spec.metadata.name)"
+		if _config.securityProfile == "restricted" {
+			"--default-service-account=\(_config.metadata.name)"
 		},
 	]
 	readinessProbe: httpGet: {
@@ -53,7 +53,7 @@ import (
 		path: "/healthz"
 		port: "healthz-hc"
 	}
-	resources: _spec.resources
+	resources: _config.resources
 	volumeMounts: [{
 		name:      "tmp"
 		mountPath: "/tmp"
