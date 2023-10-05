@@ -5,12 +5,12 @@ import (
 )
 
 #Namespace: corev1.#Namespace & {
-	_spec:      #Config
+	_config:    #Config
 	apiVersion: "v1"
 	kind:       "Namespace"
 	metadata: {
-		name:        _spec.metadata.namespace
-		labels:      _spec.metadata.labels
-		annotations: _spec.metadata.annotations
+		name:        _config.metadata.namespace
+		labels:      _config.metadata.labels
+		annotations: _config.metadata.annotations
 	}
 }

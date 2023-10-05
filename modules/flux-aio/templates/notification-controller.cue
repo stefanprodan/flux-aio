@@ -5,12 +5,12 @@ import (
 )
 
 #NotificationController: corev1.#Container & {
-	_spec: #Config
+	_config: #Config
 
 	name:            "notification-controller"
-	image:           _spec.controllers.notification
+	image:           _config.controllers.notification
 	imagePullPolicy: "IfNotPresent"
-	securityContext: _spec.securityContext
+	securityContext: _config.securityContext
 	ports: [{
 		containerPort: 9690
 		name:          "http-nc"
@@ -42,17 +42,17 @@ import (
 	}
 	args: [
 		"--watch-all-namespaces",
-		"--log-level=\(_spec.logLevel)",
+		"--log-level=\(_config.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election",
 		"--metrics-addr=:9798",
 		"--health-addr=:9799",
 		"--events-addr=:9690",
-		if _spec.securityProfile == "restricted" {
+		if _config.securityProfile == "restricted" {
 			"--no-cross-namespace-refs"
 		},
 	]
-	resources: _spec.resources
+	resources: _config.resources
 	volumeMounts: [{
 		name:      "tmp"
 		mountPath: "/tmp"

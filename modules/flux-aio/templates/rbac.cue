@@ -5,13 +5,13 @@ import (
 )
 
 #ClusterRoleBinding: rbacv1.#ClusterRoleBinding & {
-	_spec:      #Config
+	_config:    #Config
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	kind:       "ClusterRoleBinding"
 	metadata: {
-		name:        _spec.metadata.name
-		labels:      _spec.metadata.labels
-		annotations: _spec.metadata.annotations
+		name:        _config.metadata.name
+		labels:      _config.metadata.labels
+		annotations: _config.metadata.annotations
 	}
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
@@ -21,8 +21,8 @@ import (
 	subjects: [
 		{
 			kind:      "ServiceAccount"
-			name:      _spec.metadata.name
-			namespace: _spec.metadata.namespace
+			name:      _config.metadata.name
+			namespace: _config.metadata.namespace
 		},
 	]
 }

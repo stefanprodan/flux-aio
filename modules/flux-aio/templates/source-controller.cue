@@ -5,12 +5,12 @@ import (
 )
 
 #SourceController: corev1.#Container & {
-	_spec: #Config
+	_config: #Config
 
 	name:            "source-controller"
-	image:           _spec.controllers.source
+	image:           _config.controllers.source
 	imagePullPolicy: "IfNotPresent"
-	securityContext: _spec.securityContext
+	securityContext: _config.securityContext
 	ports: [{
 		containerPort: 9790
 		name:          "http-sc"
@@ -33,16 +33,16 @@ import (
 	}]
 	args: [
 		"--watch-all-namespaces",
-		"--log-level=\(_spec.logLevel)",
+		"--log-level=\(_config.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election=false",
 		"--metrics-addr=:9791",
 		"--health-addr=:9792",
 		"--storage-addr=:9790",
 		"--storage-path=/data",
-		"--storage-adv-addr=\(_spec.metadata.name).$(RUNTIME_NAMESPACE).svc.cluster.local.",
-		"--concurrent=\(_spec.reconcile.concurrent)",
-		"--requeue-dependency=\(_spec.reconcile.requeue)s",
+		"--storage-adv-addr=\(_config.metadata.name).$(RUNTIME_NAMESPACE).svc.cluster.local.",
+		"--concurrent=\(_config.reconcile.concurrent)",
+		"--requeue-dependency=\(_config.reconcile.requeue)s",
 		"--watch-label-selector=!sharding.fluxcd.io/key",
 		"--events-addr=http://localhost:9690",
 		"--helm-cache-max-size=10",
@@ -57,7 +57,7 @@ import (
 		port: "http-sc"
 		path: "/"
 	}
-	resources: _spec.resources
+	resources: _config.resources
 	volumeMounts: [{
 		name:      "data"
 		mountPath: "/data"
