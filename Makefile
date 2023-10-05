@@ -17,14 +17,13 @@ install: ## Install Flux
 uninstall: ## Uninstall Flux
 	@flux -n flux-system uninstall --silent
 
-.PHONY: vet
-vet: ## Format and vet all CUE definitions
-	@timoni mod lint modules/flux-aio
-	@cd modules/flux-aio
-	@cue fmt ./...
+.PHONY: fmt
+fmt: ## Format all CUE definitions
+	@cue fmt  ./modules/flux-aio/...
+	@cue fmt  ./modules/flux-git-sync/...
 
 .PHONY: gen
-gen: vet ## Print the CUE generated objects
+gen: ## Print the CUE generated objects
 	@cd modules/flux-aio
 	@cue cmd -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 build
 
