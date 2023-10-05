@@ -35,13 +35,19 @@ import (
 		"--watch-all-namespaces",
 		"--log-level=\(_spec.logLevel)",
 		"--log-encoding=json",
-		"--enable-leader-election=true",
+		"--enable-leader-election=false",
 		"--metrics-addr=:9791",
 		"--health-addr=:9792",
 		"--storage-addr=:9790",
 		"--storage-path=/data",
 		"--storage-adv-addr=\(_spec.metadata.name).$(RUNTIME_NAMESPACE).svc.cluster.local.",
+		"--concurrent=\(_spec.reconcile.concurrent)",
+		"--requeue-dependency=\(_spec.reconcile.requeue)s",
+		"--watch-label-selector=!sharding.fluxcd.io/key",
 		"--events-addr=http://localhost:9690",
+		"--helm-cache-max-size=10",
+		"--helm-cache-ttl=60m",
+		"--helm-cache-purge-interval=5m",
 	]
 	livenessProbe: httpGet: {
 		port: "healthz-sc"

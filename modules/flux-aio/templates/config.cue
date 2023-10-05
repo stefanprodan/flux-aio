@@ -49,13 +49,15 @@ import (
 		identity: *"" | string
 	}
 
-	resources: *{
-		requests: {
-			cpu:    "100m"
-			memory: "64Mi"
-		}
-		limits: memory: "1Gi"
-	} | corev1.#ResourceRequirements
+	reconcile: {
+		concurrent: *5 | int
+		requeue:    *30 | int
+	}
+
+	resources: corev1.#ResourceRequirements
+	resources: requests: cpu:    *"100m" | string
+	resources: requests: memory: *"64Mi" | string
+	resources: limits: memory:   *"1Gi" | string
 
 	imagePullSecrets?: [...corev1.LocalObjectReference]
 
