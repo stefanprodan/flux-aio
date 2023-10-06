@@ -1,8 +1,24 @@
 # Flux
 
-Flux All-In-One is an experimental distribution made with [cuelang](https://cuelang.org/)
-for running [Flux](https://fluxcd.io) on Kubernetes clusters without a CNI plugin being
-installed in advance.
+Flux All-In-One is an experimental distribution made with [Timoni](https://github.com/stefanprodan/timoni)
+for deploying [Flux](https://fluxcd.io) on Kubernetes clusters.
+
+The main difference to the upstream distribution, is that Flux AIO bundles
+all the controllers into a single Kubernetes Deployment.
+The communication between controllers happens on the loopback interface, hence
+Flux can function on clusters which don't have a CNI plugin installed.
+This allows Kubernetes operators to setup their clusters networking in a GitOps way.
+
+### Prerequisites
+
+Install the Timoni CLI with:
+
+```shell
+brew install stefanprodan/tap/timoni
+```
+
+For other installation methods,
+see [timoni.sh](https://timoni.sh/install/).
 
 ## Module Repository
 
@@ -11,34 +27,29 @@ This module is available on GitHub Container Registry at
 
 ## Install
 
-To install Flux using the default values:
-
-```shell
-timoni -n flux-system apply flux oci://ghcr.io/stefanprodan/modules/flux-aio
-```
-
-To install a specific Flux version:
-
-```shell
-timoni flux-system apply flux oci://ghcr.io/stefanprodan/modules/flux-aio -v 2.1.1
-```
-
-To change the [default configuration](#configuration),
-create one or more `values.cue` files and apply them to the instance.
-
-For example, create a file `my-values.cue` with the following content:
+Create a `flux-aio.cue` file with the following content:
 
 ```cue
-values: {
-	securityProfile: "restricted"
+bundle: {
+	apiVersion: "v1alpha1"
+	name:       "flux-aio"
+	instances: {
+		flux: {
+			module: url: "oci://ghcr.io/stefanprodan/modules/flux-aio"
+			namespace: "flux-system"
+			values: {
+				hostNetwork:     true
+				securityProfile: "privileged"
+			}
+		}
+	}
 }
 ```
 
-And apply the values with:
+Install Flux by applying the Timoni bundle:
 
 ```shell
-timoni -n flux-system apply flux oci://ghcr.io/stefanprodan/modules/flux-aio \
---values ./my-values.cue
+timoni bundle apply -f ./flux-aio.cue
 ```
 
 ## Uninstall
@@ -51,8 +62,6 @@ flux -n flux-system uninstall
 
 ## Configuration
 
-### General values
-
 | Key                           | Type                               | Default                       | Description                                                                                                                                  |
 |-------------------------------|------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | `hostNetwork:`                | `bool`                             | `true`                        | Host network must be enabled on bare-metal clusters without a CNI preinstalled                                                               |
@@ -64,6 +73,8 @@ flux -n flux-system uninstall
 | `persistence: enabled:`       | `bool`                             | `false`                       | Enable persistent storage for Flux artifacts                                                                                                 |
 | `persistence: storageClass:`  | `string`                           | `standard`                    | The [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) storage class name                              |
 | `persistence: size:`          | `string`                           | `8Gi`                         | The persistent volume size                                                                                                                   |
+| `porxy: http:`                | `string`                           | `""`                          | HTTP Proxy URL                                                                                                                               |
+| `porxy: https:`               | `string`                           | `""`                          | HTTPS Proxy URL                                                                                                                              |
 | `expose: webhookReceiver:`    | `bool`                             | `false`                       | Create the `webhook-reciver` Kubernetes Service                                                                                              |
 | `expose: notificationServer:` | `bool`                             | `false`                       | Create the `notification-controller` Kubernetes Service                                                                                      |
 | `expose: sourceServer:`       | `bool`                             | `false`                       | Create the `source-controller` Kubernetes Service                                                                                            |

@@ -44,6 +44,12 @@ import (
 		sourceServer:       *false | bool
 	}
 
+	proxy: {
+		https?: string
+		http?:  string
+		no:     *".cluster.local.,.cluster.local,.svc" | string
+	}
+
 	securityProfile: "restricted" | "privileged"
 
 	logLevel: *"info" | string

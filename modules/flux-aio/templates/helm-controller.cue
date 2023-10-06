@@ -5,12 +5,14 @@ import (
 )
 
 #HelmController: corev1.#Container & {
-	_config: #Config
+	_config:       #Config
+	_containerEnv: #ContainerEnv & {_config: _config}
 
 	name:            "helm-controller"
 	image:           _config.controllers.helm
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
+	env:             _containerEnv.env
 	ports: [{
 		containerPort: 9795
 		name:          "http-prom-hc"
@@ -19,13 +21,6 @@ import (
 		containerPort: 9796
 		name:          "healthz-hc"
 		protocol:      "TCP"
-	}]
-	env: [{
-		name:  "SOURCE_CONTROLLER_LOCALHOST"
-		value: "localhost:9790"
-	}, {
-		name: "RUNTIME_NAMESPACE"
-		valueFrom: fieldRef: fieldPath: "metadata.namespace"
 	}]
 	args: [
 		"--watch-all-namespaces",
