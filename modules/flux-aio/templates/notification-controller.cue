@@ -5,12 +5,14 @@ import (
 )
 
 #NotificationController: corev1.#Container & {
-	_config: #Config
+	_config:       #Config
+	_containerEnv: #ContainerEnv & {_config: _config}
 
 	name:            "notification-controller"
 	image:           _config.controllers.notification
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
+	env:             _containerEnv.env
 	ports: [{
 		containerPort: 9690
 		name:          "http-nc"
@@ -27,10 +29,6 @@ import (
 		containerPort: 9799
 		name:          "healthz-nc"
 		protocol:      "TCP"
-	}]
-	env: [{
-		name: "RUNTIME_NAMESPACE"
-		valueFrom: fieldRef: fieldPath: "metadata.namespace"
 	}]
 	readinessProbe: httpGet: {
 		path: "/readyz"

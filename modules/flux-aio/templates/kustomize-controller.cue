@@ -5,12 +5,14 @@ import (
 )
 
 #KustomizeController: corev1.#Container & {
-	_config: #Config
+	_config:       #Config
+	_containerEnv: #ContainerEnv & {_config: _config}
 
 	name:            "kustomize-controller"
 	image:           _config.controllers.kustomize
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
+	env:             _containerEnv.env
 	ports: [{
 		containerPort: 9793
 		name:          "http-prom-kc"
@@ -19,13 +21,6 @@ import (
 		containerPort: 9794
 		name:          "healthz-kc"
 		protocol:      "TCP"
-	}]
-	env: [{
-		name:  "SOURCE_CONTROLLER_LOCALHOST"
-		value: "localhost:9790"
-	}, {
-		name: "RUNTIME_NAMESPACE"
-		valueFrom: fieldRef: fieldPath: "metadata.namespace"
 	}]
 	args: [
 		"--watch-all-namespaces",

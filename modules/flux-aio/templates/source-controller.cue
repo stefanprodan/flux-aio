@@ -5,12 +5,15 @@ import (
 )
 
 #SourceController: corev1.#Container & {
-	_config: #Config
+	_config:       #Config
+	_containerEnv: #ContainerEnv & {_config: _config}
 
 	name:            "source-controller"
 	image:           _config.controllers.source
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
+	env:             _containerEnv.env
+
 	ports: [{
 		containerPort: 9790
 		name:          "http-sc"
@@ -23,13 +26,6 @@ import (
 		containerPort: 9792
 		name:          "healthz-sc"
 		protocol:      "TCP"
-	}]
-	env: [{
-		name: "RUNTIME_NAMESPACE"
-		valueFrom: fieldRef: fieldPath: "metadata.namespace"
-	}, {
-		name:  "TUF_ROOT"
-		value: "/tmp/.sigstore"
 	}]
 	args: [
 		"--watch-all-namespaces",
