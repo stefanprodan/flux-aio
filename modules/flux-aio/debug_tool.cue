@@ -7,7 +7,8 @@ import (
 )
 
 // The build command generates the Kubernetes manifests and prints the multi-docs YAML to stdout.
-// Run 'cue -t test build' to use the values from test_values.cue.
+// Example:
+// cue cmd -t debug -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 build
 command: build: {
 	task: print: cli.Print & {
 		text: yaml.MarshalStream(timoni.apply.all)
@@ -15,7 +16,8 @@ command: build: {
 }
 
 // The ls command prints a table with the Kubernetes resources kind, namespace, name and version.
-// Run 'cue -t test ls' to use the values from test_values.cue.
+// Example:
+// cue cmd -t debug -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 ls
 command: ls: {
 	task: print: cli.Print & {
 		text: tabwriter.Write([

@@ -79,7 +79,7 @@ timoni bundle apply -f ./flux-aio.cue
 ```
 
 To enable Flux multi-tenancy lockdown, you can set the security profile to `restricted`.
-You can fine tune various Flux settings, the various options are listed in
+You can fine tune the Flux installation using various options listed in
 the [flux-aio module readme](modules/flux-aio/README.md#configuration).
 
 Changes to the `flux-aio.cue` bundle, can be applied in dry-run mode
@@ -136,12 +136,12 @@ For Google Cloud, the type must be set to `gcp` and the identity set to the GCP 
 To configure Flux to deploy workloads from a Git repository,
 you'll be using the [flux-git-sync](modules/flux-git-sync/README.md) Timoni module.
 
-This module generates Flux `GitRepository` and `Kustomization` objects using on
-the provider values, such as Git URL, branch, sync path, interval, etc.
+This module generates Flux `GitRepository` and `Kustomization` objects and allows
+the configuration of the Git URL, auth token, branch, path, interval, health checks.
 
 ### Sync from a public Git repository
 
-To deploy the latest version of Cilium CNI and the metrics server cluster addon,
+To deploy the latest version of Cilium CNI and the metrics-server cluster addon,
 add the `cluster-addons` instance to the `flux-aio.cue` bundle:
 
 ```cue
@@ -167,9 +167,8 @@ bundle: {
 }
 ```
 
-The above configuration, will generate a Flux GitRepository and Kustomization for
-reconciling the HelmReleases defined in the [test/cluster-addons](/test/cluster-addons)
-directory from this repository.
+The above configuration, will instruct Flux to reconcile the `HelmRelease` manifests
+from the [test/cluster-addons](/test/cluster-addons) directory.
 
 Apply the bundle with:
 
