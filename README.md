@@ -32,17 +32,32 @@ On clusters without a CNI the Flux pod binds to the following ports on the host 
 - `9790` source-controller storage endpoint
 - `9791-9799` metrics, liveness and readiness endpoints
 
-## Install Flux on self-managed clusters
+## Install Flux with Timoni
 
-To deploy Flux AIO on a cluster without a CNI,
-create a Timoni bundle with the host network value enabled: 
+To deploy Flux on Kubernetes clusters, you'll be using
+the Timoni CLI and a Timoni [Bundle file](https://timoni.sh/bundle/)
+where you'll define the configuration of the Flux controllers and their settings.
+
+Install the Timoni CLI with:
+
+```shell
+brew install stefanprodan/tap/timoni
+```
+
+For other installation methods,
+see [timoni.sh](https://timoni.sh/install/).
+
+### Install Flux on self-managed clusters
+
+To deploy Flux AIO on a cluster without a CNI, create a Timoni Bundle file
+named `flux-aio.cue` with the following content: 
 
 ```cue
 bundle: {
 	apiVersion: "v1alpha1"
 	name:       "flux-aio"
 	instances: {
-		flux: {
+		"flux": {
 			module: {
 				url:     "oci://ghcr.io/stefanprodan/modules/flux-aio"
 				version: "2.1.1"
@@ -57,14 +72,22 @@ bundle: {
 }
 ```
 
-And apply the bundle with:
+Apply the bundle with:
 
 ```shell
 timoni bundle apply -f ./flux-aio.cue
 ```
 
-To enable Flux multi-tenancy lockdown, you can set the security profile to `restricted`,
-as documented in the [module readme](modules/flux-aio/README.md#configuration).
+To enable Flux multi-tenancy lockdown, you can set the security profile to `restricted`.
+You can fine tune various Flux settings, the various options are listed in
+the [flux-aio module readme](modules/flux-aio/README.md#configuration).
+
+Changes to the `flux-aio.cue` bundle, can be applied in dry-run mode
+to see how Timoni will reconfigure Flux on the cluster:
+
+```shell
+timoni bundle apply -f ./flux-aio.cue --dry-run --diff
+```
 
 ### Install Flux on managed clusters
 
@@ -84,7 +107,7 @@ bundle: {
 	apiVersion: "v1alpha1"
 	name:       "flux-aio"
 	instances: {
-		flux: {
+		"flux": {
 			module: url: "oci://ghcr.io/stefanprodan/modules/flux-aio"
 			namespace: "flux-system"
 			values: {
@@ -108,12 +131,17 @@ For Azure Workload Identity, the type must be set to `azure` and the identity se
 
 For Google Cloud, the type must be set to `gcp` and the identity set to the GCP Identity Name.
 
-### Configure Flux Git sync
+## Configure Flux Git sync
 
 To configure Flux to deploy workloads from a Git repository,
-you can use the [flux-git-sync](modules/flux-git-sync/README.md) module.
+you'll be using the [flux-git-sync](modules/flux-git-sync/README.md) Timoni module.
 
-For example, to deploy the latest version of Cilium CNI and the metrics server cluster addon,
+This module generates Flux `GitRepository` and `Kustomization` objects using on
+the provider values, such as Git URL, branch, sync path, interval, etc.
+
+### Sync from a public Git repository
+
+To deploy the latest version of Cilium CNI and the metrics server cluster addon,
 add the `cluster-addons` instance to the `flux-aio.cue` bundle:
 
 ```cue
@@ -121,13 +149,10 @@ bundle: {
 	apiVersion: "v1alpha1"
 	name:       "flux-aio"
 	instances: {
-		flux: {
+		"flux": {
 			module: url: "oci://ghcr.io/stefanprodan/modules/flux-aio"
 			namespace: "flux-system"
-			values: {
-				hostNetwork:     true
-				securityProfile: "privileged"
-			}
+			values: securityProfile: "privileged"
 		}
 		"cluster-addons": {
 			module: url: "oci://ghcr.io/stefanprodan/modules/flux-git-sync"
@@ -145,6 +170,15 @@ bundle: {
 The above configuration, will generate a Flux GitRepository and Kustomization for
 reconciling the HelmReleases defined in the [test/cluster-addons](/test/cluster-addons)
 directory from this repository.
+
+Apply the bundle with:
+
+```shell
+timoni bundle apply -f ./flux-aio.cue
+```
+
+Timoni will configure the Flux Git sync and will wait for Flux to pull the repo and
+deploy the cluster addons.
 
 ### Sync from a private Git repository
 
@@ -166,7 +200,7 @@ bundle: {
 			module: url: "oci://ghcr.io/stefanprodan/modules/flux-git-sync"
 			namespace: "flux-system"
 			values: git: {
-				token: "" @timoni(runtime:string:GITHUB_TOKEN)
+				token: string @timoni(runtime:string:GITHUB_TOKEN)
 				url:   "https://github.com/my-org/my-private-repo"
 				ref:   "refs/head/main"
 				path:  "./test/cluster-addons"
@@ -186,7 +220,7 @@ timoni bundle apply -f ./flux-aio.cue --runtime-from-env
 To learn more about Timoni bundles, please see the documentation on
 [Bundle API](https://timoni.sh/bundle/) and [Bundle Runtime API](https://timoni.sh/bundle-runtime/).
 
-### Uninstall Flux
+## Uninstall Flux
 
 To remove Flux from your cluster, without affecting any reconciled workloads:
 
