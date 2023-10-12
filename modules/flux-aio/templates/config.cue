@@ -125,6 +125,7 @@ import (
 		namespace:          #Namespace & {_config:          config}
 		resourcequota:      #ResourceQuota & {_config:      config}
 		serviceaccount:     #ServiceAccount & {_config:     config}
+		clusterrol:         #ClusterRole & {_config:        config}
 		clusterrolebinding: #ClusterRoleBinding & {_config: config}
 		deployment:         #Deployment & {
 			_config:     config
