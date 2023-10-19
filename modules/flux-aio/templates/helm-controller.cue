@@ -9,7 +9,7 @@ import (
 	_containerEnv: #ContainerEnv & {_config: _config}
 
 	name:            "helm-controller"
-	image:           _config.controllers.helm
+	image:           _config.controllers.helm.image.reference
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
 	env:             _containerEnv.env
@@ -29,10 +29,12 @@ import (
 		"--enable-leader-election=false",
 		"--metrics-addr=:9795",
 		"--health-addr=:9796",
-		"--events-addr=http://localhost:9690",
 		"--watch-label-selector=!sharding.fluxcd.io/key",
 		"--concurrent=\(_config.reconcile.concurrent)",
 		"--requeue-dependency=\(_config.reconcile.requeue)s",
+		if _config.controllers.notification.enabled {
+			"--events-addr=http://localhost:9690"
+		},
 		if _config.securityProfile == "restricted" {
 			"--no-cross-namespace-refs"
 		},

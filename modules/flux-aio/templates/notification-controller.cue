@@ -9,7 +9,7 @@ import (
 	_containerEnv: #ContainerEnv & {_config: _config}
 
 	name:            "notification-controller"
-	image:           _config.controllers.notification
+	image:           _config.controllers.notification.image.reference
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
 	env:             _containerEnv.env

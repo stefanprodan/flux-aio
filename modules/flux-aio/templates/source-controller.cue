@@ -9,7 +9,7 @@ import (
 	_containerEnv: #ContainerEnv & {_config: _config}
 
 	name:            "source-controller"
-	image:           _config.controllers.source
+	image:           _config.controllers.source.image.reference
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
 	env:             _containerEnv.env
@@ -40,10 +40,12 @@ import (
 		"--concurrent=\(_config.reconcile.concurrent)",
 		"--requeue-dependency=\(_config.reconcile.requeue)s",
 		"--watch-label-selector=!sharding.fluxcd.io/key",
-		"--events-addr=http://localhost:9690",
 		"--helm-cache-max-size=10",
 		"--helm-cache-ttl=60m",
 		"--helm-cache-purge-interval=5m",
+		if _config.controllers.notification.enabled {
+			"--events-addr=http://localhost:9690"
+		},
 	]
 	livenessProbe: httpGet: {
 		port: "healthz-sc"
