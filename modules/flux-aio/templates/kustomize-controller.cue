@@ -9,7 +9,7 @@ import (
 	_containerEnv: #ContainerEnv & {_config: _config}
 
 	name:            "kustomize-controller"
-	image:           _config.controllers.kustomize
+	image:           _config.controllers.kustomize.image.reference
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
 	env:             _containerEnv.env
@@ -29,10 +29,12 @@ import (
 		"--enable-leader-election=false",
 		"--metrics-addr=:9793",
 		"--health-addr=:9794",
-		"--events-addr=http://localhost:9690",
 		"--watch-label-selector=!sharding.fluxcd.io/key",
 		"--concurrent=\(_config.reconcile.concurrent)",
 		"--requeue-dependency=\(_config.reconcile.requeue)s",
+		if _config.controllers.notification.enabled {
+			"--events-addr=http://localhost:9690"
+		},
 		if _config.securityProfile == "restricted" {
 			"--no-cross-namespace-refs"
 		},

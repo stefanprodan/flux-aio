@@ -66,6 +66,7 @@ bundle: {
 			values: {
 				hostNetwork:     true
 				securityProfile: "privileged"
+				controllers: notification: enabled: false
 			}
 		}
 	}

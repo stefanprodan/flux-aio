@@ -6,12 +6,28 @@ package main
 // Eval example:
 // cue -t debug -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 eval -c -e timoni.instance.objects.deployment
 values: {
-	version: "v2.1.1"
+	version: "v2.1.2"
 	controllers: {
-		source:       "ghcr.io/fluxcd/source-controller:v1.1.1"
-		kustomize:    "ghcr.io/fluxcd/kustomize-controller:preview-ef135a14"
-		notification: "ghcr.io/fluxcd/notification-controller:v1.1.0"
-		helm:         "ghcr.io/fluxcd/helm-controller:preview-bd3ec356"
+		source: image: {
+			repository: "ghcr.io/fluxcd/source-controller"
+			tag:        "v1.1.2"
+			digest:     ""
+		}
+		kustomize: image: {
+			repository: "ghcr.io/fluxcd/kustomize-controller"
+			tag:        "v1.1.1"
+			digest:     ""
+		}
+		notification: image: {
+			repository: "ghcr.io/fluxcd/notification-controller"
+			tag:        "v1.1.0"
+			digest:     ""
+		}
+		helm: image: {
+			repository: "ghcr.io/fluxcd/helm-controller"
+			tag:        "v0.36.2"
+			digest:     ""
+		}
 	}
 	hostNetwork:     true
 	securityProfile: "privileged"

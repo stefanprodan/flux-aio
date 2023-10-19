@@ -6,6 +6,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
+	timoniv1 "timoni.sh/core/v1alpha1"
 )
 
 // Config defines the schema and defaults for the Instance values.
@@ -19,23 +20,35 @@ import (
 	metadata: name:      *"flux" | string & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$" & strings.MaxRunes(63)
 	metadata: namespace: *"flux-system" | string & strings.MaxRunes(63)
 
-	metadata: labels: *{
-			"app.kubernetes.io/name":    metadata.name
-			"app.kubernetes.io/version": version
-			"app.kubernetes.io/part-of": "flux"
-	} | {[ string]: string}
+	metadata: labels: {
+		"app.kubernetes.io/name":       metadata.name
+		"app.kubernetes.io/version":    version
+		"app.kubernetes.io/part-of":    "flux"
+		"app.kubernetes.io/managed-by": "timoni"
+	}
 
-	metadata: annotations: *{
-			"app.kubernetes.io/role": "cluster-admin"
-	} | {[ string]: string}
+	metadata: annotations: {
+		"app.kubernetes.io/role": "cluster-admin"
+	}
 
 	version: string
 
 	controllers: {
-		source:       string
-		kustomize:    string
-		helm:         string
-		notification: string
+		source: {
+			image: timoniv1.#Image
+		}
+		kustomize: {
+			enabled: *true | bool
+			image:   timoniv1.#Image
+		}
+		helm: {
+			enabled: *true | bool
+			image:   timoniv1.#Image
+		}
+		notification: {
+			enabled: *true | bool
+			image:   timoniv1.#Image
+		}
 	}
 
 	expose: {
@@ -105,10 +118,16 @@ import (
 	config: #Config
 
 	containers: [
-		#SourceController & {_config:       config},
-		#KustomizeController & {_config:    config},
-		#HelmController & {_config:         config},
-		#NotificationController & {_config: config},
+		#SourceController & {_config: config},
+		if config.controllers.kustomize.enabled {
+			#KustomizeController & {_config: config}
+		},
+		if config.controllers.helm.enabled {
+			#HelmController & {_config: config}
+		},
+		if config.controllers.notification.enabled {
+			#NotificationController & {_config: config}
+		},
 	]
 
 	objects: [ID=_]: runtime.#Object
@@ -133,11 +152,11 @@ import (
 		}
 	}
 
-	if config.expose.webhookReceiver {
+	if config.controllers.notification.enabled && config.expose.webhookReceiver {
 		objects: webhookreceiver: #WebhookService & {_config: config}
 	}
 
-	if config.expose.notificationServer {
+	if config.controllers.notification.enabled && config.expose.notificationServer {
 		objects: notificationserver: #NotificationService & {_config: config}
 	}
 
