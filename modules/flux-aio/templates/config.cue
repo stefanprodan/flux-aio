@@ -100,17 +100,26 @@ import (
 		seccompProfile: type: "RuntimeDefault"
 	} | corev1.#PodSecurityContext
 
-	tolerations: *[{
-		operator: "Exists"
-	}] | corev1.#Toleration
-
+	affinity: corev1.#Affinity
 	affinity: nodeAffinity: requiredDuringSchedulingIgnoredDuringExecution: nodeSelectorTerms: [{
 		matchExpressions: [{
 			key:      "kubernetes.io/os"
 			operator: "In"
 			values: ["linux"]
 		}]
-	}] | corev1.#Affinity
+	}]
+	affinity: podAntiAffinity: requiredDuringSchedulingIgnoredDuringExecution: [{
+		topologyKey: "kubernetes.io/hostname"
+		labelSelector: matchExpressions: [{
+			key:      "app.kubernetes.io/name"
+			operator: "In"
+			values: [metadata.name]
+		}]
+	}]
+
+	tolerations: *[{
+		operator: "Exists"
+	}] | corev1.#Toleration
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.

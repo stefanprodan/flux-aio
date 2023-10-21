@@ -51,11 +51,9 @@ import (
 					name: "tmp"
 				}]
 				containers: _containers
+				affinity:   _config.affinity
 				if _config.tolerations != _|_ {
 					tolerations: _config.tolerations
-				}
-				if _config.affinity != _|_ {
-					affinity: _config.affinity
 				}
 				if _config.imagePullSecrets != _|_ {
 					imagePullSecrets: _config.imagePullSecrets
