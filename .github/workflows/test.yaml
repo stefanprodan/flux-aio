@@ -32,6 +32,10 @@ jobs:
         run: make tools
       - name: Run CUE format
         run: make fmt
+      - name: Vet modules
+        run: |
+          timoni mod vet ./modules/flux-aio --debug
+          timoni mod vet ./modules/flux-git-sync --debug
       - name: Create cluster without CNI
         run: kind create cluster --config ./test/cluster/kind.yaml
       - name: Push modules
