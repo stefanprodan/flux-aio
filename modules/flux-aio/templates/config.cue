@@ -35,19 +35,23 @@ import (
 
 	controllers: {
 		source: {
-			image: timoniv1.#Image
+			image:      timoniv1.#Image
+			resources?: corev1.#ResourceRequirements
 		}
 		kustomize: {
-			enabled: *true | bool
-			image:   timoniv1.#Image
+			enabled:    *true | bool
+			image:      timoniv1.#Image
+			resources?: corev1.#ResourceRequirements
 		}
 		helm: {
-			enabled: *true | bool
-			image:   timoniv1.#Image
+			enabled:    *true | bool
+			image:      timoniv1.#Image
+			resources?: corev1.#ResourceRequirements
 		}
 		notification: {
-			enabled: *true | bool
-			image:   timoniv1.#Image
+			enabled:    *true | bool
+			image:      timoniv1.#Image
+			resources?: corev1.#ResourceRequirements
 		}
 	}
 

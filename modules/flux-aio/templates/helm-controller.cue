@@ -50,7 +50,12 @@ import (
 		path: "/healthz"
 		port: "healthz-hc"
 	}
-	resources: _config.resources
+	if _config.controllers.helm.resources == _|_ {
+		resources: _config.resources
+	}
+	if _config.controllers.helm.resources != _|_ {
+		resources: _config.controllers.helm.resources
+	}
 	volumeMounts: [{
 		name:      "tmp"
 		mountPath: "/tmp"

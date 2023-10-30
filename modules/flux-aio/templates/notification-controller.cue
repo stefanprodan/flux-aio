@@ -50,7 +50,12 @@ import (
 			"--no-cross-namespace-refs"
 		},
 	]
-	resources: _config.resources
+	if _config.controllers.notification.resources == _|_ {
+		resources: _config.resources
+	}
+	if _config.controllers.notification.resources != _|_ {
+		resources: _config.controllers.notification.resources
+	}
 	volumeMounts: [{
 		name:      "tmp"
 		mountPath: "/tmp"

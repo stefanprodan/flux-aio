@@ -55,7 +55,12 @@ import (
 		port: "http-sc"
 		path: "/"
 	}
-	resources: _config.resources
+	if _config.controllers.source.resources == _|_ {
+		resources: _config.resources
+	}
+	if _config.controllers.source.resources != _|_ {
+		resources: _config.controllers.source.resources
+	}
 	volumeMounts: [{
 		name:      "data"
 		mountPath: "/data"
