@@ -8,10 +8,22 @@ package main
 values: {
 	version: "v2.1.2"
 	controllers: {
-		source: image: {
-			repository: "ghcr.io/fluxcd/source-controller"
-			tag:        "v1.1.2"
-			digest:     ""
+		source: {
+			image: {
+				repository: "ghcr.io/fluxcd/source-controller"
+				tag:        "v1.1.2"
+				digest:     ""
+			}
+			resources: {
+				requests: {
+					cpu:    "150m"
+					memory: "128Mi"
+				}
+				limits: {
+					cpu:    "1500m"
+					memory: "1Gi"
+				}
+			}
 		}
 		kustomize: image: {
 			repository: "ghcr.io/fluxcd/kustomize-controller"

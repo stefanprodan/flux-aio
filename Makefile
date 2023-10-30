@@ -32,6 +32,10 @@ ls: ## List the CUE generated objects
 	@cd modules/flux-aio
 	@cue cmd -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 ls
 
+.PHONY: gen-deploy
+gen-deploy: ## Print the Flux deployment
+	@timoni -n flux-system build flux ./modules/flux-aio/ -f ./modules/flux-aio/debug_values.cue | yq e '. | select(.kind == "Deployment")'
+
 .PHONY: push-mod
 push-mod: ## Push the Timoni modules to GHCR
 	@timoni mod push ./modules/flux-aio oci://ghcr.io/stefanprodan/modules/flux-aio -v=$(VERSION:v%=%) --latest \

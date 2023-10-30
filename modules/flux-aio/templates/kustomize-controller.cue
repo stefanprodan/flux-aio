@@ -53,7 +53,12 @@ import (
 		path: "/healthz"
 		port: "healthz-kc"
 	}
-	resources: _config.resources
+	if _config.controllers.kustomize.resources == _|_ {
+		resources: _config.resources
+	}
+	if _config.controllers.kustomize.resources != _|_ {
+		resources: _config.controllers.kustomize.resources
+	}
 	volumeMounts: [{
 		name:      "tmp"
 		mountPath: "/tmp"
