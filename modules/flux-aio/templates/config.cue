@@ -85,6 +85,11 @@ import (
 		size:         *"8Gi" | string & =~"^([0-9]*)?(Gi)?$"
 	}
 
+	tmpfs: {
+		enabled:    *false | bool
+		sizeLimit?: string & =~"^([0-9]*)?(Mi|Gi)?$"
+	}
+
 	resources: corev1.#ResourceRequirements
 	resources: requests: cpu:    *"100m" | string & =~"^([0-9]*)?(m)?$"
 	resources: requests: memory: *"64Mi" | string & =~"^([0-9]*)?(Mi|Gi)?$"

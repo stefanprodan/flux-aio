@@ -10,7 +10,7 @@ for running the Flux controllers as single unit (Kubernetes Pod).
 
 ## Specifications
 
-This distribution is optimized for running Flux on:
+This distribution is optimized for running Flux at scale on:
 
 - Bare clusters without a CNI plugin installed
 - Edge clusters with limited CPU and memory resources
