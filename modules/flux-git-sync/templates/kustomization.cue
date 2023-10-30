@@ -19,5 +19,11 @@ import (
 		prune:         _config.sync.prune
 		wait:          _config.sync.wait
 		timeout:       "\(_config.sync.timeout)m"
+		if _config.sync.serviceAccountName != _|_ {
+			serviceAccountName: _config.sync.serviceAccountName
+		}
+		if _config.sync.targetNamespace != _|_ {
+			targetNamespace: _config.sync.targetNamespace
+		}
 	}
 }

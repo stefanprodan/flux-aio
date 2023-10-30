@@ -27,6 +27,9 @@ import (
 		prune:   *true | bool
 		wait:    *true | bool
 		timeout: *3 | int
+
+		serviceAccountName?: string
+		targetNamespace?:    string
 	}
 }
 
