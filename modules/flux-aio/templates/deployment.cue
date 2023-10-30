@@ -47,8 +47,18 @@ import (
 						persistentVolumeClaim: claimName: _config.metadata.name
 					}
 				}, {
-					emptyDir: {}
 					name: "tmp"
+					if !_config.tmpfs.enabled {
+						emptyDir: {}
+					}
+					if _config.tmpfs.enabled {
+						emptyDir: {
+							medium: "Memory"
+							if _config.tmpfs.sizeLimit != _|_ {
+								sizeLimit: _config.tmpfs.sizeLimit
+							}
+						}
+					}
 				}]
 				containers: _containers
 				affinity:   _config.affinity
