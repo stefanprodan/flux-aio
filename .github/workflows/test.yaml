@@ -13,6 +13,7 @@ permissions:
 env:
   FLUX_MODULE_URL: "oci://localhost:5000/flux-aio"
   FLUX_SYNC_MODULE_URL: "oci://localhost:5000/flux-git-sync"
+  FLUX_TENANT_MODULE_URL: "oci://localhost:5000/flux-tenant"
   FLUX_MODULE_VERSION: "0.0.0-devel"
 
 jobs:
@@ -36,13 +37,15 @@ jobs:
         run: |
           timoni mod vet ./modules/flux-aio --debug
           timoni mod vet ./modules/flux-git-sync --debug
+          timoni mod vet ./modules/flux-tenant --debug
       - name: Create cluster without CNI
         run: kind create cluster --config ./test/cluster/kind.yaml
       - name: Push modules
         run: |
           timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION}
           timoni mod push ./modules/flux-git-sync ${FLUX_SYNC_MODULE_URL} -v ${FLUX_MODULE_VERSION}
-      - name: Apply bundle
+          timoni mod push ./modules/flux-tenant ${FLUX_TENANT_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+      - name: Apply flux-aio bundle
         run: |
           PR_NUMBER=${{ github.event.number }}
           if [ -z "$PR_NUMBER" ]
@@ -57,6 +60,9 @@ jobs:
         run: flux check
       - name: Verify CoreDNS availability
         run: kubectl -n kube-system rollout status deploy/coredns --timeout=5m
+      - name: Apply flux-tenants bundle
+        run: |
+          timoni bundle apply -f bundles/flux-tenants.cue --runtime-from-env
       - name: Debug failure
         if: failure()
         run: |
