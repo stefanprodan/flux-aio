@@ -79,7 +79,6 @@ Apply the bundle with:
 timoni bundle apply -f ./flux-aio.cue
 ```
 
-To enable Flux multi-tenancy lockdown, you can set the security profile to `restricted`.
 You can fine tune the Flux installation using various options listed in
 the [flux-aio module readme](modules/flux-aio/README.md#configuration).
 
@@ -160,7 +159,7 @@ bundle: {
 			namespace: "flux-system"
 			values: git: {
 				url:  "https://github.com/stefanprodan/flux-aio"
-				ref:  "refs/head/main"
+				ref:  "refs/heads/main"
 				path: "./test/cluster-addons"
 			}
 		}
@@ -202,7 +201,7 @@ bundle: {
 			values: git: {
 				token: string @timoni(runtime:string:GITHUB_TOKEN)
 				url:   "https://github.com/my-org/my-private-repo"
-				ref:   "refs/head/main"
+				ref:   "refs/heads/main"
 				path:  "./test/cluster-addons"
 			}
 		}
@@ -219,6 +218,85 @@ timoni bundle apply -f ./flux-aio.cue --runtime-from-env
 
 To learn more about Timoni bundles, please see the documentation on
 [Bundle API](https://timoni.sh/bundle/) and [Bundle Runtime API](https://timoni.sh/bundle-runtime/).
+
+## Flux multi-tenancy
+
+To enable Flux [multi-tenancy lockdown](https://fluxcd.io/flux/installation/configuration/multitenancy/),
+you can set the security profile to `restricted`.
+
+```cue
+bundle: {
+	apiVersion: "v1alpha1"
+	name:       "flux-aio"
+	instances: {
+		"flux": {
+			module: url: "oci://ghcr.io/stefanprodan/modules/flux-aio"
+			namespace: "flux-system"
+			values: {
+				securityProfile: "restricted"
+			}
+		}
+	}
+}
+```
+
+With the restricted profile, Flux Kustomizations and HelmReleases
+can't create cluster-wide resources (CRDs, Namespaces, ClusterRoleBindings, etc)
+unless they are deployed in the `flux-system` namespace.
+The `flux-system` namespace, like `kube-system`, is reserved to cluster admins.
+
+### Onboard tenants and their repositories
+
+To configure Flux to deploy workloads from a tenant repository,
+you'll be using the [flux-tenant](modules/flux-tenant/README.md)
+and [flux-git-sync](modules/flux-git-sync/README.md) Timoni modules.
+
+The `flux-tenant` module generates the tenant's Kubernetes namespace
+and RBAC (service account & role binding) that constrains Flux to be able
+to deploy applications only in that namespace.
+
+The `flux-git-sync` module configures Flux to reconcile the tenant's Kubernetes
+resources from their Git repository while impersonating the restricted service account.
+
+```cue
+bundle: {
+	apiVersion: "v1alpha1"
+	name:       "dev-team"
+	instances: {
+		"dev-team": {
+			module: url: "oci://ghcr.io/stefanprodan/modules/flux-tenant"
+			namespace: "dev-team-apps"
+			values: role: "namespace-admin"
+		}
+		"dev-team-apps": {
+			module: url: "oci://ghcr.io/stefanprodan/modules/flux-git-sync"
+			namespace: "dev-team-apps"
+			values: {
+				git: {
+					token: string @timoni(runtime:string:DEVTEAM_TOKEN)
+					url:   "https://github.com/org/dev-team-apps"
+					ref:   "refs/heads/main"
+					path:  "deploy/"
+				}
+				sync: targetNamespace: namespace
+			}
+		}
+	}
+}
+```
+
+On-board the tenant with:
+
+```shell
+export DEVTEAM_TOKEN=<GH TOKEN>
+timoni bundle apply -f dev-team.cue --runtime-from-env
+```
+
+Off-board the tenant and remove all their workloads with:
+
+```shell
+timoni bundle delete dev-team
+```
 
 ## Uninstall Flux
 
