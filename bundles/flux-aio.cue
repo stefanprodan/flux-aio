@@ -10,7 +10,7 @@ bundle: {
 			namespace: "flux-system"
 			values: {
 				hostNetwork:     true
-				securityProfile: "privileged"
+				securityProfile: "restricted"
 			}
 		}
 		"cluster-addons": {
@@ -21,7 +21,7 @@ bundle: {
 			namespace: "flux-system"
 			values: git: {
 				url:  "https://github.com/stefanprodan/flux-aio"
-				ref:  "refs/head/main" @timoni(runtime:string:FLUX_SYNC_REF)
+				ref:  "refs/heads/main" @timoni(runtime:string:FLUX_SYNC_REF)
 				path: "./test/cluster-addons"
 			}
 		}
