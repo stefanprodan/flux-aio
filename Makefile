@@ -56,6 +56,12 @@ push-mod: ## Push the Timoni modules to GHCR
 		-a 'org.opencontainers.image.licenses=Apache-2.0' \
 		-a 'org.opencontainers.image.description=A timoni.sh module for managing Flux tenants.' \
 		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
+	@timoni mod push ./modules/flux-helm-release oci://ghcr.io/stefanprodan/modules/flux-helm-release -v=$(VERSION:v%=%) --latest \
+		--sign cosign \
+		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
+		-a 'org.opencontainers.image.licenses=Apache-2.0' \
+		-a 'org.opencontainers.image.description=A timoni.sh module for deploying Flux Helm Releases.' \
+		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
 
 .PHONY: push-manifests
 push-manifests: ## Build and push the Flux manifests to GHCR
