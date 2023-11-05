@@ -21,13 +21,15 @@ timoni -n default delete podinfo
 
 ## Configuration
 
-| Key                         | Type                  | Default | Description                    |
-|-----------------------------|-----------------------|---------|--------------------------------|
-| `repository: url:`          | `string`              | `""`    | Helm repository URL            |
-| `chart: name:`              | `string`              | `""`    | Helm chart name                |
-| `chart: version:`           | `string`              | `"*"`   | Helm chart name semver range   |
-| `sync: interval:`           | `int`                 | `60`    | Reconcile interval             |
-| `sync: serviceAccountName:` | `string`              | `""`    | Service account to impersonate |
-| `helmValues`                | `{...}`               | `{}`    | Helm values                    |
-| `metadata: labels:`         | `{[ string]: string}` | `{}`    | Custom labels                  |
-| `metadata: annotations:`    | `{[ string]: string}` | `{}`    | Custom annotations             |
+| Key                           | Type                  | Default | Description                    |
+|-------------------------------|-----------------------|---------|--------------------------------|
+| `repository: url:`            | `string`              | `""`    | Helm repository URL            |
+| `repository: auth: username:` | `string`              | `""`    | Helm repository username       |
+| `repository: auth: password:` | `string`              | `""`    | Helm repository password       |
+| `chart: name:`                | `string`              | `""`    | Helm chart name                |
+| `chart: version:`             | `string`              | `"*"`   | Helm chart name semver range   |
+| `sync: interval:`             | `int`                 | `60`    | Reconcile interval             |
+| `sync: serviceAccountName:`   | `string`              | `""`    | Service account to impersonate |
+| `helmValues:`                 | `{...}`               | `{}`    | Helm values                    |
+| `metadata: labels:`           | `{[ string]: string}` | `{}`    | Custom labels                  |
+| `metadata: annotations:`      | `{[ string]: string}` | `{}`    | Custom annotations             |
