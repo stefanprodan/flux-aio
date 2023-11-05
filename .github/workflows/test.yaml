@@ -14,6 +14,7 @@ env:
   FLUX_MODULE_URL: "oci://localhost:5000/flux-aio"
   FLUX_SYNC_MODULE_URL: "oci://localhost:5000/flux-git-sync"
   FLUX_TENANT_MODULE_URL: "oci://localhost:5000/flux-tenant"
+  FLUX_HR_MODULE_URL: "oci://localhost:5000/flux-helm-release"
   FLUX_MODULE_VERSION: "0.0.0-devel"
 
 jobs:
@@ -38,6 +39,7 @@ jobs:
           timoni mod vet ./modules/flux-aio --debug
           timoni mod vet ./modules/flux-git-sync --debug
           timoni mod vet ./modules/flux-tenant --debug
+          timoni mod vet ./modules/flux-helm-release --debug
       - name: Create cluster without CNI
         run: kind create cluster --config ./test/cluster/kind.yaml
       - name: Push modules
@@ -45,6 +47,7 @@ jobs:
           timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION}
           timoni mod push ./modules/flux-git-sync ${FLUX_SYNC_MODULE_URL} -v ${FLUX_MODULE_VERSION}
           timoni mod push ./modules/flux-tenant ${FLUX_TENANT_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+          timoni mod push ./modules/flux-helm-release ${FLUX_HR_MODULE_URL} -v ${FLUX_MODULE_VERSION}
       - name: Apply flux-aio bundle
         run: |
           PR_NUMBER=${{ github.event.number }}
