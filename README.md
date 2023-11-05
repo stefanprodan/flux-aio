@@ -266,7 +266,13 @@ bundle: {
 		"dev-team": {
 			module: url: "oci://ghcr.io/stefanprodan/modules/flux-tenant"
 			namespace: "dev-team-apps"
-			values: role: "namespace-admin"
+			values: {
+				role: "namespace-admin"
+				resourceQuota: {
+					kustomizations: 100
+					helmreleases:   100
+				}
+			}
 		}
 		"dev-team-apps": {
 			module: url: "oci://ghcr.io/stefanprodan/modules/flux-git-sync"
@@ -283,6 +289,7 @@ bundle: {
 		}
 	}
 }
+
 ```
 
 On-board the tenant with:

@@ -14,9 +14,14 @@ import (
 	metadata: timoniv1.#Metadata & {#Version: moduleVersion}
 	metadata: labels: "toolkit.fluxcd.io/tenant": metadata.name
 
-	fluxServiceAccount: *"flux" | string
+	fluxServiceAccount: string | *"flux"
 
 	role: "namespace-admin" | "cluster-admin" | *"namespace-admin"
+
+	resourceQuota: {
+		kustomizations: int | *100
+		helmreleases:   int | *100
+	}
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.
@@ -27,6 +32,7 @@ import (
 		namespace:      #Namespace & {_config:      config}
 		serviceAccount: #ServiceAccount & {_config: config}
 		roleBinding:    #NamespaceAdmin & {_config: config}
+		resourcequota:  #ResourceQuota & {_config:  config}
 	}
 
 	if config.role == "cluster-admin" {
