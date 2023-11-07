@@ -22,17 +22,18 @@ timoni -n flux-system delete my-repo-sync
 
 ## Configuration
 
-| Key                         | Type                  | Default           | Description                                                                               |
-|-----------------------------|-----------------------|-------------------|-------------------------------------------------------------------------------------------|
-| `git: url:`                 | `string`              | `""`              | Git repository HTTPS URL                                                                  |
-| `git: ref:`                 | `string`              | `refs/heads/main` | Git [reference](https://fluxcd.io/flux/components/source/gitrepositories/#name-example)   |
-| `git: token:`               | `string`              | `""`              | Git token (e.g. GitHub PAT or GitLab Deploy Token) for connection to a private repository |
-| `git: path:`                | `string`              | `""`              | Path to the directory containing Kubernetes YAMLs                                         |
-| `git: interval:`            | `int`                 | `"1"`             | Interval in minutes to check for changes upstream                                         |
-| `sync: prune:`              | `bool`                | `true`            | Prune stale resources                                                                     |
-| `sync: wait:`               | `bool`                | `false`           | Wait for resources to become ready                                                        |
-| `sync: timeout:`            | `int`                 | `3`               | Wait timeout in minutes                                                                   |
-| `sync: serviceAccountName:` | `string`              | `""`              | Service account to impersonate                                                            |
-| `sync: targetNamespace:`    | `string`              | `""`              | Target namespace                                                                          |
-| `metadata: labels:`         | `{[ string]: string}` | `{}`              | Custom labels                                                                             |
-| `metadata: annotations:`    | `{[ string]: string}` | `{}`              | Custom annotations                                                                        |
+| Key                         | Type                  | Default           | Description                                                                                                                                |
+|-----------------------------|-----------------------|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| `git: url:`                 | `string`              | `""`              | Git repository HTTPS URL                                                                                                                   |
+| `git: ref:`                 | `string`              | `refs/heads/main` | Git [reference](https://fluxcd.io/flux/components/source/gitrepositories/#name-example)                                                    |
+| `git: token:`               | `string`              | `""`              | Git token (e.g. GitHub PAT or GitLab Deploy Token) for connection to a private repository                                                  |
+| `git: path:`                | `string`              | `""`              | Path to the directory containing Kubernetes YAMLs                                                                                          |
+| `git: interval:`            | `int`                 | `"1"`             | Interval in minutes to check for changes upstream                                                                                          |
+| `sync: prune:`              | `bool`                | `true`            | Prune stale resources                                                                                                                      |
+| `sync: wait:`               | `bool`                | `false`           | Wait for resources to become ready                                                                                                         |
+| `sync: timeout:`            | `int`                 | `3`               | Wait timeout in minutes                                                                                                                    |
+| `sync: serviceAccountName:` | `string`              | `""`              | Service account to impersonate                                                                                                             |
+| `sync: targetNamespace:`    | `string`              | `""`              | Target namespace                                                                                                                           |
+| `substitute:`               | `{[ string]: string}` | `{}`              | Configure [post build variable substitution](https://fluxcd.io/flux/components/kustomize/kustomizations/#post-build-variable-substitution) |
+| `metadata: labels:`         | `{[ string]: string}` | `{}`              | Custom labels                                                                                                                              |
+| `metadata: annotations:`    | `{[ string]: string}` | `{}`              | Custom annotations                                                                                                                         |

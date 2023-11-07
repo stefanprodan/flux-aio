@@ -25,5 +25,10 @@ import (
 		if _config.sync.targetNamespace != _|_ {
 			targetNamespace: _config.sync.targetNamespace
 		}
+
+		if _config.substitute != _|_ {
+			postBuild: substitute: _config.substitute
+		}
+
 	}
 }
