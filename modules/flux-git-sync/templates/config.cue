@@ -31,6 +31,8 @@ import (
 		serviceAccountName?: string
 		targetNamespace?:    string
 	}
+
+	substitute?: [string]: string
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.
