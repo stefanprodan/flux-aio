@@ -26,5 +26,8 @@ import (
 	stringData: {
 		username: "git"
 		password: _config.git.token
+		if _config.git.ca != "" {
+			"ca.crt": _config.git.ca
+		}
 	}
 }

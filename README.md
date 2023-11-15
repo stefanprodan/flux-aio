@@ -219,6 +219,44 @@ timoni bundle apply -f ./flux-aio.cue --runtime-from-env
 To learn more about Timoni bundles, please see the documentation on
 [Bundle API](https://timoni.sh/bundle/) and [Bundle Runtime API](https://timoni.sh/bundle-runtime/).
 
+### Sync from a self-hosted Git repository
+
+When using a self-hosted Git server such as GitLab,
+the self-signed TLS Certificate Authority
+must be specified for Flux to be able to sync the repository.
+
+```cue
+bundle: {
+	apiVersion: "v1alpha1"
+	name:       "flux-aio"
+	instances: {
+		// flux instance omitted for brevity 
+		"cluster-addons": {
+			module: url: "oci://ghcr.io/stefanprodan/modules/flux-git-sync"
+			namespace: "flux-system"
+			values: git: {
+				ca:    string @timoni(runtime:string:GIT_CA)
+				token: string @timoni(runtime:string:GIT_TOKEN)
+				url:   "https://gitlab.internal/my-group/my-repo"
+				ref:   "refs/heads/main"
+				path:  "./test/cluster-addons"
+			}
+		}
+	}
+}
+```
+
+Export the `GIT_TOKEN` and `GIT_CA` env vars, then apply the bundle:
+
+```shell
+export GIT_CA=$(cat ca.crt)
+export GIT_TOKEN="your-token"
+
+timoni bundle apply -f ./flux-aio.cue --runtime-from-env
+```
+
+Note that the CA certificate must be PEM-encoded.
+
 ## Flux multi-tenancy
 
 To enable Flux [multi-tenancy lockdown](https://fluxcd.io/flux/installation/configuration/multitenancy/),
