@@ -20,6 +20,7 @@ import (
 		ref:      *"refs/heads/main" | string
 		interval: *1 | int
 		token:    *"" | string
+		ca:       *"" | string
 	}
 
 	// Cluster reconciler settings
