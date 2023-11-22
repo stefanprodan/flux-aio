@@ -73,6 +73,17 @@ bundle: {
 }
 ```
 
+For clusters without `kube-proxy`, you'll have to set following env vars:
+
+```cue
+values: {
+	env: {
+		"KUBERNETES_SERVICE_HOST": "<host>"
+		"KUBERNETES_SERVICE_PORT": "<port>"
+	}
+}
+```
+
 Apply the bundle with:
 
 ```shell

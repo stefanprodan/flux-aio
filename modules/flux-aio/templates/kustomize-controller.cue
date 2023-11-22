@@ -5,14 +5,14 @@ import (
 )
 
 #KustomizeController: corev1.#Container & {
-	_config:       #Config
-	_containerEnv: #ContainerEnv & {_config: _config}
+	_config: #Config
+	_env:    #ContainerEnv
 
 	name:            "kustomize-controller"
 	image:           _config.controllers.kustomize.image.reference
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
-	env:             _containerEnv.env
+	env:             _env.env
 	ports: [{
 		containerPort: 9793
 		name:          "http-prom-kc"

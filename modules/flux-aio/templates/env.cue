@@ -2,7 +2,7 @@ package templates
 
 #ContainerEnv: {
 	_config: #Config
-	env: [
+	defaultEnv: [
 		{
 			name:  "SOURCE_CONTROLLER_LOCALHOST"
 			value: "localhost:9790"
@@ -30,4 +30,11 @@ package templates
 				value: _config.proxy.http
 			}},
 	]
+
+	extraEnv: [...]
+	if _config.env != _|_ {
+		extraEnv: [ for k , v in _config.env {name: k, value: v}]
+	}
+
+	env: defaultEnv + extraEnv
 }
