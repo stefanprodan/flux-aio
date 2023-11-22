@@ -67,6 +67,8 @@ import (
 		no:     *".cluster.local.,.cluster.local,.svc" | string
 	}
 
+	env?: [string]: string
+
 	securityProfile: "restricted" | "privileged"
 
 	logLevel: *"info" | string
@@ -133,18 +135,19 @@ import (
 
 // Instance takes the config values and outputs the Kubernetes objects.
 #Instance: {
-	config: #Config
+	config:       #Config
+	containerEnv: #ContainerEnv & {_config: config}
 
 	containers: [
-		#SourceController & {_config: config},
+		#SourceController & {_config: config, _env: containerEnv},
 		if config.controllers.kustomize.enabled {
-			#KustomizeController & {_config: config}
+			#KustomizeController & {_config: config, _env: containerEnv}
 		},
 		if config.controllers.helm.enabled {
-			#HelmController & {_config: config}
+			#HelmController & {_config: config, _env: containerEnv}
 		},
 		if config.controllers.notification.enabled {
-			#NotificationController & {_config: config}
+			#NotificationController & {_config: config, _env: containerEnv}
 		},
 	]
 

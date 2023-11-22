@@ -5,14 +5,14 @@ import (
 )
 
 #SourceController: corev1.#Container & {
-	_config:       #Config
-	_containerEnv: #ContainerEnv & {_config: _config}
+	_config: #Config
+	_env:    #ContainerEnv
 
 	name:            "source-controller"
 	image:           _config.controllers.source.image.reference
 	imagePullPolicy: "IfNotPresent"
 	securityContext: _config.securityContext
-	env:             _containerEnv.env
+	env:             _env.env
 
 	ports: [{
 		containerPort: 9790
