@@ -130,6 +130,12 @@ import (
 
 	tolerations: *[{
 		operator: "Exists"
+		key:      "node.kubernetes.io/not-ready"
+	}, {
+		operator:          "Exists"
+		key:               "node.kubernetes.io/unreachable"
+		effect:            "NoExecute"
+		tolerationSeconds: 300
 	}] | corev1.#Toleration
 }
 
