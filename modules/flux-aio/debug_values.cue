@@ -59,7 +59,7 @@ values: {
 		sourceServer:       true
 	}
 	persistence: enabled: true
-	proxy: http: "http://my.proxy"
+	proxy: http:          "http://my.proxy"
 	env: {
 		"TEST_KEY1": "VAL1"
 		"TEST_KEY2": "VAL2"
