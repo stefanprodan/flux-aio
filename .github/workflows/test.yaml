@@ -33,7 +33,12 @@ jobs:
       - name: Install tools
         run: make tools
       - name: Run CUE format
-        run: make fmt
+        run: |
+          make fmt
+          if [[ $(git diff --stat) != '' ]]; then
+            echo 'run "make fmt" and commit changes'
+            exit 1
+          fi
       - name: Vet modules
         run: |
           timoni mod vet ./modules/flux-aio --debug
