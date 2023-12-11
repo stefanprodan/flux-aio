@@ -8,7 +8,7 @@ import (
 #GitRepository: sourcev1.#GitRepository & {
 	_config:  #Config
 	metadata: _config.metadata
-	spec:     sourcev1.#GitRepositorySpec & {
+	spec: sourcev1.#GitRepositorySpec & {
 		interval: "\(_config.git.interval)m"
 		url:      _config.git.url
 		ref: name: _config.git.ref

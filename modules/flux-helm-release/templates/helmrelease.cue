@@ -7,7 +7,7 @@ import (
 #HelmRelease: fluxv2.#HelmRelease & {
 	_config:  #Config
 	metadata: _config.metadata
-	spec:     fluxv2.#HelmReleaseSpec & {
+	spec: fluxv2.#HelmReleaseSpec & {
 		releaseName: "\(_config.metadata.name)"
 		interval:    "\(_config.sync.interval)m"
 

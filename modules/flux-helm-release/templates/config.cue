@@ -43,7 +43,7 @@ import (
 
 	objects: {
 		repository: #HelmRepository & {_config: config}
-		release:    #HelmRelease & {_config:    config}
+		release: #HelmRelease & {_config: config}
 	}
 
 	if config.repository.auth != _|_ {

@@ -8,7 +8,7 @@ import (
 #Kustomization: ksv1.#Kustomization & {
 	_config:  #Config
 	metadata: _config.metadata
-	spec:     ksv1.#KustomizationSpec & {
+	spec: ksv1.#KustomizationSpec & {
 		sourceRef: {
 			kind: sourcev1.#GitRepository.kind
 			name: _config.metadata.name

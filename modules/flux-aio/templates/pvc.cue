@@ -9,7 +9,7 @@ import (
 	apiVersion: "v1"
 	kind:       "PersistentVolumeClaim"
 	metadata:   _config.metadata
-	spec:       corev1.#PersistentVolumeClaimSpec & {
+	spec: corev1.#PersistentVolumeClaimSpec & {
 		storageClassName: _config.persistence.storageClass
 		resources: requests: storage: _config.persistence.size
 		accessModes: ["ReadWriteOnce"]
