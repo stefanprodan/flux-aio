@@ -33,7 +33,7 @@ package templates
 
 	extraEnv: [...]
 	if _config.env != _|_ {
-		extraEnv: [ for k , v in _config.env {name: k, value: v}]
+		extraEnv: [for k , v in _config.env {name: k, value: v}]
 	}
 
 	env: defaultEnv + extraEnv

@@ -142,7 +142,7 @@ import (
 
 // Instance takes the config values and outputs the Kubernetes objects.
 #Instance: {
-	config:       #Config
+	config:                                 #Config
 	containerEnv: #ContainerEnv & {_config: config}
 
 	containers: [
@@ -169,12 +169,12 @@ import (
 	}
 
 	objects: {
-		namespace:          #Namespace & {_config:          config}
-		resourcequota:      #ResourceQuota & {_config:      config}
-		serviceaccount:     #ServiceAccount & {_config:     config}
-		clusterrol:         #ClusterRole & {_config:        config}
+		namespace: #Namespace & {_config: config}
+		resourcequota: #ResourceQuota & {_config: config}
+		serviceaccount: #ServiceAccount & {_config: config}
+		clusterrol: #ClusterRole & {_config: config}
 		clusterrolebinding: #ClusterRoleBinding & {_config: config}
-		deployment:         #Deployment & {
+		deployment: #Deployment & {
 			_config:     config
 			_containers: containers
 		}

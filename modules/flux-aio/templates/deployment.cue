@@ -7,7 +7,7 @@ import (
 
 #Deployment: appsv1.#Deployment & {
 	_config: #Config
-	_containers: [ ...corev1.#Container]
+	_containers: [...corev1.#Container]
 
 	apiVersion: "apps/v1"
 	kind:       "Deployment"
