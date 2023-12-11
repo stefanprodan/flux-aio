@@ -136,7 +136,8 @@ import (
 		key:               "node.kubernetes.io/unreachable"
 		effect:            "NoExecute"
 		tolerationSeconds: 300
-	}] | corev1.#Toleration
+	}] | [...corev1.#Toleration]
+
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.

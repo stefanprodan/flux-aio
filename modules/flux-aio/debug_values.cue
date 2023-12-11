@@ -64,4 +64,8 @@ values: {
 		"TEST_KEY1": "VAL1"
 		"TEST_KEY2": "VAL2"
 	}
+	tolerations: [{
+		operator: "Exists"
+		key:      ""
+	}]
 }
