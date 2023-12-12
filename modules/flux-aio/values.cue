@@ -22,7 +22,7 @@ values: {
 		}
 		helm: image: {
 			repository: "ghcr.io/fluxcd/helm-controller"
-			tag:        "v0.37.0"
+			tag:        "preview-1e662018"
 			digest:     ""
 		}
 	}
