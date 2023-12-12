@@ -77,4 +77,6 @@ jobs:
           kubectl -n flux-system get pods
           kubectl -n flux-system get gitrepository -oyaml
           kubectl -n flux-system get kustomization -oyaml
+          kubectl -n flux-system get helmchart -oyaml
+          kubectl -n flux-system get helmrelease -oyaml
           flux get all --all-namespaces
