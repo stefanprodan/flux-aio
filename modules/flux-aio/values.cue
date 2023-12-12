@@ -3,26 +3,26 @@
 package main
 
 values: {
-	version: "v2.1.2"
+	version: "v2.2.0"
 	controllers: {
 		source: image: {
 			repository: "ghcr.io/fluxcd/source-controller"
-			tag:        "v1.1.2"
+			tag:        "v1.2.2"
 			digest:     ""
 		}
 		kustomize: image: {
 			repository: "ghcr.io/fluxcd/kustomize-controller"
-			tag:        "v1.1.1"
+			tag:        "v1.2.0"
 			digest:     ""
 		}
 		notification: image: {
 			repository: "ghcr.io/fluxcd/notification-controller"
-			tag:        "v1.1.0"
+			tag:        "v1.2.2"
 			digest:     ""
 		}
 		helm: image: {
 			repository: "ghcr.io/fluxcd/helm-controller"
-			tag:        "v0.36.2"
+			tag:        "v0.37.0"
 			digest:     ""
 		}
 	}
