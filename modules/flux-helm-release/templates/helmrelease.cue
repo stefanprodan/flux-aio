@@ -1,7 +1,7 @@
 package templates
 
 import (
-	fluxv2 "helm.toolkit.fluxcd.io/helmrelease/v2beta1"
+	fluxv2 "helm.toolkit.fluxcd.io/helmrelease/v2beta2"
 )
 
 #HelmRelease: fluxv2.#HelmRelease & {
