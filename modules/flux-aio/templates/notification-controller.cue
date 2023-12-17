@@ -42,7 +42,7 @@ import (
 		"--watch-all-namespaces",
 		"--log-level=\(_config.logLevel)",
 		"--log-encoding=json",
-		"--enable-leader-election",
+		"--enable-leader-election=false",
 		"--metrics-addr=:9798",
 		"--health-addr=:9799",
 		"--events-addr=:9690",
