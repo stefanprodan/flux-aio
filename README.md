@@ -129,6 +129,38 @@ deploy the cluster addons.
 For more details on how to sync from private Git repositories and self-hosted Git servers,
 see the [Git sync documentation](https://timoni.sh/flux-aio/#flux-git-sync-configuration).
 
+### Sync from a bootstrap repository
+
+If you want to use Flux AIO with a bootstrap repository layout, you'll have to add an ignore
+rule for the `flux-system` directory and name the sync instance `flux-system`:
+
+```cue
+bundle: {
+	apiVersion: "v1alpha1"
+	name:       "flux-aio"
+	instances: {
+		// flux instance omitted for brevity
+		"flux-system": {
+			module: url: "oci://ghcr.io/stefanprodan/modules/flux-git-sync"
+			namespace: "flux-system"
+			values: {
+				git: {
+					token:  string @timoni(runtime:string:GITHUB_TOKEN)
+					url:    "https://github.com/fluxcd/flux2-kustomize-helm-example.git"
+					ref:    "refs/heads/main"
+					path:   "clusters/production"
+					ignore: "clusters/**/flux-system/"
+				}
+				sync: wait: false
+			}
+		}
+	}
+}
+```
+
+The above configuration, generates the same `flux-system` objects (`GitRepository`, `Secret`, `Kustomization`)
+as the `flux bootstrap` command.
+
 ### Uninstall Flux
 
 To remove Flux from your cluster, without affecting any reconciled workloads:
