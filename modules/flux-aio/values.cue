@@ -3,7 +3,7 @@
 package main
 
 values: {
-	version: "v2.2.1"
+	version: "v2.2.2"
 	controllers: {
 		source: image: {
 			repository: "ghcr.io/fluxcd/source-controller"
@@ -22,7 +22,7 @@ values: {
 		}
 		helm: image: {
 			repository: "ghcr.io/fluxcd/helm-controller"
-			tag:        "v0.37.1"
+			tag:        "v0.37.2"
 			digest:     ""
 		}
 	}
