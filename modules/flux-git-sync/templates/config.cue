@@ -21,13 +21,15 @@ import (
 		interval: *1 | int
 		token:    *"" | string
 		ca:       *"" | string
+		ignore:   *"" | string
 	}
 
 	// Cluster reconciler settings
 	sync: {
-		prune:   *true | bool
-		wait:    *true | bool
-		timeout: *3 | int
+		prune:         *true | bool
+		wait:          *true | bool
+		timeout:       *3 | int
+		retryInterval: *5 | int
 
 		serviceAccountName?: string
 		targetNamespace?:    string
