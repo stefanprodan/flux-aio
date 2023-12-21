@@ -14,7 +14,7 @@ import (
 			name: _config.metadata.name
 		}
 		interval:      "60m"
-		retryInterval: "2m"
+		retryInterval: "\(_config.sync.retryInterval)m"
 		path:          _config.git.path
 		prune:         _config.sync.prune
 		wait:          _config.sync.wait

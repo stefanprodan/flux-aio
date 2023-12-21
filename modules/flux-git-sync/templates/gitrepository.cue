@@ -15,6 +15,9 @@ import (
 		if _config.git.token != "" {
 			secretRef: name: _config.metadata.name
 		}
+		if _config.git.ignore != "" {
+			ignore: _config.git.ignore
+		}
 	}
 }
 
