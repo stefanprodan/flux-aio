@@ -1,10 +1,7 @@
 package templates
 
 import (
-	"strings"
-
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	timoniv1 "timoni.sh/core/v1alpha1"
 )
@@ -15,23 +12,19 @@ import (
 	moduleVersion!: string
 	kubeVersion!:   string
 
-	// Metadata (common to all resources)
-	metadata: metav1.#ObjectMeta
-	metadata: name:      *"flux" | string & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$" & strings.MaxRunes(63)
-	metadata: namespace: *"flux-system" | string & strings.MaxRunes(63)
+	// Enforce minimum Kubernetes version
+	clusterVersion: timoniv1.#SemVer & {#Version: kubeVersion, #Minimum: "1.21.0"}
 
-	metadata: labels: {
-		"app.kubernetes.io/name":       metadata.name
-		"app.kubernetes.io/version":    version
-		"app.kubernetes.io/part-of":    "flux"
-		"app.kubernetes.io/managed-by": "timoni"
-	}
-
-	metadata: annotations: {
-		"app.kubernetes.io/role": "cluster-admin"
-	}
-
+	// Flux distribution version
 	version: string
+
+	// Metadata (common to all resources)
+	metadata: timoniv1.#Metadata & {#Version: version}
+	metadata: {
+		labels: "app.kubernetes.io/part-of":   "flux"
+		annotations: "app.kubernetes.io/role": "cluster-admin"
+	}
+	selector: timoniv1.#Selector & {#Name: metadata.name}
 
 	controllers: {
 		source: {

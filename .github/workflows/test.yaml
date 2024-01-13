@@ -40,11 +40,7 @@ jobs:
             exit 1
           fi
       - name: Vet modules
-        run: |
-          timoni mod vet ./modules/flux-aio --debug
-          timoni mod vet ./modules/flux-git-sync --debug
-          timoni mod vet ./modules/flux-tenant --debug
-          timoni mod vet ./modules/flux-helm-release --debug
+        run: make vet
       - name: Create cluster without CNI
         run: kind create cluster --config ./test/cluster/kind.yaml
       - name: Push modules

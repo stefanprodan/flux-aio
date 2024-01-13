@@ -15,8 +15,8 @@ import (
 		annotations: _config.metadata.annotations
 	}
 	spec: corev1.#ServiceSpec & {
-		type: "ClusterIP"
-		selector: "app.kubernetes.io/name": _config.metadata.name
+		type:     "ClusterIP"
+		selector: _config.selector.labels
 		ports: [{
 			name:       "http"
 			port:       80
@@ -37,8 +37,8 @@ import (
 		annotations: _config.metadata.annotations
 	}
 	spec: corev1.#ServiceSpec & {
-		type: "ClusterIP"
-		selector: "app.kubernetes.io/name": _config.metadata.name
+		type:     "ClusterIP"
+		selector: _config.selector.labels
 		ports: [{
 			name:       "http"
 			port:       80
@@ -59,8 +59,8 @@ import (
 		annotations: _config.metadata.annotations
 	}
 	spec: corev1.#ServiceSpec & {
-		type: "ClusterIP"
-		selector: "app.kubernetes.io/name": _config.metadata.name
+		type:     "ClusterIP"
+		selector: _config.selector.labels
 		ports: [{
 			name:       "http"
 			port:       80
