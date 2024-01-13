@@ -20,10 +20,10 @@ import (
 		strategy: {
 			type: "Recreate"
 		}
-		selector: matchLabels: "app.kubernetes.io/name": _config.metadata.name
+		selector: matchLabels: _config.selector.labels
 		template: {
 			metadata: {
-				labels: "app.kubernetes.io/name": _config.metadata.name
+				labels: _config.selector.labels
 				if _config.workload.provider == "azure" {
 					labels: "azure.workload.identity/use": "true"
 				}
