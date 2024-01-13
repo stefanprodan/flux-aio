@@ -20,10 +20,16 @@ uninstall: ## Uninstall Flux
 .PHONY: fmt
 fmt: ## Format all CUE definitions
 	@cue fmt ./bundles/...
-	@cue fmt ./modules/flux-aio/...
-	@cue fmt ./modules/flux-git-sync/...
-	@cue fmt ./modules/flux-helm-release/...
-	@cue fmt ./modules/flux-tenant/...
+	@for dir in ./modules/* ; do
+		cue fmt $$dir/...
+	done
+
+.PHONY: vet
+vet: ## Vet modules
+	@for dir in ./modules/* ; do
+		echo "vetting $$dir"
+		timoni mod vet $$dir --debug
+	done
 
 .PHONY: gen
 gen: ## Print the CUE generated objects
