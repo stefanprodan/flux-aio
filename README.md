@@ -17,6 +17,9 @@ This distribution is optimized for running [Flux](https://fluxcd.io) on:
 - Clusters with egress via HTTP/S proxies
 - Serverless clusters for cost optimisation (EKS Fargate)
 
+The versioning of this distribution follows semver with the following format:
+`<flux version>-<distribution release number>`, e.g. `2.2.2-0`.
+
 ## Documentation
 
 - [Distribution specifications](https://timoni.sh/flux-aio/#specifications)
@@ -52,7 +55,7 @@ bundle: {
 		"flux": {
 			module: {
 				url:     "oci://ghcr.io/stefanprodan/modules/flux-aio"
-				version: "2.2.2"
+				version: "latest"
 			}
 			namespace: "flux-system"
 			values: {
@@ -63,6 +66,7 @@ bundle: {
 		}
 	}
 }
+
 ```
 
 Apply the bundle with:
