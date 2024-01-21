@@ -1,9 +1,10 @@
 # Flux All-In-One distribution
 
 .ONESHELL:
-.SHELLFLAGS += -e
+SHELL := bash
+.SHELLFLAGS += -eo pipefail
 
-VERSION:=$(shell grep 'version:' modules/flux-aio/values.cue | awk '{ print $$2 }' | tr -d '"')
+VERSION?=$(shell grep 'version:' modules/flux-aio/values.cue | awk '{ print $$2 }' | tr -d '"')
 
 .PHONY: tools
 tools: ## Install cue, kind, kubectl, Timoni and FLux CLIs

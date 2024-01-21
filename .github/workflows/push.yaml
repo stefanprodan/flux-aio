@@ -1,7 +1,8 @@
 name: push
 
 on:
-  workflow_dispatch:
+  push:
+    tags: [ 'v*' ]
 
 permissions:
   contents: read
@@ -28,6 +29,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish Timoni module
-        run: make push-mod
+        run: make push-mod VERSION=$GITHUB_REF_NAME
       - name: Publish Flux default manifests
-        run: make push-manifests
+        run: make push-manifests VERSION=$GITHUB_REF_NAME
