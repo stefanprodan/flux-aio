@@ -1,7 +1,7 @@
 package templates
 
 #ContainerEnv: {
-	_config: #Config
+	#config: #Config
 	defaultEnv: [
 		{
 			name:  "SOURCE_CONTROLLER_LOCALHOST"
@@ -17,23 +17,23 @@ package templates
 		},
 		{
 			name:  "NO_PROXY"
-			value: _config.proxy.no
+			value: #config.proxy.no
 		},
-		if _config.proxy.https != _|_ {
+		if #config.proxy.https != _|_ {
 			{
 				name:  "HTTPS_PROXY"
-				value: _config.proxy.https
+				value: #config.proxy.https
 			}},
-		if _config.proxy.http != _|_ {
+		if #config.proxy.http != _|_ {
 			{
 				name:  "HTTP_PROXY"
-				value: _config.proxy.http
+				value: #config.proxy.http
 			}},
 	]
 
 	extraEnv: [...]
-	if _config.env != _|_ {
-		extraEnv: [for k , v in _config.env {name: k, value: v}]
+	if #config.env != _|_ {
+		extraEnv: [for k , v in #config.env {name: k, value: v}]
 	}
 
 	env: defaultEnv + extraEnv

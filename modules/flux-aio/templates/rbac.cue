@@ -5,13 +5,13 @@ import (
 )
 
 #ClusterRoleBinding: rbacv1.#ClusterRoleBinding & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	kind:       "ClusterRoleBinding"
 	metadata: {
-		name:        _config.metadata.name
-		labels:      _config.metadata.labels
-		annotations: _config.metadata.annotations
+		name:        #config.metadata.name
+		labels:      #config.metadata.labels
+		annotations: #config.metadata.annotations
 	}
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
@@ -21,20 +21,20 @@ import (
 	subjects: [
 		{
 			kind:      "ServiceAccount"
-			name:      _config.metadata.name
-			namespace: _config.metadata.namespace
+			name:      #config.metadata.name
+			namespace: #config.metadata.namespace
 		},
 	]
 }
 
 #ClusterRole: rbacv1.#ClusterRole & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	kind:       "ClusterRole"
 	metadata: {
-		name:        "\(_config.metadata.name)-view"
-		annotations: _config.metadata.annotations
-		labels:      _config.metadata.labels
+		name:        "\(#config.metadata.name)-view"
+		annotations: #config.metadata.annotations
+		labels:      #config.metadata.labels
 		labels: {
 			"rbac.authorization.k8s.io/aggregate-to-admin": "true"
 			"rbac.authorization.k8s.io/aggregate-to-edit":  "true"

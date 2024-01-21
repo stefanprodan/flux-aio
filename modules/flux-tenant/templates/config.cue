@@ -29,13 +29,13 @@ import (
 	config: #Config
 
 	objects: {
-		namespace: #Namespace & {_config: config}
-		serviceAccount: #ServiceAccount & {_config: config}
-		roleBinding: #NamespaceAdmin & {_config: config}
-		resourcequota: #ResourceQuota & {_config: config}
+		namespace: #Namespace & {#config: config}
+		serviceAccount: #ServiceAccount & {#config: config}
+		roleBinding: #NamespaceAdmin & {#config: config}
+		resourcequota: #ResourceQuota & {#config: config}
 	}
 
 	if config.role == "cluster-admin" {
-		objects: clusterRoleBinding: #ClusterAdmin & {_config: config}
+		objects: clusterRoleBinding: #ClusterAdmin & {#config: config}
 	}
 }

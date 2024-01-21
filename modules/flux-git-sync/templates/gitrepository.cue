@@ -6,31 +6,31 @@ import (
 )
 
 #GitRepository: sourcev1.#GitRepository & {
-	_config:  #Config
-	metadata: _config.metadata
+	#config:  #Config
+	metadata: #config.metadata
 	spec: sourcev1.#GitRepositorySpec & {
-		interval: "\(_config.git.interval)m"
-		url:      _config.git.url
-		ref: name: _config.git.ref
-		if _config.git.token != "" {
-			secretRef: name: _config.metadata.name
+		interval: "\(#config.git.interval)m"
+		url:      #config.git.url
+		ref: name: #config.git.ref
+		if #config.git.token != "" {
+			secretRef: name: #config.metadata.name
 		}
-		if _config.git.ignore != "" {
-			ignore: _config.git.ignore
+		if #config.git.ignore != "" {
+			ignore: #config.git.ignore
 		}
 	}
 }
 
 #GitSecret: corev1.#Secret & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "v1"
 	kind:       "Secret"
-	metadata:   _config.metadata
+	metadata:   #config.metadata
 	stringData: {
 		username: "git"
-		password: _config.git.token
-		if _config.git.ca != "" {
-			"ca.crt": _config.git.ca
+		password: #config.git.token
+		if #config.git.ca != "" {
+			"ca.crt": #config.git.ca
 		}
 	}
 }

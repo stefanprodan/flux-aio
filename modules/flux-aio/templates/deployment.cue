@@ -6,13 +6,13 @@ import (
 )
 
 #Deployment: appsv1.#Deployment & {
-	_config: #Config
+	#config: #Config
 	_containers: [...corev1.#Container]
 
 	apiVersion: "apps/v1"
 	kind:       "Deployment"
-	metadata:   _config.metadata
-	if _config.workload.provider == "azure" {
+	metadata:   #config.metadata
+	if #config.workload.provider == "azure" {
 		metadata: labels: "azure.workload.identity/use": "true"
 	}
 	spec: appsv1.#DeploymentSpec & {
@@ -20,11 +20,11 @@ import (
 		strategy: {
 			type: "Recreate"
 		}
-		selector: matchLabels: _config.selector.labels
+		selector: matchLabels: #config.selector.labels
 		template: {
 			metadata: {
-				labels: _config.selector.labels
-				if _config.workload.provider == "azure" {
+				labels: #config.selector.labels
+				if #config.workload.provider == "azure" {
 					labels: "azure.workload.identity/use": "true"
 				}
 				annotations: {
@@ -36,37 +36,37 @@ import (
 				priorityClassName:             "system-cluster-critical"
 				terminationGracePeriodSeconds: 120
 				securityContext: fsGroup: 1337
-				serviceAccountName: _config.metadata.name
-				hostNetwork:        _config.hostNetwork
+				serviceAccountName: #config.metadata.name
+				hostNetwork:        #config.hostNetwork
 				volumes: [{
 					name: "data"
-					if !_config.persistence.enabled {
+					if !#config.persistence.enabled {
 						emptyDir: {}
 					}
-					if _config.persistence.enabled {
-						persistentVolumeClaim: claimName: _config.metadata.name
+					if #config.persistence.enabled {
+						persistentVolumeClaim: claimName: #config.metadata.name
 					}
 				}, {
 					name: "tmp"
-					if !_config.tmpfs.enabled {
+					if !#config.tmpfs.enabled {
 						emptyDir: {}
 					}
-					if _config.tmpfs.enabled {
+					if #config.tmpfs.enabled {
 						emptyDir: {
 							medium: "Memory"
-							if _config.tmpfs.sizeLimit != _|_ {
-								sizeLimit: _config.tmpfs.sizeLimit
+							if #config.tmpfs.sizeLimit != _|_ {
+								sizeLimit: #config.tmpfs.sizeLimit
 							}
 						}
 					}
 				}]
 				containers: _containers
-				affinity:   _config.affinity
-				if _config.tolerations != _|_ {
-					tolerations: _config.tolerations
+				affinity:   #config.affinity
+				if #config.tolerations != _|_ {
+					tolerations: #config.tolerations
 				}
-				if _config.imagePullSecrets != _|_ {
-					imagePullSecrets: _config.imagePullSecrets
+				if #config.imagePullSecrets != _|_ {
+					imagePullSecrets: #config.imagePullSecrets
 				}
 			}
 		}

@@ -5,13 +5,13 @@ import (
 )
 
 #NotificationController: corev1.#Container & {
-	_config: #Config
+	#config: #Config
 	_env:    #ContainerEnv
 
 	name:            "notification-controller"
-	image:           _config.controllers.notification.image.reference
+	image:           #config.controllers.notification.image.reference
 	imagePullPolicy: "IfNotPresent"
-	securityContext: _config.securityContext
+	securityContext: #config.securityContext
 	env:             _env.env
 	ports: [{
 		containerPort: 9690
@@ -40,21 +40,21 @@ import (
 	}
 	args: [
 		"--watch-all-namespaces",
-		"--log-level=\(_config.logLevel)",
+		"--log-level=\(#config.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election=false",
 		"--metrics-addr=:9798",
 		"--health-addr=:9799",
 		"--events-addr=:9690",
-		if _config.securityProfile == "restricted" {
+		if #config.securityProfile == "restricted" {
 			"--no-cross-namespace-refs"
 		},
 	]
-	if _config.controllers.notification.resources == _|_ {
-		resources: _config.resources
+	if #config.controllers.notification.resources == _|_ {
+		resources: #config.resources
 	}
-	if _config.controllers.notification.resources != _|_ {
-		resources: _config.controllers.notification.resources
+	if #config.controllers.notification.resources != _|_ {
+		resources: #config.controllers.notification.resources
 	}
 	volumeMounts: [{
 		name:      "tmp"

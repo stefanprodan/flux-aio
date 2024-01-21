@@ -5,21 +5,21 @@ import (
 )
 
 #ResourceQuota: corev1.#ResourceQuota & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "v1"
 	kind:       "ResourceQuota"
 	metadata: {
-		name:      "\(_config.fluxServiceAccount)-quota"
-		namespace: _config.metadata.namespace
-		labels:    _config.metadata.labels
-		if _config.metadata.annotations != _|_ {
-			annotations: _config.metadata.annotations
+		name:      "\(#config.fluxServiceAccount)-quota"
+		namespace: #config.metadata.namespace
+		labels:    #config.metadata.labels
+		if #config.metadata.annotations != _|_ {
+			annotations: #config.metadata.annotations
 		}
 	}
 	spec: corev1.#ResourceQuotaSpec & {
 		hard: {
-			"count/kustomizations.kustomize.toolkit.fluxcd.io": "\(_config.resourceQuota.kustomizations)"
-			"count/helmreleases.helm.toolkit.fluxcd.io":        "\(_config.resourceQuota.helmreleases)"
+			"count/kustomizations.kustomize.toolkit.fluxcd.io": "\(#config.resourceQuota.kustomizations)"
+			"count/helmreleases.helm.toolkit.fluxcd.io":        "\(#config.resourceQuota.helmreleases)"
 		}
 	}
 }

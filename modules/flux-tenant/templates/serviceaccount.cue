@@ -5,15 +5,15 @@ import (
 )
 
 #ServiceAccount: corev1.#ServiceAccount & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "v1"
 	kind:       "ServiceAccount"
 	metadata: {
-		name:      _config.fluxServiceAccount
-		namespace: _config.metadata.namespace
-		labels:    _config.metadata.labels
-		if _config.metadata.annotations != _|_ {
-			annotations: _config.metadata.annotations
+		name:      #config.fluxServiceAccount
+		namespace: #config.metadata.namespace
+		labels:    #config.metadata.labels
+		if #config.metadata.annotations != _|_ {
+			annotations: #config.metadata.annotations
 		}
 	}
 }

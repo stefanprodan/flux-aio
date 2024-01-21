@@ -5,18 +5,18 @@ import (
 )
 
 #WebhookService: corev1.#Service & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "v1"
 	kind:       "Service"
 	metadata: {
 		name:        "webhook-receiver"
-		namespace:   _config.metadata.namespace
-		labels:      _config.metadata.labels
-		annotations: _config.metadata.annotations
+		namespace:   #config.metadata.namespace
+		labels:      #config.metadata.labels
+		annotations: #config.metadata.annotations
 	}
 	spec: corev1.#ServiceSpec & {
 		type:     "ClusterIP"
-		selector: _config.selector.labels
+		selector: #config.selector.labels
 		ports: [{
 			name:       "http"
 			port:       80
@@ -27,18 +27,18 @@ import (
 }
 
 #NotificationService: corev1.#Service & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "v1"
 	kind:       "Service"
 	metadata: {
 		name:        "notification-controller"
-		namespace:   _config.metadata.namespace
-		labels:      _config.metadata.labels
-		annotations: _config.metadata.annotations
+		namespace:   #config.metadata.namespace
+		labels:      #config.metadata.labels
+		annotations: #config.metadata.annotations
 	}
 	spec: corev1.#ServiceSpec & {
 		type:     "ClusterIP"
-		selector: _config.selector.labels
+		selector: #config.selector.labels
 		ports: [{
 			name:       "http"
 			port:       80
@@ -49,18 +49,18 @@ import (
 }
 
 #SourceService: corev1.#Service & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "v1"
 	kind:       "Service"
 	metadata: {
 		name:        "source-controller"
-		namespace:   _config.metadata.namespace
-		labels:      _config.metadata.labels
-		annotations: _config.metadata.annotations
+		namespace:   #config.metadata.namespace
+		labels:      #config.metadata.labels
+		annotations: #config.metadata.annotations
 	}
 	spec: corev1.#ServiceSpec & {
 		type:     "ClusterIP"
-		selector: _config.selector.labels
+		selector: #config.selector.labels
 		ports: [{
 			name:       "http"
 			port:       80

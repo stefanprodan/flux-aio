@@ -5,13 +5,13 @@ import (
 )
 
 #HelmController: corev1.#Container & {
-	_config: #Config
+	#config: #Config
 	_env:    #ContainerEnv
 
 	name:            "helm-controller"
-	image:           _config.controllers.helm.image.reference
+	image:           #config.controllers.helm.image.reference
 	imagePullPolicy: "IfNotPresent"
-	securityContext: _config.securityContext
+	securityContext: #config.securityContext
 	env:             _env.env
 	ports: [{
 		containerPort: 9795
@@ -24,22 +24,22 @@ import (
 	}]
 	args: [
 		"--watch-all-namespaces",
-		"--log-level=\(_config.logLevel)",
+		"--log-level=\(#config.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election=false",
 		"--metrics-addr=:9795",
 		"--health-addr=:9796",
 		"--watch-label-selector=!sharding.fluxcd.io/key",
-		"--concurrent=\(_config.reconcile.concurrent)",
-		"--requeue-dependency=\(_config.reconcile.requeue)s",
-		if _config.controllers.notification.enabled {
+		"--concurrent=\(#config.reconcile.concurrent)",
+		"--requeue-dependency=\(#config.reconcile.requeue)s",
+		if #config.controllers.notification.enabled {
 			"--events-addr=http://localhost:9690"
 		},
-		if _config.securityProfile == "restricted" {
+		if #config.securityProfile == "restricted" {
 			"--no-cross-namespace-refs"
 		},
-		if _config.securityProfile == "restricted" {
-			"--default-service-account=\(_config.metadata.name)"
+		if #config.securityProfile == "restricted" {
+			"--default-service-account=\(#config.metadata.name)"
 		},
 	]
 	readinessProbe: httpGet: {
@@ -50,11 +50,11 @@ import (
 		path: "/healthz"
 		port: "healthz-hc"
 	}
-	if _config.controllers.helm.resources == _|_ {
-		resources: _config.resources
+	if #config.controllers.helm.resources == _|_ {
+		resources: #config.resources
 	}
-	if _config.controllers.helm.resources != _|_ {
-		resources: _config.controllers.helm.resources
+	if #config.controllers.helm.resources != _|_ {
+		resources: #config.controllers.helm.resources
 	}
 	volumeMounts: [{
 		name:      "tmp"
