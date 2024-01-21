@@ -136,18 +136,18 @@ import (
 // Instance takes the config values and outputs the Kubernetes objects.
 #Instance: {
 	config:                                 #Config
-	containerEnv: #ContainerEnv & {_config: config}
+	containerEnv: #ContainerEnv & {#config: config}
 
 	containers: [
-		#SourceController & {_config: config, _env: containerEnv},
+		#SourceController & {#config: config, _env: containerEnv},
 		if config.controllers.kustomize.enabled {
-			#KustomizeController & {_config: config, _env: containerEnv}
+			#KustomizeController & {#config: config, _env: containerEnv}
 		},
 		if config.controllers.helm.enabled {
-			#HelmController & {_config: config, _env: containerEnv}
+			#HelmController & {#config: config, _env: containerEnv}
 		},
 		if config.controllers.notification.enabled {
-			#NotificationController & {_config: config, _env: containerEnv}
+			#NotificationController & {#config: config, _env: containerEnv}
 		},
 	]
 
@@ -162,30 +162,30 @@ import (
 	}
 
 	objects: {
-		namespace: #Namespace & {_config: config}
-		resourcequota: #ResourceQuota & {_config: config}
-		serviceaccount: #ServiceAccount & {_config: config}
-		clusterrol: #ClusterRole & {_config: config}
-		clusterrolebinding: #ClusterRoleBinding & {_config: config}
+		namespace: #Namespace & {#config: config}
+		resourcequota: #ResourceQuota & {#config: config}
+		serviceaccount: #ServiceAccount & {#config: config}
+		clusterrol: #ClusterRole & {#config: config}
+		clusterrolebinding: #ClusterRoleBinding & {#config: config}
 		deployment: #Deployment & {
-			_config:     config
+			#config:     config
 			_containers: containers
 		}
 	}
 
 	if config.controllers.notification.enabled && config.expose.webhookReceiver {
-		objects: webhookreceiver: #WebhookService & {_config: config}
+		objects: webhookreceiver: #WebhookService & {#config: config}
 	}
 
 	if config.controllers.notification.enabled && config.expose.notificationServer {
-		objects: notificationserver: #NotificationService & {_config: config}
+		objects: notificationserver: #NotificationService & {#config: config}
 	}
 
 	if config.expose.sourceServer {
-		objects: sourceserver: #SourceService & {_config: config}
+		objects: sourceserver: #SourceService & {#config: config}
 	}
 
 	if config.persistence.enabled {
-		objects: pvc: #PVC & {_config: config}
+		objects: pvc: #PVC & {#config: config}
 	}
 }

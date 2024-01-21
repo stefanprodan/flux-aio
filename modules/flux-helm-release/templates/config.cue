@@ -42,11 +42,11 @@ import (
 	config: #Config
 
 	objects: {
-		repository: #HelmRepository & {_config: config}
-		release: #HelmRelease & {_config: config}
+		repository: #HelmRepository & {#config: config}
+		release: #HelmRelease & {#config: config}
 	}
 
 	if config.repository.auth != _|_ {
-		objects: secret: #HelmRepositoryAuth & {_config: config}
+		objects: secret: #HelmRepositoryAuth & {#config: config}
 	}
 }

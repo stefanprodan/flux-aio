@@ -5,13 +5,13 @@ import (
 )
 
 #SourceController: corev1.#Container & {
-	_config: #Config
+	#config: #Config
 	_env:    #ContainerEnv
 
 	name:            "source-controller"
-	image:           _config.controllers.source.image.reference
+	image:           #config.controllers.source.image.reference
 	imagePullPolicy: "IfNotPresent"
-	securityContext: _config.securityContext
+	securityContext: #config.securityContext
 	env:             _env.env
 
 	ports: [{
@@ -29,21 +29,21 @@ import (
 	}]
 	args: [
 		"--watch-all-namespaces",
-		"--log-level=\(_config.logLevel)",
+		"--log-level=\(#config.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election=false",
 		"--metrics-addr=:9791",
 		"--health-addr=:9792",
 		"--storage-addr=:9790",
 		"--storage-path=/data",
-		"--storage-adv-addr=\(_config.metadata.name).$(RUNTIME_NAMESPACE).svc.cluster.local.",
-		"--concurrent=\(_config.reconcile.concurrent)",
-		"--requeue-dependency=\(_config.reconcile.requeue)s",
+		"--storage-adv-addr=\(#config.metadata.name).$(RUNTIME_NAMESPACE).svc.cluster.local.",
+		"--concurrent=\(#config.reconcile.concurrent)",
+		"--requeue-dependency=\(#config.reconcile.requeue)s",
 		"--watch-label-selector=!sharding.fluxcd.io/key",
 		"--helm-cache-max-size=10",
 		"--helm-cache-ttl=60m",
 		"--helm-cache-purge-interval=5m",
-		if _config.controllers.notification.enabled {
+		if #config.controllers.notification.enabled {
 			"--events-addr=http://localhost:9690"
 		},
 	]
@@ -55,11 +55,11 @@ import (
 		port: "http-sc"
 		path: "/"
 	}
-	if _config.controllers.source.resources == _|_ {
-		resources: _config.resources
+	if #config.controllers.source.resources == _|_ {
+		resources: #config.resources
 	}
-	if _config.controllers.source.resources != _|_ {
-		resources: _config.controllers.source.resources
+	if #config.controllers.source.resources != _|_ {
+		resources: #config.controllers.source.resources
 	}
 	volumeMounts: [{
 		name:      "data"

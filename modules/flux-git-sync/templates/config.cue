@@ -43,11 +43,11 @@ import (
 	config: #Config
 
 	objects: {
-		gitrepository: #GitRepository & {_config: config}
-		kustomization: #Kustomization & {_config: config}
+		gitrepository: #GitRepository & {#config: config}
+		kustomization: #Kustomization & {#config: config}
 	}
 
 	if config.git.token != "" {
-		objects: gitsecret: #GitSecret & {_config: config}
+		objects: gitsecret: #GitSecret & {#config: config}
 	}
 }

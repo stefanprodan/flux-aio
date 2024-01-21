@@ -6,28 +6,28 @@ import (
 )
 
 #Kustomization: ksv1.#Kustomization & {
-	_config:  #Config
-	metadata: _config.metadata
+	#config:  #Config
+	metadata: #config.metadata
 	spec: ksv1.#KustomizationSpec & {
 		sourceRef: {
 			kind: sourcev1.#GitRepository.kind
-			name: _config.metadata.name
+			name: #config.metadata.name
 		}
 		interval:      "60m"
-		retryInterval: "\(_config.sync.retryInterval)m"
-		path:          _config.git.path
-		prune:         _config.sync.prune
-		wait:          _config.sync.wait
-		timeout:       "\(_config.sync.timeout)m"
-		if _config.sync.serviceAccountName != _|_ {
-			serviceAccountName: _config.sync.serviceAccountName
+		retryInterval: "\(#config.sync.retryInterval)m"
+		path:          #config.git.path
+		prune:         #config.sync.prune
+		wait:          #config.sync.wait
+		timeout:       "\(#config.sync.timeout)m"
+		if #config.sync.serviceAccountName != _|_ {
+			serviceAccountName: #config.sync.serviceAccountName
 		}
-		if _config.sync.targetNamespace != _|_ {
-			targetNamespace: _config.sync.targetNamespace
+		if #config.sync.targetNamespace != _|_ {
+			targetNamespace: #config.sync.targetNamespace
 		}
 
-		if _config.substitute != _|_ {
-			postBuild: substitute: _config.substitute
+		if #config.substitute != _|_ {
+			postBuild: substitute: #config.substitute
 		}
 
 	}

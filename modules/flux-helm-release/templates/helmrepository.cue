@@ -7,36 +7,36 @@ import (
 )
 
 #HelmRepository: fluxv1.#HelmRepository & {
-	_config:  #Config
-	metadata: _config.metadata
+	#config:  #Config
+	metadata: #config.metadata
 	spec: fluxv1.#HelmRepositorySpec & {
 		interval: "12h"
-		url:      _config.repository.url
-		if strings.HasPrefix(_config.repository.url, "oci") {
+		url:      #config.repository.url
+		if strings.HasPrefix(#config.repository.url, "oci") {
 			type: "oci"
 		}
-		if _config.repository.auth != _|_ {
-			secretRef: name: "\(_config.metadata.name)-auth"
+		if #config.repository.auth != _|_ {
+			secretRef: name: "\(#config.metadata.name)-auth"
 		}
 	}
 }
 
 #HelmRepositoryAuth: {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "v1"
 	kind:       "Secret"
 	metadata: {
-		name:      "\(_config.metadata.name)-auth"
-		namespace: _config.metadata.namespace
-		labels:    _config.metadata.labels
-		if _config.metadata.annotations != _|_ {
-			annotations: _config.metadata.annotations
+		name:      "\(#config.metadata.name)-auth"
+		namespace: #config.metadata.namespace
+		labels:    #config.metadata.labels
+		if #config.metadata.annotations != _|_ {
+			annotations: #config.metadata.annotations
 		}
 	}
 	stringData: {
-		if _config.repository.auth != _|_ {
-			username: _config.repository.auth.username
-			password: _config.repository.auth.password
+		if #config.repository.auth != _|_ {
+			username: #config.repository.auth.username
+			password: #config.repository.auth.password
 		}
 	}
 }

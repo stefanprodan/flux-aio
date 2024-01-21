@@ -5,10 +5,10 @@ import (
 )
 
 #NamespaceAdmin: rbacv1.#RoleBinding & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	kind:       "RoleBinding"
-	metadata:   _config.metadata
+	metadata:   #config.metadata
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
 		kind:     "ClusterRole"
@@ -17,21 +17,21 @@ import (
 	subjects: [
 		{
 			kind:      "ServiceAccount"
-			name:      _config.fluxServiceAccount
-			namespace: _config.metadata.namespace
+			name:      #config.fluxServiceAccount
+			namespace: #config.metadata.namespace
 		},
 	]
 }
 
 #ClusterAdmin: rbacv1.#ClusterRoleBinding & {
-	_config:    #Config
+	#config:    #Config
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	kind:       "ClusterRoleBinding"
 	metadata: {
-		name:   "\(_config.metadata.name)-\(_config.metadata.namespace)"
-		labels: _config.metadata.labels
-		if _config.metadata.annotations != _|_ {
-			annotations: _config.metadata.annotations
+		name:   "\(#config.metadata.name)-\(#config.metadata.namespace)"
+		labels: #config.metadata.labels
+		if #config.metadata.annotations != _|_ {
+			annotations: #config.metadata.annotations
 		}
 	}
 	roleRef: {
@@ -42,8 +42,8 @@ import (
 	subjects: [
 		{
 			kind:      "ServiceAccount"
-			name:      _config.fluxServiceAccount
-			namespace: _config.metadata.namespace
+			name:      #config.fluxServiceAccount
+			namespace: #config.metadata.namespace
 		},
 	]
 }
