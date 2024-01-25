@@ -14,11 +14,13 @@ import (
 	metadata: timoniv1.#Metadata & {#Version: moduleVersion}
 
 	repository: {
-		url!: string
+		url!: string & =~"^(http|https|oci)://.*$"
 		auth?: {
 			username!: string
 			password!: string
 		}
+		provider: *"generic" | "aws" | "azure" | "gcp"
+		insecure: *false | bool
 	}
 
 	chart: {

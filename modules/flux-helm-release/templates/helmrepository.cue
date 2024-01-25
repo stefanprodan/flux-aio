@@ -18,6 +18,10 @@ import (
 		if #config.repository.auth != _|_ {
 			secretRef: name: "\(#config.metadata.name)-auth"
 		}
+		if #config.repository.insecure {
+			insecure: true
+		}
+		provider: #config.repository.provider
 	}
 }
 
