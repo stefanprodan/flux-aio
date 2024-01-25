@@ -41,6 +41,10 @@ values: {
 			digest:     ""
 		}
 	}
+	workload: {
+		identity: "arn:aws:iam::111122223333:role/my-role"
+		provider: "aws"
+	}
 	hostNetwork:     true
 	securityProfile: "privileged"
 	resources: {
