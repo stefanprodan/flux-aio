@@ -72,4 +72,9 @@ values: {
 		operator: "Exists"
 		key:      ""
 	}]
+	imagePullSecret: {
+		registry: "ghcr.io"
+		username: "flux"
+		password: "test"
+	}
 }

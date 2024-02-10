@@ -68,6 +68,11 @@ import (
 				if #config.imagePullSecrets != _|_ {
 					imagePullSecrets: #config.imagePullSecrets
 				}
+				if #config.imagePullSecret != _|_ {
+					imagePullSecrets: [{
+						name: #config.metadata.name + "-image-pull"
+					}]
+				}
 			}
 		}
 	}

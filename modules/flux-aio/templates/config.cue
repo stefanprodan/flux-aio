@@ -95,6 +95,11 @@ import (
 	resources: limits: memory:   *"1Gi" | string & =~"^([0-9]*)?(Mi|Gi)?$"
 
 	imagePullSecrets?: [...corev1.LocalObjectReference]
+	imagePullSecret?: {
+		registry!: string
+		username!: string
+		password!: string
+	}
 
 	securityContext: *{
 		allowPrivilegeEscalation: false
@@ -187,5 +192,9 @@ import (
 
 	if config.persistence.enabled {
 		objects: pvc: #PVC & {#config: config}
+	}
+
+	if config.imagePullSecret != _|_ {
+		objects: imagepullsecret: #PullSecret & {#config: config}
 	}
 }
