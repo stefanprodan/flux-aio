@@ -11,14 +11,13 @@ bundle: {
 		}
 		"podinfo": {
 			module: {
-				url: "oci://ghcr.io/stefanprodan/modules/flux-git-sync" @timoni(runtime:string:FLUX_SYNC_MODULE_URL)
+				url: "oci://ghcr.io/stefanprodan/modules/flux-oci-sync" @timoni(runtime:string:FLUX_OCI_MODULE_URL)
 			}
 			namespace: "dev-team-apps"
 			values: {
-				git: {
-					url:  "https://github.com/stefanprodan/podinfo"
-					ref:  "refs/heads/master"
-					path: "kustomize"
+				artifact: {
+					url:    "oci://ghcr.io/stefanprodan/manifests/podinfo"
+					semver: ">=1.0.0"
 				}
 				sync: {
 					serviceAccountName: "flux"
