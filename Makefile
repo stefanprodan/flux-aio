@@ -60,6 +60,12 @@ push-mod: ## Push the Timoni modules to GHCR
 		-a 'org.opencontainers.image.licenses=Apache-2.0' \
 		-a 'org.opencontainers.image.description=A timoni.sh module for configuring Flux Git reconciliation.' \
 		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
+	@timoni mod push ./modules/flux-oci-sync oci://ghcr.io/stefanprodan/modules/flux-oci-sync -v=$(VERSION:v%=%) --latest \
+		--sign cosign \
+		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
+		-a 'org.opencontainers.image.licenses=Apache-2.0' \
+		-a 'org.opencontainers.image.description=A timoni.sh module for configuring Flux OCI artifacts reconciliation.' \
+		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
 	@timoni mod push ./modules/flux-tenant oci://ghcr.io/stefanprodan/modules/flux-tenant -v=$(VERSION:v%=%) --latest \
 		--sign cosign \
 		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
