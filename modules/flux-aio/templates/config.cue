@@ -94,7 +94,7 @@ import (
 	resources: requests: memory: *"64Mi" | string & =~"^([0-9]*)?(Mi|Gi)?$"
 	resources: limits: memory:   *"1Gi" | string & =~"^([0-9]*)?(Mi|Gi)?$"
 
-	imagePullSecrets?: [...corev1.LocalObjectReference]
+	imagePullSecrets?: [...corev1.#LocalObjectReference]
 	imagePullSecret?: {
 		registry!: string
 		username!: string
