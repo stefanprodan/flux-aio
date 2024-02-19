@@ -13,6 +13,7 @@ permissions:
 env:
   FLUX_MODULE_URL: "oci://localhost:5000/flux-aio"
   FLUX_SYNC_MODULE_URL: "oci://localhost:5000/flux-git-sync"
+  FLUX_OCI_MODULE_URL: "oci://localhost:5000/flux-oci-sync"
   FLUX_TENANT_MODULE_URL: "oci://localhost:5000/flux-tenant"
   FLUX_HR_MODULE_URL: "oci://localhost:5000/flux-helm-release"
   FLUX_MODULE_VERSION: "0.0.0-devel"
@@ -47,6 +48,7 @@ jobs:
         run: |
           timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION}
           timoni mod push ./modules/flux-git-sync ${FLUX_SYNC_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+          timoni mod push ./modules/flux-oci-sync ${FLUX_OCI_MODULE_URL} -v ${FLUX_MODULE_VERSION}
           timoni mod push ./modules/flux-tenant ${FLUX_TENANT_MODULE_URL} -v ${FLUX_MODULE_VERSION}
           timoni mod push ./modules/flux-helm-release ${FLUX_HR_MODULE_URL} -v ${FLUX_MODULE_VERSION}
       - name: Apply flux-aio bundle
