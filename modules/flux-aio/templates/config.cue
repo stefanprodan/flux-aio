@@ -34,17 +34,17 @@ import (
 		kustomize: {
 			enabled:    *true | bool
 			image:      timoniv1.#Image
-			resources?: corev1.#ResourceRequirements
+			resources?: timoniv1.#ResourceRequirements
 		}
 		helm: {
 			enabled:    *true | bool
 			image:      timoniv1.#Image
-			resources?: corev1.#ResourceRequirements
+			resources?: timoniv1.#ResourceRequirements
 		}
 		notification: {
 			enabled:    *true | bool
 			image:      timoniv1.#Image
-			resources?: corev1.#ResourceRequirements
+			resources?: timoniv1.#ResourceRequirements
 		}
 	}
 
@@ -89,12 +89,12 @@ import (
 		sizeLimit?: string & =~"^([0-9]*)?(Mi|Gi)?$"
 	}
 
-	resources: corev1.#ResourceRequirements
-	resources: requests: cpu:    *"100m" | string & =~"^([0-9]*)?(m)?$"
-	resources: requests: memory: *"64Mi" | string & =~"^([0-9]*)?(Mi|Gi)?$"
-	resources: limits: memory:   *"1Gi" | string & =~"^([0-9]*)?(Mi|Gi)?$"
+	resources: timoniv1.#ResourceRequirements
+	resources: requests: cpu:    *"100m" | timoniv1.#CPUQuantity
+	resources: requests: memory: *"64Mi" | timoniv1.#MemoryQuantity
+	resources: limits: memory:   *"1Gi" | timoniv1.#MemoryQuantity
 
-	imagePullSecrets?: [...corev1.#LocalObjectReference]
+	imagePullSecrets?: [...timoniv1.#ObjectReference]
 	imagePullSecret?: {
 		registry!: string
 		username!: string
