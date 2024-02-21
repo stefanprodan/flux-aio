@@ -33,5 +33,6 @@ timoni -n default delete podinfo
 | `sync: interval:`             | `int`                 | `60`        | Reconcile interval                                                  |
 | `sync: serviceAccountName:`   | `string`              | `""`        | Service account to impersonate                                      |
 | `helmValues:`                 | `{...}`               | `{}`        | Helm values                                                         |
+| `dependsOn:`                  | `{...}                | `{}`        | List of kustomize dependencies                                      |
 | `metadata: labels:`           | `{[ string]: string}` | `{}`        | Custom labels                                                       |
 | `metadata: annotations:`      | `{[ string]: string}` | `{}`        | Custom annotations                                                  |
