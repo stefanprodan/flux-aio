@@ -1,0 +1,79 @@
+name: e2e
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '*'
+
+permissions:
+  contents: read
+
+env:
+  FLUX_MODULE_URL: "oci://localhost:5000/flux-aio"
+  FLUX_SYNC_MODULE_URL: "oci://localhost:5000/flux-git-sync"
+  FLUX_OCI_MODULE_URL: "oci://localhost:5000/flux-oci-sync"
+  FLUX_TENANT_MODULE_URL: "oci://localhost:5000/flux-tenant"
+  FLUX_HR_MODULE_URL: "oci://localhost:5000/flux-helm-release"
+  FLUX_MODULE_VERSION: "0.0.0-devel"
+
+jobs:
+  kubernetes:
+    runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Install tools
+        run: make tools
+      - name: Run CUE format
+        run: |
+          make fmt
+          if [[ $(git diff --stat) != '' ]]; then
+            echo 'run "make fmt" and commit changes'
+            exit 1
+          fi
+      - name: Vet modules
+        run: make vet
+      - name: Create cluster without CNI
+        run: kind create cluster --config ./test/cluster/kind.yaml
+      - name: Push modules
+        run: |
+          timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+          timoni mod push ./modules/flux-git-sync ${FLUX_SYNC_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+          timoni mod push ./modules/flux-oci-sync ${FLUX_OCI_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+          timoni mod push ./modules/flux-tenant ${FLUX_TENANT_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+          timoni mod push ./modules/flux-helm-release ${FLUX_HR_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+      - name: Apply flux-aio bundle
+        run: |
+          PR_NUMBER=${{ github.event.number }}
+          if [ -z "$PR_NUMBER" ]
+          then
+            export FLUX_SYNC_REF=${GITHUB_REF}
+          else
+            export FLUX_SYNC_REF="refs/pull/${PR_NUMBER}/head"
+          fi
+          
+          timoni bundle apply -f bundles/flux-aio.cue --runtime-from-env
+      - name: Verify Flux installation
+        run: flux check
+      - name: Verify CoreDNS availability
+        run: kubectl -n kube-system rollout status deploy/coredns --timeout=5m
+      - name: Apply flux-tenants bundle
+        run: |
+          timoni bundle apply -f bundles/flux-tenants.cue --runtime-from-env
+      - name: Debug failure
+        if: failure()
+        run: |
+          kubectl -n flux-system get pods
+          kubectl -n flux-system get gitrepository -oyaml
+          kubectl -n flux-system get kustomization -oyaml
+          kubectl -n flux-system get helmchart -oyaml
+          kubectl -n flux-system get helmrelease -oyaml
+          flux get all --all-namespaces
