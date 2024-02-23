@@ -45,5 +45,9 @@ import (
 		if #config.helmValues != _|_ {
 			values: #config.helmValues
 		}
+
+		if #config.dependsOn != _|_ {
+			dependsOn: #config.dependsOn
+		}
 	}
 }

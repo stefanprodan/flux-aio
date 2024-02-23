@@ -36,6 +36,11 @@ import (
 	}
 
 	substitute?: [string]: string
+
+	dependsOn?: [...{
+		name:       string
+		namespace?: string
+	}]
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.

@@ -38,5 +38,6 @@ timoni -n flux-system delete my-repo-sync
 | `sync: serviceAccountName:` | `string`              | `""`              | Service account to impersonate                                                                                                             |
 | `sync: targetNamespace:`    | `string`              | `""`              | Target namespace                                                                                                                           |
 | `substitute:`               | `{[ string]: string}` | `{}`              | Configure [post build variable substitution](https://fluxcd.io/flux/components/kustomize/kustomizations/#post-build-variable-substitution) |
+| `dependsOn:`                | `{...}                | `{}`              | List of kustomize dependencies                                                                                                             |
 | `metadata: labels:`         | `{[ string]: string}` | `{}`              | Custom labels                                                                                                                              |
 | `metadata: annotations:`    | `{[ string]: string}` | `{}`              | Custom annotations                                                                                                                         |

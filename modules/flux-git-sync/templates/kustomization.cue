@@ -30,5 +30,8 @@ import (
 			postBuild: substitute: #config.substitute
 		}
 
+		if #config.dependsOn != _|_ {
+			dependsOn: #config.dependsOn
+		}
 	}
 }
