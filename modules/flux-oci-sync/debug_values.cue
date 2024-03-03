@@ -17,4 +17,8 @@ values: {
 	sync: {
 		targetNamespace: "default"
 	}
+	dependsOn: [{
+		name:      "test"
+		namespace: "test"
+	}]
 }
