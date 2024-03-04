@@ -30,6 +30,7 @@ import (
 		"--metrics-addr=:9793",
 		"--health-addr=:9794",
 		"--watch-label-selector=!sharding.fluxcd.io/key",
+		"--override-manager=timoni",
 		"--concurrent=\(#config.reconcile.concurrent)",
 		"--requeue-dependency=\(#config.reconcile.requeue)s",
 		if #config.controllers.notification.enabled {
