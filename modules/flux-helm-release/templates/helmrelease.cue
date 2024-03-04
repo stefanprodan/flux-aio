@@ -10,6 +10,7 @@ import (
 	spec: fluxv2.#HelmReleaseSpec & {
 		releaseName: "\(#config.metadata.name)"
 		interval:    "\(#config.sync.interval)m"
+		timeout:     "\(#config.sync.timeout)m"
 
 		if #config.sync.targetNamespace != _|_ {
 			targetNamespace:  "\(#config.sync.targetNamespace)"
@@ -21,6 +22,12 @@ import (
 		}
 
 		chart: {
+			metadata: {
+				labels: #config.metadata.labels
+				if #config.metadata.annotations != _|_ {
+					annotations: #config.metadata.annotations
+				}
+			}
 			spec: {
 				chart:   "\(#config.chart.name)"
 				version: "\(#config.chart.version)"
@@ -42,12 +49,18 @@ import (
 			remediation: retries: #config.sync.retries
 		}
 
+		test: enable: #config.test
+
 		if #config.helmValues != _|_ {
 			values: #config.helmValues
 		}
 
 		if #config.dependsOn != _|_ {
 			dependsOn: #config.dependsOn
+		}
+
+		if #config.driftDetection != _|_ {
+			driftDetection: mode: #config.driftDetection
 		}
 	}
 }

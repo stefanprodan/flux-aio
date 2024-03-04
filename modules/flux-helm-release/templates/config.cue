@@ -31,16 +31,21 @@ import (
 	sync: {
 		retries:             int | *-1
 		interval:            int | *60
+		timeout:             int | *5
 		serviceAccountName?: string
 		targetNamespace?:    string
 	}
 
-	helmValues?: {...}
+	test: bool | *false
+
+	driftDetection?: "enabled" | "warn" | "disabled"
 
 	dependsOn?: [...{
 		name:       string
 		namespace?: string
 	}]
+
+	helmValues?: {...}
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.

@@ -17,4 +17,6 @@ values: {
 		name:    "podinfo"
 		version: "6.x"
 	}
+
+	driftDetection: "enabled"
 }
