@@ -23,7 +23,8 @@ The versioning of this distribution follows semver with the following format:
 ## Documentation
 
 - [Distribution specifications](https://timoni.sh/flux-aio/#specifications)
-- [Flux installation](https://timoni.sh/flux-aio/#flux-installation)
+- [Flux installation and upgrade](https://timoni.sh/flux-aio/#flux-installation)
+- [Flux OCI sync configuration](https://timoni.sh/flux-aio/#flux-oci-sync-configuration)
 - [Flux Git sync configuration](https://timoni.sh/flux-aio/#flux-git-sync-configuration)
 - [Flux multi-tenancy configuration](https://timoni.sh/flux-aio/#flux-multi-tenancy-configuration)
 
