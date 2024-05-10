@@ -6,12 +6,12 @@ package main
 // Eval example:
 // cue -t debug -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 eval -c -e timoni.instance.objects.deployment
 values: {
-	version: "v2.2.3"
+	version: "v2.3.0"
 	controllers: {
 		source: {
 			image: {
 				repository: "ghcr.io/fluxcd/source-controller"
-				tag:        "v1.2.4"
+				tag:        "v1.3.0"
 				digest:     ""
 			}
 			resources: {
@@ -20,25 +20,43 @@ values: {
 					memory: "128Mi"
 				}
 				limits: {
-					cpu:    "1500m"
+					cpu:    "1000m"
 					memory: "1Gi"
 				}
 			}
 		}
-		kustomize: image: {
-			repository: "ghcr.io/fluxcd/kustomize-controller"
-			tag:        "v1.2.2"
-			digest:     ""
+		kustomize: {
+			image: {
+				repository: "ghcr.io/fluxcd/kustomize-controller"
+				tag:        "v1.3.0"
+				digest:     ""
+			}
+			resources: limits: {
+				cpu:    "2000m"
+				memory: "1Gi"
+			}
 		}
-		notification: image: {
-			repository: "ghcr.io/fluxcd/notification-controller"
-			tag:        "v1.2.4"
-			digest:     ""
+		notification: {
+			image: {
+				repository: "ghcr.io/fluxcd/notification-controller"
+				tag:        "v1.3.0"
+				digest:     ""
+			}
+			resources: limits: {
+				cpu:    "1000m"
+				memory: "500Mi"
+			}
 		}
-		helm: image: {
-			repository: "ghcr.io/fluxcd/helm-controller"
-			tag:        "v0.37.4"
-			digest:     ""
+		helm: {
+			image: {
+				repository: "ghcr.io/fluxcd/helm-controller"
+				tag:        "v1.0.0"
+				digest:     ""
+			}
+			resources: limits: {
+				cpu:    "2000m"
+				memory: "1Gi"
+			}
 		}
 	}
 	workload: {
