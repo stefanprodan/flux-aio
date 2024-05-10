@@ -68,6 +68,8 @@ import (
 
 	hostNetwork: *true | bool
 
+	compatibility: *"kubernetes" | "openshift"
+
 	workload: {
 		provider: *"" | "aws" | "azure" | "gcp"
 		identity: *"" | string

@@ -35,7 +35,9 @@ import (
 			spec: corev1.#PodSpec & {
 				priorityClassName:             "system-cluster-critical"
 				terminationGracePeriodSeconds: 120
-				securityContext: fsGroup: 1337
+				if #config.compatibility == "kubernetes" {
+					securityContext: fsGroup: 1337
+				}
 				serviceAccountName: #config.metadata.name
 				hostNetwork:        #config.hostNetwork
 				volumes: [{

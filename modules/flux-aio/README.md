@@ -87,6 +87,7 @@ flux -n flux-system uninstall
 | `imagePullSecret: registry:` | `string`                           | `null`                        | Registry address for the generated image pull secret                                                                                                                                     |
 | `imagePullSecret: username:` | `string`                           | `null`                        | Registry username for the generated image pull secret                                                                                                                                    |
 | `imagePullSecret: password:` | `string`                           | `null`                        | Registry password for the generated image pull secret                                                                                                                                    |
+| `compatibility:`             | `string`                           | `kubernetes`                  | Can be set to `openshift` to make the security context compatible with RedHat OpenShift                                                                                                  |                                                                                                 |
 
 ### Controllers
 
@@ -106,4 +107,3 @@ flux -n flux-system uninstall
 | `expose: webhookReceiver:`             | `bool`                         | `false`                                                | Create the `webhook-reciver` Kubernetes Service                                       |
 | `expose: notificationServer:`          | `bool`                         | `false`                                                | Create the `notification-controller` Kubernetes Service                               |
 | `expose: sourceServer:`                | `bool`                         | `false`                                                | Create the `source-controller` Kubernetes Service                                     |
-
