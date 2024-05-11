@@ -4721,7 +4721,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 						properties: {
 							chart: {
 								description: """
-		Chart defines the template of the v1beta2.HelmChart that should be created
+		Chart defines the template of the v1.HelmChart that should be created
 		for this HelmRelease.
 		"""
 
@@ -4755,7 +4755,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										type: "object"
 									}
 									spec: {
-										description: "Spec holds the template for the v1beta2.HelmChartSpec for this HelmRelease."
+										description: "Spec holds the template for the v1.HelmChartSpec for this HelmRelease."
 
 										properties: {
 											chart: {
@@ -4879,7 +4879,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											version: {
 												default: "*"
 												description: """
-		Version semver expression, ignored for charts from v1beta2.GitRepository and
+		Version semver expression, ignored for charts from v1.GitRepository and
 		v1beta2.Bucket sources. Defaults to latest when omitted.
 		"""
 
@@ -6520,6 +6520,52 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								required: ["spec"]
 								type: "object"
 							}
+							chartRef: {
+								description: """
+		ChartRef holds a reference to a source controller resource containing the
+		Helm chart artifact.
+
+
+		Note: this field is provisional to the v2 API, and not actively used
+		by v2beta1 HelmReleases.
+		"""
+
+								properties: {
+									apiVersion: {
+										description: "APIVersion of the referent."
+										type:        "string"
+									}
+									kind: {
+										description: "Kind of the referent."
+										enum: [
+											"OCIRepository",
+											"HelmChart",
+										]
+										type: "string"
+									}
+									name: {
+										description: "Name of the referent."
+										maxLength:   253
+										minLength:   1
+										type:        "string"
+									}
+									namespace: {
+										description: """
+		Namespace of the referent, defaults to the namespace of the Kubernetes
+		resource object that contains the reference.
+		"""
+
+										maxLength: 63
+										minLength: 1
+										type:      "string"
+									}
+								}
+								required: [
+									"kind",
+									"name",
+								]
+								type: "object"
+							}
 							dependsOn: {
 								description: """
 		DependsOn may contain a meta.NamespacedObjectReference slice with
@@ -7594,10 +7640,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								type: "array"
 							}
 						}
-						required: [
-							"chart",
-							"interval",
-						]
+						required: ["interval"]
 						type: "object"
 					}
 					status: {
@@ -8253,6 +8296,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								description: """
 		ChartRef holds a reference to a source controller resource containing the
 		Helm chart artifact.
+
+
+		Note: this field is provisional to the v2 API, and not actively used
+		by v2beta2 HelmReleases.
 		"""
 
 								properties: {

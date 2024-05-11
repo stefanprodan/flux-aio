@@ -50,7 +50,7 @@ values: {
 		helm: {
 			image: {
 				repository: "ghcr.io/fluxcd/helm-controller"
-				tag:        "v1.0.0"
+				tag:        "v1.0.1"
 				digest:     ""
 			}
 			resources: limits: {
