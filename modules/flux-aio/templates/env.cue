@@ -12,6 +12,14 @@ package templates
 			valueFrom: fieldRef: fieldPath: "metadata.namespace"
 		},
 		{
+			name: "GOMAXPROCS"
+			valueFrom: resourceFieldRef: resource: "limits.cpu"
+		},
+		{
+			name: "GOMEMLIMIT"
+			valueFrom: resourceFieldRef: resource: "limits.memory"
+		},
+		{
 			name:  "TUF_ROOT"
 			value: "/tmp/.sigstore"
 		},
