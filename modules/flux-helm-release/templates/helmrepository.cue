@@ -3,7 +3,7 @@ package templates
 import (
 	"strings"
 
-	fluxv1 "source.toolkit.fluxcd.io/helmrepository/v1beta2"
+	fluxv1 "source.toolkit.fluxcd.io/helmrepository/v1"
 )
 
 #HelmRepository: fluxv1.#HelmRepository & {
