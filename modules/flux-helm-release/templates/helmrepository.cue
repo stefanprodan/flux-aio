@@ -1,22 +1,17 @@
 package templates
 
 import (
-	"strings"
-
-	fluxv1 "source.toolkit.fluxcd.io/helmrepository/v1"
+	sourcev1 "source.toolkit.fluxcd.io/helmrepository/v1"
 )
 
-#HelmRepository: fluxv1.#HelmRepository & {
+#HelmRepository: sourcev1.#HelmRepository & {
 	#config:  #Config
 	metadata: #config.metadata
-	spec: fluxv1.#HelmRepositorySpec & {
+	spec: sourcev1.#HelmRepositorySpec & {
 		interval: "12h"
 		url:      #config.repository.url
-		if strings.HasPrefix(#config.repository.url, "oci") {
-			type: "oci"
-		}
 		if #config.repository.auth != _|_ {
-			secretRef: name: "\(#config.metadata.name)-auth"
+			secretRef: name: "\(#config.metadata.name)-helm-auth"
 		}
 		if #config.repository.insecure {
 			insecure: true
@@ -30,7 +25,7 @@ import (
 	apiVersion: "v1"
 	kind:       "Secret"
 	metadata: {
-		name:      "\(#config.metadata.name)-auth"
+		name:      "\(#config.metadata.name)-helm-auth"
 		namespace: #config.metadata.namespace
 		labels:    #config.metadata.labels
 		if #config.metadata.annotations != _|_ {

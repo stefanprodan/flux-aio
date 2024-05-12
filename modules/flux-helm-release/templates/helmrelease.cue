@@ -1,13 +1,15 @@
 package templates
 
 import (
-	fluxv2 "helm.toolkit.fluxcd.io/helmrelease/v2"
+	"strings"
+
+	helmv2 "helm.toolkit.fluxcd.io/helmrelease/v2"
 )
 
-#HelmRelease: fluxv2.#HelmRelease & {
+#HelmRelease: helmv2.#HelmRelease & {
 	#config:  #Config
 	metadata: #config.metadata
-	spec: fluxv2.#HelmReleaseSpec & {
+	spec: helmv2.#HelmReleaseSpec & {
 		releaseName: "\(#config.metadata.name)"
 		interval:    "\(#config.sync.interval)m"
 		timeout:     "\(#config.sync.timeout)m"
@@ -21,21 +23,30 @@ import (
 			serviceAccountName: #config.sync.serviceAccountName
 		}
 
-		chart: {
-			metadata: {
-				labels: #config.metadata.labels
-				if #config.metadata.annotations != _|_ {
-					annotations: #config.metadata.annotations
+		if !strings.HasPrefix(#config.repository.url, "oci://") {
+			chart: {
+				metadata: {
+					labels: #config.metadata.labels
+					if #config.metadata.annotations != _|_ {
+						annotations: #config.metadata.annotations
+					}
+				}
+				spec: {
+					chart:   "\(#config.chart.name)"
+					version: "\(#config.chart.version)"
+					sourceRef: {
+						kind: "HelmRepository"
+						name: "\(#config.metadata.name)"
+					}
+					interval: "\(#config.sync.interval)m"
 				}
 			}
-			spec: {
-				chart:   "\(#config.chart.name)"
-				version: "\(#config.chart.version)"
-				sourceRef: {
-					kind: "HelmRepository"
-					name: "\(#config.metadata.name)"
-				}
-				interval: "\(#config.sync.interval)m"
+		}
+
+		if strings.HasPrefix(#config.repository.url, "oci://") {
+			chartRef: {
+				kind: "OCIRepository"
+				name: "\(#config.metadata.name)"
 			}
 		}
 

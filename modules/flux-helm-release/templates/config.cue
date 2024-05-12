@@ -1,6 +1,8 @@
 package templates
 
 import (
+	"strings"
+
 	timoniv1 "timoni.sh/core/v1alpha1"
 )
 
@@ -52,12 +54,19 @@ import (
 #Instance: {
 	config: #Config
 
-	objects: {
-		repository: #HelmRepository & {#config: config}
-		release: #HelmRelease & {#config: config}
+	objects: release: #HelmRelease & {#config: config}
+
+	if strings.HasPrefix(config.repository.url, "oci://") {
+		objects: repository: #OCIRepository & {#config: config}
+		if config.repository.auth != _|_ {
+			objects: secret: #OCIRepositoryAuth & {#config: config}
+		}
 	}
 
-	if config.repository.auth != _|_ {
-		objects: secret: #HelmRepositoryAuth & {#config: config}
+	if !strings.HasPrefix(config.repository.url, "oci://") {
+		objects: repository: #HelmRepository & {#config: config}
+		if config.repository.auth != _|_ {
+			objects: secret: #HelmRepositoryAuth & {#config: config}
+		}
 	}
 }
