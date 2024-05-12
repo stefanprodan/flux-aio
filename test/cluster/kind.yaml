@@ -4,4 +4,4 @@ networking:
   disableDefaultCNI: true
 nodes:
   - role: control-plane
-    image: kindest/node:v1.29.0
+  - role: worker
