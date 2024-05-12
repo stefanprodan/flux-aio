@@ -9,7 +9,7 @@ bundle: {
 			namespace: "dev-team-apps"
 			values: role: "namespace-admin"
 		}
-		"podinfo": {
+		"podinfo-ks-oci": {
 			module: {
 				url: "oci://ghcr.io/stefanprodan/modules/flux-oci-sync" @timoni(runtime:string:FLUX_OCI_MODULE_URL)
 			}
@@ -32,7 +32,7 @@ bundle: {
 			}
 			namespace: "dev-team-apps"
 			values: {
-				repository: url: "oci://ghcr.io/stefanprodan/charts"
+				repository: url: "https://stefanprodan.github.io/podinfo"
 				chart: name:     "podinfo"
 				sync: {
 					serviceAccountName: "flux"
@@ -49,6 +49,18 @@ bundle: {
 						cpu:     99
 					}
 				}
+			}
+		}
+		"podinfo-hr-oci": {
+			module: {
+				url: "oci://ghcr.io/stefanprodan/modules/flux-helm-release" @timoni(runtime:string:FLUX_HR_MODULE_URL)
+			}
+			namespace: "dev-team-apps"
+			values: {
+				repository: url:          "oci://ghcr.io/stefanprodan/charts"
+				chart: name:              "podinfo"
+				sync: serviceAccountName: "flux"
+				helmValues: replicaCount: 2
 			}
 		}
 	}
