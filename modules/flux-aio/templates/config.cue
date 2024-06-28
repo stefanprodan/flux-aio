@@ -142,7 +142,7 @@ import (
 
 // Instance takes the config values and outputs the Kubernetes objects.
 #Instance: {
-	config:                                 #Config
+	config: #Config
 	containerEnv: #ContainerEnv & {#config: config}
 
 	containers: [
