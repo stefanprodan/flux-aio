@@ -61,7 +61,7 @@ import (
 							}
 						}
 					}
-				}]
+				}] + #config.extraVolumes
 				containers: _containers
 				affinity:   #config.affinity
 				if #config.tolerations != _|_ {
