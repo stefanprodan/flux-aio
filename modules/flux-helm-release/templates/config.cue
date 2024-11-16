@@ -34,6 +34,7 @@ import (
 		retries:             int | *-1
 		interval:            int | *60
 		timeout:             int | *5
+		disableWait:         bool | *false
 		serviceAccountName?: string
 		targetNamespace?:    string
 	}

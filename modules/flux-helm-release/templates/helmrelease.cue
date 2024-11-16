@@ -53,11 +53,15 @@ import (
 		install: {
 			crds: "Create"
 			remediation: retries: #config.sync.retries
+			disableWait:        #config.sync.disableWait
+			disableWaitForJobs: #config.sync.disableWait
 		}
 
 		upgrade: {
 			crds: "CreateReplace"
 			remediation: retries: #config.sync.retries
+			disableWait:        #config.sync.disableWait
+			disableWaitForJobs: #config.sync.disableWait
 		}
 
 		test: enable: #config.test

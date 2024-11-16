@@ -33,6 +33,7 @@ timoni -n default delete podinfo
 | `sync: interval:`             | `int`                 | `60`         | Reconcile interval in minutes                                       |
 | `sync: timeout:`              | `int`                 | `5`          | Timeout in minutes                                                  |
 | `sync: serviceAccountName:`   | `string`              | `""`         | Service account to impersonate                                      |
+| `sync: disableWait:`          | `bool`                | `false`      | Disables waiting for resource readiness after install/upgrade       |
 | `dependsOn:`                  | `[...{name: string}]` | `{}`         | List of dependencies                                                |
 | `driftDetection:`             | `string`              | `"disabled"` | Set drift detection mode, can be `enabled` or `warn`                |
 | `test:`                       | `bool`                | `false`      | Run Helm tests after install and upgrade                            |
