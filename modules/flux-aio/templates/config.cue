@@ -30,21 +30,25 @@ import (
 		source: {
 			image:      timoniv1.#Image
 			resources?: corev1.#ResourceRequirements
+			extraVolumeMounts: *[] | [...corev1.#VolumeMount]
 		}
 		kustomize: {
 			enabled:    *true | bool
 			image:      timoniv1.#Image
 			resources?: timoniv1.#ResourceRequirements
+			extraVolumeMounts: *[] | [...corev1.#VolumeMount]
 		}
 		helm: {
 			enabled:    *true | bool
 			image:      timoniv1.#Image
 			resources?: timoniv1.#ResourceRequirements
+			extraVolumeMounts: *[] | [...corev1.#VolumeMount]
 		}
 		notification: {
 			enabled:    *true | bool
 			image:      timoniv1.#Image
 			resources?: timoniv1.#ResourceRequirements
+			extraVolumeMounts: *[] | [...corev1.#VolumeMount]
 		}
 	}
 
@@ -138,6 +142,7 @@ import (
 		tolerationSeconds: 300
 	}] | [...corev1.#Toleration]
 
+    extraVolumes: *[] | [...corev1.#Volume]
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.
