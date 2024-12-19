@@ -1,5 +1,7 @@
 package templates
 
+import "list"
+
 #ContainerEnv: {
 	#config: #Config
 	defaultEnv: [
@@ -44,5 +46,5 @@ package templates
 		extraEnv: [for k , v in #config.env {name: k, value: v}]
 	}
 
-	env: defaultEnv + extraEnv
+	env: list.Concat([defaultEnv, extraEnv])
 }
