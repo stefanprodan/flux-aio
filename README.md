@@ -46,7 +46,7 @@ see [timoni.sh](https://timoni.sh/install/).
 ### Install Flux on self-managed clusters
 
 To deploy Flux AIO on a cluster without a CNI, create a Timoni Bundle file
-named `flux-aio.cue` with the following content: 
+named `flux-aio.cue` with the following content:
 
 ```cue
 bundle: {
@@ -82,6 +82,16 @@ Note that on clusters without `kube-proxy`, you'll have to add the following env
 values: env: {
 	"KUBERNETES_SERVICE_HOST": "<host>"
 	"KUBERNETES_SERVICE_PORT": "<port>"
+}
+```
+
+Note that on [Talos](https://github.com/siderolabs/talos) clusters, you'll have to set the pod security profile to
+`privileged`:
+
+```cue
+values: {
+	hostNetwork:     true
+	podSecurityProfile: "privileged"
 }
 ```
 

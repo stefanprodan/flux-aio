@@ -64,6 +64,8 @@ import (
 
 	securityProfile: "restricted" | "privileged"
 
+	podSecurityProfile: *"" | "restricted" | "privileged"
+
 	logLevel: *"info" | string
 
 	hostNetwork: *true | bool
