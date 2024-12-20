@@ -63,8 +63,9 @@ values: {
 		identity: "arn:aws:iam::111122223333:role/my-role"
 		provider: "aws"
 	}
-	hostNetwork:     true
-	securityProfile: "privileged"
+	hostNetwork:        true
+	podSecurityProfile: "privileged"
+	securityProfile:    "privileged"
 	resources: {
 		requests: {
 			cpu:    "250m"

@@ -88,6 +88,7 @@ flux -n flux-system uninstall
 | `imagePullSecret: username:` | `string`                           | `null`                        | Registry username for the generated image pull secret                                                                                                                                    |
 | `imagePullSecret: password:` | `string`                           | `null`                        | Registry password for the generated image pull secret                                                                                                                                    |
 | `compatibility:`             | `string`                           | `kubernetes`                  | Can be set to `openshift` to make the security context compatible with RedHat OpenShift                                                                                                  |                                                                                                 |
+| `podSecurityProfile:`        | `string`                           | `""`                          | Can be `privileged` or `restricted`, used for setting the `pod-security.kubernetes.io` labels on the namespace                                                                           |
 
 ### Controllers
 

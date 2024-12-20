@@ -10,7 +10,14 @@ import (
 	kind:       "Namespace"
 	metadata: {
 		name:        #config.metadata.namespace
-		labels:      #config.metadata.labels
 		annotations: #config.metadata.annotations
+		labels:      #config.metadata.labels
+		if #config.podSecurityProfile != "" {
+			labels: {
+				"pod-security.kubernetes.io/enforce": #config.podSecurityProfile
+				"pod-security.kubernetes.io/warn":    #config.podSecurityProfile
+				"pod-security.kubernetes.io/audit":   #config.podSecurityProfile
+			}
+		}
 	}
 }
