@@ -67,5 +67,5 @@ import (
 	}, {
 		name:      "tmp"
 		mountPath: "/tmp"
-	}]
+	}] + #config.controllers.source.extraVolumeMounts
 }
