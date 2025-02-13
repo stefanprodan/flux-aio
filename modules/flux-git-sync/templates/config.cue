@@ -29,6 +29,7 @@ import (
 		prune:         *true | bool
 		wait:          *true | bool
 		timeout:       *3 | int
+		interval:      *60 | int
 		retryInterval: *5 | int
 
 		serviceAccountName?: string

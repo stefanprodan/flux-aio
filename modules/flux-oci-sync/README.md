@@ -38,6 +38,7 @@ timoni -n flux-system delete my-repo-sync
 | `sync: prune:`                 | `bool`                | `true`      | Prune stale resources                                                                                                                      |
 | `sync: wait:`                  | `bool`                | `false`     | Wait for resources to become ready                                                                                                         |
 | `sync: timeout:`               | `int`                 | `3`         | Wait timeout in minutes                                                                                                                    |
+| `sync: interval:`              | `int`                 | `60`        | Reconciliation interval in minutes                                                                                                         |
 | `sync: retryInterval:`         | `int`                 | `5`         | Retry failed reconciliation interval in minutes                                                                                            |
 | `sync: serviceAccountName:`    | `string`              | `""`        | Service account to impersonate                                                                                                             |
 | `sync: targetNamespace:`       | `string`              | `""`        | Target namespace                                                                                                                           |
