@@ -55,21 +55,21 @@ import "strings"
 		// NamespaceSelectors is the list of namespace selectors to which
 		// this ACL applies.
 		// Items in this list are evaluated using a logical OR operation.
-		namespaceSelectors: [...{
+		namespaceSelectors!: [...{
 			// MatchLabels is a map of {key,value} pairs. A single {key,value}
 			// in the matchLabels
 			// map is equivalent to an element of matchExpressions, whose key
 			// field is "key", the
 			// operator is "In", and the values array contains only "value".
 			// The requirements are ANDed.
-			matchLabels?: {
+			matchLabels?: close({
 				[string]: string
-			}
+			})
 		}]
 	}
 	certSecretRef?: {
 		// Name of the referent.
-		name: string
+		name!: string
 	}
 
 	// Insecure allows connecting to a non-TLS HTTP container
@@ -101,10 +101,10 @@ import "strings"
 	// This field is optional, and only taken into account if the
 	// .spec.type field is set to 'oci'.
 	// When not specified, defaults to 'generic'.
-	provider?: "generic" | "aws" | "azure" | "gcp" | *"generic"
+	provider?: "generic" | "aws" | "azure" | "gcp"
 	secretRef?: {
 		// Name of the referent.
-		name: string
+		name!: string
 	}
 
 	// Suspend tells the controller to suspend the reconciliation of
@@ -128,5 +128,5 @@ import "strings"
 	// URL of the Helm repository, a valid URL contains at least a
 	// protocol and
 	// host.
-	url: =~"^(http|https|oci)://.*$"
+	url!: =~"^(http|https|oci)://.*$"
 }
