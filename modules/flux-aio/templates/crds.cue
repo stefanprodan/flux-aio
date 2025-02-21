@@ -668,9 +668,12 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 								type: "object"
 							}
 							summary: {
-								description: "Summary holds a short description of the impact and affected cluster."
-								maxLength:   255
-								type:        "string"
+								description: """
+	Summary holds a short description of the impact and affected cluster.
+	Deprecated: Use EventMetadata instead.
+	"""
+								maxLength: 255
+								type:      "string"
 							}
 							suspend: {
 								description: """
@@ -2005,12 +2008,13 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 							}
 							provider: {
 								description: """
-	Provider used for authentication, can be 'azure', 'generic'.
+	Provider used for authentication, can be 'azure', 'github', 'generic'.
 	When not specified, defaults to 'generic'.
 	"""
 								enum: [
 									"generic",
 									"azure",
+									"github",
 								]
 								type: "string"
 							}
@@ -5090,6 +5094,13 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 	"""
 										type: "boolean"
 									}
+									disableTakeOwnership: {
+										description: """
+	DisableTakeOwnership disables taking ownership of existing resources
+	during the Helm install action. Defaults to false.
+	"""
+										type: "boolean"
+									}
 									disableWait: {
 										description: """
 	DisableWait disables the waiting for resources to be ready after a Helm
@@ -5604,6 +5615,13 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										description: """
 	DisableSchemaValidation prevents the Helm upgrade action from validating
 	the values against the JSON Schema.
+	"""
+										type: "boolean"
+									}
+									disableTakeOwnership: {
+										description: """
+	DisableTakeOwnership disables taking ownership of existing resources
+	during the Helm upgrade action. Defaults to false.
 	"""
 										type: "boolean"
 									}
@@ -11909,6 +11927,14 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 	"""
 												type: "string"
 											}
+											messageTemplateValues: {
+												additionalProperties: type: "string"
+												description: """
+	MessageTemplateValues provides additional values to be available to the
+	templating rendering.
+	"""
+												type: "object"
+											}
 											signingKey: {
 												description: "SigningKey provides the option to sign commits with a GPG key"
 												properties: secretRef: {
@@ -12370,6 +12396,20 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 								required: ["provider"]
 								type: "object"
 							}
+							deletionPolicy: {
+								description: """
+	DeletionPolicy can be used to control garbage collection when this
+	Kustomization is deleted. Valid values are ('MirrorPrune', 'Delete',
+	'Orphan'). 'MirrorPrune' mirrors the Prune field (orphan if false,
+	delete if true). Defaults to 'MirrorPrune'.
+	"""
+								enum: [
+									"MirrorPrune",
+									"Delete",
+									"Orphan",
+								]
+								type: "string"
+							}
 							dependsOn: {
 								description: """
 	DependsOn may contain a meta.NamespacedObjectReference slice
@@ -12403,6 +12443,54 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 	when patching fails due to an immutable field change.
 	"""
 								type: "boolean"
+							}
+							healthCheckExprs: {
+								description: """
+	HealthCheckExprs is a list of healthcheck expressions for evaluating the
+	health of custom resources using Common Expression Language (CEL).
+	The expressions are evaluated only when Wait or HealthChecks are specified.
+	"""
+								items: {
+									description: "CustomHealthCheck defines the health check for custom resources."
+									properties: {
+										apiVersion: {
+											description: "APIVersion of the custom resource under evaluation."
+											type:        "string"
+										}
+										current: {
+											description: """
+	Current is the CEL expression that determines if the status
+	of the custom resource has reached the desired state.
+	"""
+											type: "string"
+										}
+										failed: {
+											description: """
+	Failed is the CEL expression that determines if the status
+	of the custom resource has failed to reach the desired state.
+	"""
+											type: "string"
+										}
+										inProgress: {
+											description: """
+	InProgress is the CEL expression that determines if the status
+	of the custom resource has not yet reached the desired state.
+	"""
+											type: "string"
+										}
+										kind: {
+											description: "Kind of the custom resource under evaluation."
+											type:        "string"
+										}
+									}
+									required: [
+										"apiVersion",
+										"current",
+										"kind",
+									]
+									type: "object"
+								}
+								type: "array"
 							}
 							healthChecks: {
 								description: "A list of resources to be included in the health assessment."
@@ -12884,6 +12972,16 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 								}
 								required: ["entries"]
 								type: "object"
+							}
+							lastAppliedOriginRevision: {
+								description: """
+	The last successfully applied origin revision.
+	Equals the origin revision of the applied Artifact from the referenced Source.
+	Usually present on the Metadata of the applied Artifact and depends on the
+	Source type, e.g. for OCI it's the value associated with the key
+	"org.opencontainers.image.revision".
+	"""
+								type: "string"
 							}
 							lastAppliedRevision: {
 								description: """
@@ -15613,6 +15711,18 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 								description: "Interval at which to reconcile the Receiver with its Secret references."
 								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 								type:        "string"
+							}
+							resourceFilter: {
+								description: """
+	ResourceFilter is a CEL expression expected to return a boolean that is
+	evaluated for each resource referenced in the Resources field when a
+	webhook is received. If the expression returns false then the controller
+	will not request a reconciliation for the resource.
+	When the expression is specified the controller will parse it and mark
+	the object as terminally failed if the expression is invalid or does not
+	return a boolean.
+	"""
+								type: "string"
 							}
 							resources: {
 								description: "A list of resources to be notified about changes."

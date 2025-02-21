@@ -49,7 +49,7 @@ import "strings"
 #OCIRepositorySpec: {
 	certSecretRef?: {
 		// Name of the referent.
-		name: string
+		name!: string
 	}
 
 	// Ignore overrides the set of excluded patterns in the
@@ -68,7 +68,7 @@ import "strings"
 	// This interval is approximate and may be subject to jitter to
 	// ensure
 	// efficient use of resources.
-	interval: =~"^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+	interval!: =~"^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 
 	// LayerSelector specifies which layer should be extracted from
 	// the OCI artifact.
@@ -92,7 +92,7 @@ import "strings"
 	// The provider used for authentication, can be 'aws', 'azure',
 	// 'gcp' or 'generic'.
 	// When not specified, defaults to 'generic'.
-	provider?: "generic" | "aws" | "azure" | "gcp" | *"generic"
+	provider?: "generic" | "aws" | "azure" | "gcp"
 
 	// The OCI reference to pull and monitor for changes,
 	// defaults to the latest tag.
@@ -115,7 +115,7 @@ import "strings"
 	}
 	secretRef?: {
 		// Name of the referent.
-		name: string
+		name!: string
 	}
 
 	// ServiceAccountName is the name of the Kubernetes ServiceAccount
@@ -131,11 +131,11 @@ import "strings"
 
 	// The timeout for remote OCI Repository operations like pulling,
 	// defaults to 60s.
-	timeout?: =~"^([0-9]+(\\.[0-9]+)?(ms|s|m))+$" | *"60s"
+	timeout?: =~"^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
 
 	// URL is a reference to an OCI artifact repository hosted
 	// on a remote container registry.
-	url: =~"^oci://.*$"
+	url!: =~"^oci://.*$"
 
 	// Verify contains the secret name containing the trusted public
 	// keys
@@ -155,21 +155,21 @@ import "strings"
 			// the OIDC issuer in the Fulcio certificate. The pattern must be
 			// a
 			// valid Go regular expression.
-			issuer: string
+			issuer!: string
 
 			// Subject specifies the regex pattern to match against to verify
 			// the identity subject in the Fulcio certificate. The pattern
 			// must
 			// be a valid Go regular expression.
-			subject: string
+			subject!: string
 		}]
 
 		// Provider specifies the technology used to sign the OCI
 		// Artifact.
-		provider: "cosign" | "notation" | *"cosign"
+		provider!: "cosign" | "notation"
 		secretRef?: {
 			// Name of the referent.
-			name: string
+			name!: string
 		}
 	}
 }

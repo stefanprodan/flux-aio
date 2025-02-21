@@ -49,7 +49,7 @@ import "strings"
 #HelmChartSpec: {
 	// Chart is the name or path the Helm chart is available at in the
 	// SourceRef.
-	chart: string
+	chart!: string
 
 	// IgnoreMissingValuesFiles controls whether to silently ignore
 	// missing values
@@ -61,7 +61,7 @@ import "strings"
 	// This interval is approximate and may be subject to jitter to
 	// ensure
 	// efficient use of resources.
-	interval: =~"^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+	interval!: =~"^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 
 	// ReconcileStrategy determines what enables the creation of a new
 	// artifact.
@@ -69,21 +69,21 @@ import "strings"
 	// See the documentation of the values for an explanation on their
 	// behavior.
 	// Defaults to ChartVersion when omitted.
-	reconcileStrategy?: "ChartVersion" | "Revision" | *"ChartVersion"
+	reconcileStrategy?: "ChartVersion" | "Revision"
 
 	// SourceRef is the reference to the Source the chart is available
 	// at.
-	sourceRef: {
+	sourceRef!: {
 		// APIVersion of the referent.
 		apiVersion?: string
 
 		// Kind of the referent, valid values are ('HelmRepository',
 		// 'GitRepository',
 		// 'Bucket').
-		kind: "HelmRepository" | "GitRepository" | "Bucket"
+		kind!: "HelmRepository" | "GitRepository" | "Bucket"
 
 		// Name of the referent.
-		name: string
+		name!: string
 	}
 
 	// Suspend tells the controller to suspend the reconciliation of
@@ -123,21 +123,21 @@ import "strings"
 			// the OIDC issuer in the Fulcio certificate. The pattern must be
 			// a
 			// valid Go regular expression.
-			issuer: string
+			issuer!: string
 
 			// Subject specifies the regex pattern to match against to verify
 			// the identity subject in the Fulcio certificate. The pattern
 			// must
 			// be a valid Go regular expression.
-			subject: string
+			subject!: string
 		}]
 
 		// Provider specifies the technology used to sign the OCI
 		// Artifact.
-		provider: "cosign" | "notation" | *"cosign"
+		provider!: "cosign" | "notation"
 		secretRef?: {
 			// Name of the referent.
-			name: string
+			name!: string
 		}
 	}
 
@@ -145,5 +145,5 @@ import "strings"
 	// charts from
 	// GitRepository and Bucket sources. Defaults to latest when
 	// omitted.
-	version?: string | *"*"
+	version?: string
 }
