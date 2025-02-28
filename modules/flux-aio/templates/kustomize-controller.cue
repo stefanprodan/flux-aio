@@ -63,5 +63,5 @@ import (
 	volumeMounts: [{
 		name:      "tmp"
 		mountPath: "/tmp"
-	}]
+	}] + #config.controllers.kustomize.extraVolumeMounts
 }
