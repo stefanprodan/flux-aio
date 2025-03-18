@@ -33,6 +33,8 @@ timoni -n default delete podinfo
 | `sync: interval:`             | `int`                 | `60`         | Reconcile interval in minutes                                       |
 | `sync: timeout:`              | `int`                 | `5`          | Timeout in minutes                                                  |
 | `sync: serviceAccountName:`   | `string`              | `""`         | Service account to impersonate                                      |
+| `sync: targetNamespace:`      | `string`              | `""`         | Specify the namespace to which the Helm release is made. When not specified, it defaults to the instance namespace. |
+| `sync: createNamespace:`      | `bool`                | `false`      | Instructs Helm to create the target namespace if it does not exist  |
 | `sync: disableWait:`          | `bool`                | `false`      | Disables waiting for resource readiness after install/upgrade       |
 | `dependsOn:`                  | `[...{name: string}]` | `{}`         | List of dependencies                                                |
 | `driftDetection:`             | `string`              | `"disabled"` | Set drift detection mode, can be `enabled` or `warn`                |
