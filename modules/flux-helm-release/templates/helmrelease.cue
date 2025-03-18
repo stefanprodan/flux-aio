@@ -53,6 +53,7 @@ import (
 		install: {
 			crds: "Create"
 			remediation: retries: #config.sync.retries
+			createNamespace:    #config.sync.createNamespace
 			disableWait:        #config.sync.disableWait
 			disableWaitForJobs: #config.sync.disableWait
 		}

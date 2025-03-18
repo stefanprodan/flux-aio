@@ -35,6 +35,7 @@ import (
 		interval:            int | *60
 		timeout:             int | *5
 		disableWait:         bool | *false
+		createNamespace:     bool | *false
 		serviceAccountName?: string
 		targetNamespace?:    string
 	}
