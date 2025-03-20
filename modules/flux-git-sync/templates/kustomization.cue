@@ -30,6 +30,10 @@ import (
 			postBuild: substitute: #config.substitute
 		}
 
+		if #config.substituteFrom != _|_ {
+			postBuild: substituteFrom: #config.substituteFrom
+		}
+
 		if #config.dependsOn != _|_ {
 			dependsOn: #config.dependsOn
 		}
