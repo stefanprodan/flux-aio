@@ -54,6 +54,11 @@ import (
 	}
 
 	substitute?: [string]: string
+	substituteFrom?: [...{
+		kind:      "Secret" | "ConfigMap"
+		name:      string
+		optional?: bool
+	}]
 
 	dependsOn?: [...{
 		name:       string
