@@ -26,9 +26,9 @@ import (
 
 	// GitHub App settings
 	github: {
-		appID:   *"" | string
-		appInstallationID:  *"" | string
-		appPrivateKey: *"" | string
+		appID:             *"" | string
+		appInstallationID: *"" | string
+		appPrivateKey:     *"" | string
 	}
 
 	// Cluster reconciler settings

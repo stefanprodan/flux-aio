@@ -32,15 +32,15 @@ import (
 	stringData: {
 		username: "git"
 		if #config.git.token != "" {
-		password: #config.git.token
+			password: #config.git.token
 		}
 		if #config.git.ca != "" {
 			"ca.crt": #config.git.ca
 		}
 		if #config.github.appID != "" {
-			githubAppID: #config.github.appID
+			githubAppID:             #config.github.appID
 			githubAppInstallationID: #config.github.appInstallationID
-			githubAppPrivateKey: #config.github.appPrivateKey
+			githubAppPrivateKey:     #config.github.appPrivateKey
 		}
 	}
 }
