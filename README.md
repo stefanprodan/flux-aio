@@ -176,6 +176,44 @@ bundle: {
 The above configuration, generates the same `flux-system` objects (`GitRepository`, `Secret`, `Kustomization`)
 as the `flux bootstrap` command.
 
+### Sync from a GitHub repository using GitHub App auth
+
+Starting with Flux 2.5.0, you can sync the cluster state from a repository
+using GitHub App authentication:
+
+```cue
+bundle: {
+	apiVersion: "v1alpha1"
+	name:       "flux-aio"
+	instances: {
+		// flux instance omitted for brevity
+		"flux-system": {
+			module: url: "oci://ghcr.io/stefanprodan/modules/flux-git-sync"
+			namespace: "flux-system"
+			values: {
+				git: {
+					url:   "https://github.com/org/repo"
+					ref:   "refs/heads/main"
+					path:  "clusters/production"
+				}
+				github: {
+					appID:             "123"
+					appInstallationID: "234"
+					appPrivateKey:     string @timoni(runtime:string:GITHUB_APP_PEM)
+				}
+			}
+		}
+	}
+}
+```
+
+Export the `GITHUB_APP_PEM` env var and apply the bundle with:
+
+```shell
+export GITHUB_APP_PEM=$(cat path/to/app.private-key.pem)
+timoni bundle apply -f flux-aio.cue --runtime-from-env
+```
+
 ### Uninstall Flux
 
 To remove Flux from your cluster, without affecting any reconciled workloads:
