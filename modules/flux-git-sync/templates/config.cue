@@ -24,6 +24,13 @@ import (
 		ignore:   *"" | string
 	}
 
+	// GitHub App settings
+	github: {
+		appID:   *"" | string
+		appInstallationID:  *"" | string
+		appPrivateKey: *"" | string
+	}
+
 	// Cluster reconciler settings
 	sync: {
 		prune:         *true | bool
@@ -57,7 +64,7 @@ import (
 		kustomization: #Kustomization & {#config: config}
 	}
 
-	if config.git.token != "" {
+	if config.git.token != "" || config.github.appID != "" {
 		objects: gitsecret: #GitSecret & {#config: config}
 	}
 }
