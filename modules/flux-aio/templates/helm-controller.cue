@@ -59,5 +59,5 @@ import (
 	volumeMounts: [{
 		name:      "tmp"
 		mountPath: "/tmp"
-	}]
+	}] + #config.controllers.helm.extraVolumeMounts
 }
