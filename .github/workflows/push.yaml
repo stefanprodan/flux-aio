@@ -29,6 +29,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish Timoni module
-        run: make push-mod VERSION=$GITHUB_REF_NAME
+        run: make push-mod USER=${{ github.actor }} VERSION=$GITHUB_REF_NAME
       - name: Publish Flux default manifests
-        run: make push-manifests VERSION=$GITHUB_REF_NAME
+        run: make push-manifests USER=${{ github.actor }} VERSION=$GITHUB_REF_NAME
