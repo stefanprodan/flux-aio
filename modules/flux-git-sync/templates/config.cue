@@ -53,6 +53,21 @@ import (
 		name:       string
 		namespace?: string
 	}]
+
+	// Strategic merge and JSON patches, defined as inline YAML objects,
+	// capable of targeting objects based on kind, label and annotation selectors.
+	patches?: [...{
+		patch!: {...} | [...]
+		target: {
+			annotationSelector?: string
+			group?:              string
+			kind?:               string
+			labelSelector?:      string
+			name?:               string
+			namespace?:          string
+			version?:            string
+		}
+	}]
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.

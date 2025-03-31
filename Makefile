@@ -4,6 +4,7 @@
 SHELL := bash
 .SHELLFLAGS += -eo pipefail
 
+USER := stefanprodan
 VERSION?=$(shell grep 'version:' modules/flux-aio/values.cue | awk '{ print $$2 }' | tr -d '"')
 
 .PHONY: tools
@@ -48,41 +49,41 @@ gen-deploy: ## Print the Flux deployment
 
 .PHONY: push-mod
 push-mod: ## Push the Timoni modules to GHCR
-	@timoni mod push ./modules/flux-aio oci://ghcr.io/stefanprodan/modules/flux-aio -v=$(VERSION:v%=%) --latest \
+	@timoni mod push ./modules/flux-aio oci://ghcr.io/$(USER)/modules/flux-aio -v=$(VERSION:v%=%) --latest \
 		--sign cosign \
 		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
 		-a 'org.opencontainers.image.licenses=Apache-2.0' \
 		-a 'org.opencontainers.image.description=A timoni.sh module for deploying Flux AIO.' \
 		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
-	@timoni mod push ./modules/flux-git-sync oci://ghcr.io/stefanprodan/modules/flux-git-sync -v=$(VERSION:v%=%) --latest \
+	@timoni mod push ./modules/flux-git-sync oci://ghcr.io/$(USER)/modules/flux-git-sync -v=$(VERSION:v%=%) --latest \
 		--sign cosign \
-		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
+		-a 'org.opencontainers.image.source=https://github.com/$(USER)/flux-aio'  \
 		-a 'org.opencontainers.image.licenses=Apache-2.0' \
 		-a 'org.opencontainers.image.description=A timoni.sh module for configuring Flux Git reconciliation.' \
-		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
-	@timoni mod push ./modules/flux-oci-sync oci://ghcr.io/stefanprodan/modules/flux-oci-sync -v=$(VERSION:v%=%) --latest \
+		-a 'org.opencontainers.image.documentation=https://github.com/$(USER)/flux-aio/blob/main/README.md'
+	@timoni mod push ./modules/flux-oci-sync oci://ghcr.io/$(USER)/modules/flux-oci-sync -v=$(VERSION:v%=%) --latest \
 		--sign cosign \
-		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
+		-a 'org.opencontainers.image.source=https://github.com/$(USER)/flux-aio'  \
 		-a 'org.opencontainers.image.licenses=Apache-2.0' \
 		-a 'org.opencontainers.image.description=A timoni.sh module for configuring Flux OCI artifacts reconciliation.' \
-		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
-	@timoni mod push ./modules/flux-tenant oci://ghcr.io/stefanprodan/modules/flux-tenant -v=$(VERSION:v%=%) --latest \
+		-a 'org.opencontainers.image.documentation=https://github.com/$(USER)/flux-aio/blob/main/README.md'
+	@timoni mod push ./modules/flux-tenant oci://ghcr.io/$(USER)/modules/flux-tenant -v=$(VERSION:v%=%) --latest \
 		--sign cosign \
-		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
+		-a 'org.opencontainers.image.source=https://github.com/$(USER)/flux-aio'  \
 		-a 'org.opencontainers.image.licenses=Apache-2.0' \
 		-a 'org.opencontainers.image.description=A timoni.sh module for managing Flux tenants.' \
-		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
-	@timoni mod push ./modules/flux-helm-release oci://ghcr.io/stefanprodan/modules/flux-helm-release -v=$(VERSION:v%=%) --latest \
+		-a 'org.opencontainers.image.documentation=https://github.com/$(USER)/flux-aio/blob/main/README.md'
+	@timoni mod push ./modules/flux-helm-release oci://ghcr.io/$(USER)/modules/flux-helm-release -v=$(VERSION:v%=%) --latest \
 		--sign cosign \
-		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
+		-a 'org.opencontainers.image.source=https://github.com/$(USER)/flux-aio'  \
 		-a 'org.opencontainers.image.licenses=Apache-2.0' \
 		-a 'org.opencontainers.image.description=A timoni.sh module for deploying Flux Helm Releases.' \
-		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
+		-a 'org.opencontainers.image.documentation=https://github.com/$(USER)/flux-aio/blob/main/README.md'
 
 .PHONY: push-manifests
 push-manifests: ## Build and push the Flux manifests to GHCR
 	@timoni -n flux-system build flux ./modules/flux-aio | flux push artifact \
-		oci://ghcr.io/stefanprodan/manifests/flux-aio:$(VERSION) \
+		oci://ghcr.io/$(USER)/manifests/flux-aio:$(VERSION) \
 		--source=https://github.com/fluxcd/flux2 \
 		--revision=$(VERSION) \
 		-f-
