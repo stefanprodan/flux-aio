@@ -37,5 +37,9 @@ import (
 		if #config.dependsOn != _|_ {
 			dependsOn: #config.dependsOn
 		}
+
+		if #config.patches != _|_ {
+			patches: [for p in #config.patches {patch: json.Marshal(p.patch), target: p.target}]
+		}
 	}
 }
