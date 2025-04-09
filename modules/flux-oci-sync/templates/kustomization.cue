@@ -1,6 +1,8 @@
 package templates
 
 import (
+	"encoding/json"
+
 	ksv1 "kustomize.toolkit.fluxcd.io/kustomization/v1"
 	sourcev1 "source.toolkit.fluxcd.io/ocirepository/v1beta2"
 )
@@ -33,6 +35,9 @@ import (
 		}
 		if #config.dependsOn != _|_ {
 			dependsOn: #config.dependsOn
+		}
+		if #config.patches != _|_ {
+			patches: [for p in #config.patches {patch: json.Marshal(p.patch), target: p.target}]
 		}
 	}
 }
