@@ -39,5 +39,8 @@ import (
 		if #config.patches != _|_ {
 			patches: [for p in #config.patches {patch: json.Marshal(p.patch), target: p.target}]
 		}
+		if #config.decryption != _|_ {
+			decryption: #config.decryption
+		}
 	}
 }

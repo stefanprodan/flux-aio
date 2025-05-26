@@ -79,6 +79,13 @@ import (
 			version?:            string
 		}
 	}]
+
+	decryption?: {
+		provider: string
+		secretRef?: {
+			name: string
+		}
+	}
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.
