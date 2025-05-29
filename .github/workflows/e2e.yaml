@@ -45,7 +45,7 @@ jobs:
         run: |
           kind create cluster \
           --config ./test/cluster/kind.yaml \
-          --image ghcr.io/fluxcd/kindest/node:v1.30.0-amd64
+          --image ghcr.io/fluxcd/kindest/node:v1.33.0-amd64
       - name: Push modules
         run: |
           timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION}
