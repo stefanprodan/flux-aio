@@ -1,7 +1,7 @@
 package templates
 
 import (
-	sourcev1 "source.toolkit.fluxcd.io/ocirepository/v1beta2"
+	sourcev1 "source.toolkit.fluxcd.io/ocirepository/v1"
 )
 
 #OCIRepository: sourcev1.#OCIRepository & {
