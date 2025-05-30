@@ -49,6 +49,9 @@ import (
 		if #config.securityProfile == "restricted" {
 			"--no-cross-namespace-refs"
 		},
+		if #config.controllers.notification.featureGates != "" {
+			"--feature-gates=\(#config.controllers.notification.featureGates)"
+		},
 	]
 	if #config.controllers.notification.resources == _|_ {
 		resources: #config.resources

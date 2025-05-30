@@ -41,6 +41,9 @@ import (
 		if #config.securityProfile == "restricted" {
 			"--default-service-account=\(#config.metadata.name)"
 		},
+		if #config.controllers.helm.featureGates != "" {
+			"--feature-gates=\(#config.controllers.helm.featureGates)"
+		},
 	]
 	readinessProbe: httpGet: {
 		path: "/readyz"

@@ -24,6 +24,7 @@ values: {
 					memory: "1Gi"
 				}
 			}
+			featureGates: "ObjectLevelWorkloadIdentity=true"
 		}
 		kustomize: {
 			image: {
@@ -46,6 +47,7 @@ values: {
 				cpu:    "1000m"
 				memory: "500Mi"
 			}
+			featureGates: "ObjectLevelWorkloadIdentity=true"
 		}
 		helm: {
 			image: {
@@ -57,6 +59,7 @@ values: {
 				cpu:    "2000m"
 				memory: "1Gi"
 			}
+			featureGates: "DisableChartDigestTracking=true,OOMWatch=true"
 		}
 	}
 	workload: {

@@ -28,23 +28,27 @@ import (
 
 	controllers: {
 		source: {
-			image:      timoniv1.#Image
-			resources?: corev1.#ResourceRequirements
+			image:        timoniv1.#Image
+			resources?:   corev1.#ResourceRequirements
+			featureGates: *"" | string
 		}
 		kustomize: {
-			enabled:    *true | bool
-			image:      timoniv1.#Image
-			resources?: timoniv1.#ResourceRequirements
+			enabled:      *true | bool
+			image:        timoniv1.#Image
+			resources?:   timoniv1.#ResourceRequirements
+			featureGates: *"" | string
 		}
 		helm: {
-			enabled:    *true | bool
-			image:      timoniv1.#Image
-			resources?: timoniv1.#ResourceRequirements
+			enabled:      *true | bool
+			image:        timoniv1.#Image
+			resources?:   timoniv1.#ResourceRequirements
+			featureGates: *"" | string
 		}
 		notification: {
-			enabled:    *true | bool
-			image:      timoniv1.#Image
-			resources?: timoniv1.#ResourceRequirements
+			enabled:      *true | bool
+			image:        timoniv1.#Image
+			resources?:   timoniv1.#ResourceRequirements
+			featureGates: *"" | string
 		}
 	}
 
