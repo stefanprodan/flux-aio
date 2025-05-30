@@ -45,6 +45,9 @@ import (
 		if #config.securityProfile == "restricted" {
 			"--default-service-account=\(#config.metadata.name)"
 		},
+		if #config.controllers.kustomize.featureGates != "" {
+			"--feature-gates=\(#config.controllers.kustomize.featureGates)"
+		},
 	]
 	readinessProbe: httpGet: {
 		path: "/readyz"

@@ -46,6 +46,9 @@ import (
 		if #config.controllers.notification.enabled {
 			"--events-addr=http://localhost:9690"
 		},
+		if #config.controllers.source.featureGates != "" {
+			"--feature-gates=\(#config.controllers.source.featureGates)"
+		},
 	]
 	livenessProbe: httpGet: {
 		port: "healthz-sc"
