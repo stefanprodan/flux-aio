@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	ksv1 "kustomize.toolkit.fluxcd.io/kustomization/v1"
-	sourcev1 "source.toolkit.fluxcd.io/ocirepository/v1beta2"
+	sourcev1 "source.toolkit.fluxcd.io/ocirepository/v1"
 )
 
 #Kustomization: ksv1.#Kustomization & {

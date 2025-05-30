@@ -3,7 +3,7 @@ package templates
 import (
 	"strings"
 
-	sourcev1 "source.toolkit.fluxcd.io/ocirepository/v1beta2"
+	sourcev1 "source.toolkit.fluxcd.io/ocirepository/v1"
 	timoniv1 "timoni.sh/core/v1alpha1"
 )
 
