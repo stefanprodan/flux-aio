@@ -43,6 +43,7 @@ import (
 		"--log-level=\(#config.logLevel)",
 		"--log-encoding=json",
 		"--enable-leader-election=false",
+		"--receiverAddr=:9797",
 		"--metrics-addr=:9798",
 		"--health-addr=:9799",
 		"--events-addr=:9690",
