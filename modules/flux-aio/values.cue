@@ -3,11 +3,11 @@
 package main
 
 values: {
-	version: "v2.6.2"
+	version: "v2.6.3"
 	controllers: {
 		source: image: {
 			repository: "ghcr.io/fluxcd/source-controller"
-			tag:        "v1.6.1"
+			tag:        "v1.6.2"
 			digest:     ""
 		}
 		kustomize: image: {

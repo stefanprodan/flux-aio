@@ -1,6 +1,6 @@
 # flux-aio
 
-[![flux](https://img.shields.io/badge/flux-v2.6.2-9cf)](https://fluxcd.io)
+[![flux](https://img.shields.io/badge/flux-v2.6.3-9cf)](https://fluxcd.io)
 [![test](https://github.com/stefanprodan/flux-aio/workflows/test/badge.svg)](https://github.com/stefanprodan/flux-aio/actions)
 [![license](https://img.shields.io/github/license/stefanprodan/flux-aio.svg)](https://github.com/stefanprodan/flux-aio/blob/main/LICENSE)
 [![release](https://img.shields.io/github/release/stefanprodan/flux-aio/all.svg)](https://github.com/stefanprodan/flux-aio/releases)
@@ -18,7 +18,7 @@ This distribution is optimized for running [Flux](https://fluxcd.io) on:
 - Serverless clusters for cost optimisation (EKS Fargate)
 
 The versioning of this distribution follows semver with the following format:
-`<flux version>-<distribution release number>`, e.g. `2.6.0-0`.
+`<flux version>-<distribution release number>`, e.g. `2.6.3-0`.
 
 ## Documentation
 
