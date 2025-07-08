@@ -3,7 +3,7 @@
 package main
 
 values: {
-	version: "v2.6.3"
+	version: "v2.6.4"
 	controllers: {
 		source: image: {
 			repository: "ghcr.io/fluxcd/source-controller"
@@ -12,7 +12,7 @@ values: {
 		}
 		kustomize: image: {
 			repository: "ghcr.io/fluxcd/kustomize-controller"
-			tag:        "v1.6.0"
+			tag:        "v1.6.1"
 			digest:     ""
 		}
 		notification: image: {
