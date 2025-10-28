@@ -9,6 +9,14 @@ The communication between controllers happens on the loopback interface, hence
 Flux can function on clusters which don't have a CNI plugin installed.
 This allows Kubernetes operators to setup their clusters networking in a GitOps way.
 
+When running Flux AIO on the host network, the following ports must be available:
+
+- **Source Controller**: 9790-9792 (artifacts, metrics, health)
+- **Source Watcher**: 9691-9693 (artifacts, metrics, health)
+- **Kustomize Controller**: 9793-9794 (metrics, health)
+- **Helm Controller**: 9795-9796 (metrics, health)
+- **Notification Controller**: 9690, 9797-9799 (events, webhook, metrics, health)
+
 ### Prerequisites
 
 Install the Timoni CLI with:
@@ -100,15 +108,19 @@ flux -n flux-system uninstall
 | `controllers: helm: enabled`              | `bool`                         | `true`                                                 | Include the `helm-controller` component                                                                                                                         |
 | `controllers: helm: image:`               | `timoniv1.#Image`              | `repository: "ghcr.io/fluxcd/source-controller"`       | Container image, tag and digest                                                                                                                                 |
 | `controllers: helm: resources`            | `corev1.#ResourceRequirements` | `null`                                                 | Set resource requests and limits specific for the `helm-controller` container                                                                                   |
-| `controllers: helm: featureGates`         | `string`                       | `""`                                                   | Set controller [feature gates](https://fluxcd.io/flux/components/helm/options/#feature-gates) e.g. `DisableChartDigestTracking=true,OOMWatch=true`              |
+| `controllers: helm: featureGates`         | `string`                       | `"ExternalArtifact=true"`                              | Set controller [feature gates](https://fluxcd.io/flux/components/helm/options/#feature-gates) e.g. `DisableChartDigestTracking=true,OOMWatch=true`              |
 | `controllers: kustomize: enabled`         | `bool`                         | `true`                                                 | Include the `kustomize-controller` component                                                                                                                    |
 | `controllers: kustomize: image:`          | `timoniv1.#Image`              | `repository: "ghcr.io/fluxcd/kustomize-controller"`    | Container image, tag and digest                                                                                                                                 |
 | `controllers: kustomize: resources`       | `corev1.#ResourceRequirements` | `null`                                                 | Set resource requests and limits specific for the `kustomize-controller` container                                                                              |
-| `controllers: kustomize: featureGates`    | `string`                       | `""`                                                   | Set controller [feature gates](https://fluxcd.io/flux/components/kustomize/options/#feature-gates) e.g. `StrictPostBuildSubstitutions=true,GroupChangeLog=true` |
+| `controllers: kustomize: featureGates`    | `string`                       | `"ExternalArtifact=true"`                              | Set controller [feature gates](https://fluxcd.io/flux/components/kustomize/options/#feature-gates) e.g. `StrictPostBuildSubstitutions=true,GroupChangeLog=true` |
 | `controllers: notification: enabled`      | `bool`                         | `true`                                                 | Include the `notification-controller` component                                                                                                                 |
 | `controllers: notification: image:`       | `timoniv1.#Image`              | `repository: "ghcr.io/fluxcd/notification-controller"` | Container image, tag and digest                                                                                                                                 |
 | `controllers: notification: resources`    | `corev1.#ResourceRequirements` | `null`                                                 | Set resource requests and limits specific for the `notification-controller` container                                                                           |
 | `controllers: notification: featureGates` | `string`                       | `""`                                                   | Set controller [feature gates](https://fluxcd.io/flux/components/notification/options/#feature-gates) e.g. `ObjectLevelWorkloadIdentity=true`                   |
+| `controllers: watcher: enabled`           | `bool`                         | `true`                                                 | Include the `source-watcher` component                                                                                                                          |
+| `controllers: watcher: image:`            | `timoniv1.#Image`              | `repository: "ghcr.io/fluxcd/source-watcher"`          | Container image, tag and digest                                                                                                                                 |
+| `controllers: watcher: resources`         | `corev1.#ResourceRequirements` | `null`                                                 | Set resource requests and limits specific for the `source-watcher` container                                                                                    |
+| `controllers: watcher: featureGates`      | `string`                       | `""`                                                   | Set controller [feature gates](https://fluxcd.io/flux/components/source/options/)                                                                               |
 | `expose: webhookReceiver:`                | `bool`                         | `false`                                                | Create the `webhook-reciver` Kubernetes Service                                                                                                                 |
 | `expose: notificationServer:`             | `bool`                         | `false`                                                | Create the `notification-controller` Kubernetes Service                                                                                                         |
 | `expose: sourceServer:`                   | `bool`                         | `false`                                                | Create the `source-controller` Kubernetes Service                                                                                                               |

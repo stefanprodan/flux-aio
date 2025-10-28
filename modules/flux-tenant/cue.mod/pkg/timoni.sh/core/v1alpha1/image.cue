@@ -18,11 +18,11 @@ import (
 	// Tag identifies an image in the repository.
 	// A tag name may contain lowercase and uppercase characters, digits, underscores, periods and dashes.
 	// A tag name may not start with a period or a dash and may contain a maximum of 128 characters.
-	tag!: string & strings.MaxRunes(128)
+	tag: *"" | string & strings.MaxRunes(128)
 
 	// Digest uniquely and immutably identifies an image in the repository.
 	// Spec: https://github.com/opencontainers/image-spec/blob/main/descriptor.md#digests.
-	digest!: string
+	digest: *"" | string
 
 	// PullPolicy defines the pull policy for the image.
 	// By default, it is set to IfNotPresent.

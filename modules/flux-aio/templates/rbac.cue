@@ -48,6 +48,7 @@ import (
 			"helm.toolkit.fluxcd.io",
 			"image.toolkit.fluxcd.io",
 			"kustomize.toolkit.fluxcd.io",
+			"source.extensions.fluxcd.io",
 		]
 		resources: ["*"]
 		verbs: [

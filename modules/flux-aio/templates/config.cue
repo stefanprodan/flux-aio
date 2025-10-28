@@ -36,15 +36,21 @@ import (
 			enabled:      *true | bool
 			image:        timoniv1.#Image
 			resources?:   timoniv1.#ResourceRequirements
-			featureGates: *"" | string
+			featureGates: *"ExternalArtifact=true" | string
 		}
 		helm: {
 			enabled:      *true | bool
 			image:        timoniv1.#Image
 			resources?:   timoniv1.#ResourceRequirements
-			featureGates: *"" | string
+			featureGates: *"ExternalArtifact=true" | string
 		}
 		notification: {
+			enabled:      *true | bool
+			image:        timoniv1.#Image
+			resources?:   timoniv1.#ResourceRequirements
+			featureGates: *"" | string
+		}
+		watcher: {
 			enabled:      *true | bool
 			image:        timoniv1.#Image
 			resources?:   timoniv1.#ResourceRequirements
@@ -161,6 +167,9 @@ import (
 		},
 		if config.controllers.notification.enabled {
 			#NotificationController & {#config: config, _env: containerEnv}
+		},
+		if config.controllers.watcher.enabled {
+			#SourceWatcher & {#config: config, _env: containerEnv}
 		},
 	]
 
