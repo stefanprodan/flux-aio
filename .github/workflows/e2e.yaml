@@ -27,7 +27,7 @@ jobs:
           - 5000:5000
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
       - name: Install tools
@@ -74,6 +74,7 @@ jobs:
       - name: Debug failure
         if: failure()
         run: |
+          kubectl -n kube-system get pods
           kubectl -n flux-system get pods
           kubectl -n flux-system get gitrepository -oyaml
           kubectl -n flux-system get kustomization -oyaml

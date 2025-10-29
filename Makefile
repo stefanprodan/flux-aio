@@ -96,14 +96,55 @@ import-crds: ## Update Flux API CUE definitions
 	@rm crds.yaml
 
 .PHONY: vendor-crds
-vendor-crds: ## Update Flux CRDs for Git sync
+vendor-crds: vendor-crds-git vendor-crds-oci vendor-crds-helm  ## Update CRDs for all modules
+
+.PHONY: vendor-crds-git
+vendor-crds-git: ## Update CRDs for flux-git-sync module
 	@cd modules/flux-git-sync
 	@timoni mod vendor crds -f https://github.com/fluxcd/flux2/releases/download/$(VERSION)/install.yaml
 	@cd cue.mod/gen
-	@rm -rf image.toolkit.fluxcd.io helm.toolkit.fluxcd.io notification.toolkit.fluxcd.io
-	@rm -rf kustomize.toolkit.fluxcd.io/kustomization/v1beta1 kustomize.toolkit.fluxcd.io/kustomization/v1beta2
-	@rm -rf source.toolkit.fluxcd.io/gitrepository/v1beta1 source.toolkit.fluxcd.io/gitrepository/v1beta2
-	@rm -rf source.toolkit.fluxcd.io/bucket source.toolkit.fluxcd.io/ocirepository source.toolkit.fluxcd.io/helmrepository source.toolkit.fluxcd.io/helmchart
+	@rm -rf image.toolkit.fluxcd.io \
+	helm.toolkit.fluxcd.io \
+	notification.toolkit.fluxcd.io \
+	kustomize.toolkit.fluxcd.io/kustomization/v1beta2 \
+	source.toolkit.fluxcd.io/gitrepository/v1beta2 \
+	source.toolkit.fluxcd.io/bucket \
+	source.toolkit.fluxcd.io/ocirepository \
+	source.toolkit.fluxcd.io/helmrepository \
+	source.toolkit.fluxcd.io/helmchart \
+	source.toolkit.fluxcd.io/externalartifact
+
+.PHONY: vendor-crds-oci
+vendor-crds-oci: ## Update CRDs for flux-oci-sync module
+	@cd modules/flux-oci-sync
+	@timoni mod vendor crds -f https://github.com/fluxcd/flux2/releases/download/$(VERSION)/install.yaml
+	@cd cue.mod/gen
+	@rm -rf image.toolkit.fluxcd.io \
+	helm.toolkit.fluxcd.io \
+	notification.toolkit.fluxcd.io \
+	kustomize.toolkit.fluxcd.io/kustomization/v1beta2 \
+	source.toolkit.fluxcd.io/ocirepository/v1beta2 \
+	source.toolkit.fluxcd.io/bucket \
+	source.toolkit.fluxcd.io/gitrepository \
+	source.toolkit.fluxcd.io/helmrepository \
+	source.toolkit.fluxcd.io/helmchart \
+	source.toolkit.fluxcd.io/externalartifact
+
+.PHONY: vendor-crds-helm
+vendor-crds-helm: ## Update CRDs for flux-helm-release module
+	@cd modules/flux-helm-release
+	@timoni mod vendor crds -f https://github.com/fluxcd/flux2/releases/download/$(VERSION)/install.yaml
+	@cd cue.mod/gen
+	@rm -rf image.toolkit.fluxcd.io \
+	kustomize.toolkit.fluxcd.io \
+	notification.toolkit.fluxcd.io \
+	helm.toolkit.fluxcd.io/helmrelease/v2beta2 \
+	source.toolkit.fluxcd.io/ocirepository/v1beta2 \
+	source.toolkit.fluxcd.io/helmrepository/v1beta2 \
+	source.toolkit.fluxcd.io/helmchart/v1beta2 \
+	source.toolkit.fluxcd.io/bucket \
+	source.toolkit.fluxcd.io/gitrepository \
+	source.toolkit.fluxcd.io/externalartifact
 
 .PHONY: list-images
 list-images:

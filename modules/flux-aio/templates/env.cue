@@ -10,12 +10,12 @@ import "list"
 			value: "localhost:9790"
 		},
 		{
-			name: "RUNTIME_NAMESPACE"
-			valueFrom: fieldRef: fieldPath: "metadata.namespace"
+			name:  "SOURCE_WATCHER_LOCALHOST"
+			value: "localhost:9691"
 		},
 		{
-			name: "GOMAXPROCS"
-			valueFrom: resourceFieldRef: resource: "limits.cpu"
+			name: "RUNTIME_NAMESPACE"
+			valueFrom: fieldRef: fieldPath: "metadata.namespace"
 		},
 		{
 			name: "GOMEMLIMIT"

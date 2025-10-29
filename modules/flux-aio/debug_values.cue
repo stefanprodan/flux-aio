@@ -6,12 +6,12 @@ package main
 // Eval example:
 // cue -t debug -t name=flux -t namespace=flux-system -t mv=2.0.0 -t kv=1.28.0 eval -c -e timoni.instance.objects.deployment
 values: {
-	version: "v2.3.0"
+	version: "v2.7.3"
 	controllers: {
 		source: {
 			image: {
 				repository: "ghcr.io/fluxcd/source-controller"
-				tag:        "v1.3.0"
+				tag:        "v1.7.3"
 				digest:     ""
 			}
 			resources: {
@@ -29,7 +29,7 @@ values: {
 		kustomize: {
 			image: {
 				repository: "ghcr.io/fluxcd/kustomize-controller"
-				tag:        "v1.3.0"
+				tag:        "v1.7.2"
 				digest:     ""
 			}
 			resources: limits: {
@@ -40,7 +40,7 @@ values: {
 		notification: {
 			image: {
 				repository: "ghcr.io/fluxcd/notification-controller"
-				tag:        "v1.3.0"
+				tag:        "v1.7.4"
 				digest:     ""
 			}
 			resources: limits: {
@@ -52,14 +52,20 @@ values: {
 		helm: {
 			image: {
 				repository: "ghcr.io/fluxcd/helm-controller"
-				tag:        "v1.0.1"
+				tag:        "v1.4.3"
 				digest:     ""
 			}
 			resources: limits: {
 				cpu:    "2000m"
 				memory: "1Gi"
 			}
-			featureGates: "DisableChartDigestTracking=true,OOMWatch=true"
+			featureGates: "DisableChartDigestTracking=true,OOMWatch=true,ExternalArtifact=true"
+		}
+		watcher: {
+			image: {
+				repository: "ghcr.io/fluxcd/source-watcher"
+				tag:        "v2.0.2"
+			}
 		}
 	}
 	workload: {
