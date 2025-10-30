@@ -21,6 +21,10 @@ import (
 		if #config.repository.insecure {
 			insecure: #config.repository.insecure
 		}
+		layerSelector: {
+			mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+			operation: "copy"
+		}
 	}
 }
 
