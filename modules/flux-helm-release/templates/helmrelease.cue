@@ -71,6 +71,10 @@ import (
 			values: #config.helmValues
 		}
 
+		if #config.helmValuesFrom != _|_ {
+			valuesFrom: #config.helmValuesFrom
+		}
+
 		if #config.dependsOn != _|_ {
 			dependsOn: #config.dependsOn
 		}

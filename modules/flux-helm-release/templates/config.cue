@@ -50,6 +50,14 @@ import (
 	}]
 
 	helmValues?: {...}
+
+	helmValuesFrom?: [...{
+		kind:        "ConfigMap" | "Secret"
+		name:        string
+		valuesKey?:  string & =~"^[A-Za-z0-9._-]+$"
+		targetPath?: string
+		optional?:   bool | *false
+	}]
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.

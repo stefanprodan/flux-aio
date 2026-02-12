@@ -18,5 +18,12 @@ values: {
 		version: "6.x"
 	}
 
+	helmValuesFrom: [{
+		kind:       "ConfigMap"
+		name:       "example-values"
+		valuesKey:  "values.yaml"
+		targetPath: "values"
+	}]
+
 	driftDetection: "enabled"
 }
