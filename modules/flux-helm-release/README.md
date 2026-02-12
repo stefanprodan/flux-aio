@@ -40,5 +40,6 @@ timoni -n default delete podinfo
 | `driftDetection:`             | `string`              | `"disabled"` | Set drift detection mode, can be `enabled` or `warn`                |
 | `test:`                       | `bool`                | `false`      | Run Helm tests after install and upgrade                            |
 | `helmValues:`                 | `{...}`               | `{}`         | Helm values                                                         |
+| `helmValuesFrom:`             | `[...{...}]`          | `[]`         | Import Helm values from ConfigMaps or Secrets                       |
 | `metadata: labels:`           | `{[ string]: string}` | `{}`         | Custom labels                                                       |
 | `metadata: annotations:`      | `{[ string]: string}` | `{}`         | Custom annotations                                                  |
