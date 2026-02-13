@@ -28,6 +28,7 @@ timoni -n default delete podinfo
 | `repository: auth: username:` | `string`              | `""`         | Helm repository username                                            |
 | `repository: auth: password:` | `string`              | `""`         | Helm repository password                                            |
 | `repository: insecure:`       | `bool`                | `false`      | Allow connecting to an insecure (HTTP) OCI registry server          |
+| `repository: certSecretName:` | `string`              | `""`         | Name of the Secret containing the TLS certificate pair or CA        |
 | `chart: name:`                | `string`              | `""`         | Helm chart name                                                     |
 | `chart: version:`             | `string`              | `"*"`        | Helm chart name semver range                                        |
 | `sync: interval:`             | `int`                 | `60`         | Reconcile interval in minutes                                       |

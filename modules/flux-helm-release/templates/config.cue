@@ -21,8 +21,9 @@ import (
 			username!: string
 			password!: string
 		}
-		provider: *"generic" | "aws" | "azure" | "gcp"
-		insecure: *false | bool
+		provider:        *"generic" | "aws" | "azure" | "gcp"
+		insecure:        *false | bool
+		certSecretName?: string
 	}
 
 	chart: {

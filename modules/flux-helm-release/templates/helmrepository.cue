@@ -16,6 +16,9 @@ import (
 		if #config.repository.insecure {
 			insecure: true
 		}
+		if #config.repository.certSecretName != _|_ {
+			certSecretRef: name: #config.repository.certSecretName
+		}
 		provider: #config.repository.provider
 	}
 }
