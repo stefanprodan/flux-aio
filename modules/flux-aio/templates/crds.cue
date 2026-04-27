@@ -3185,7 +3185,8 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									strategy: {
 										description: """
 	Strategy defines the install strategy to use for this HelmRelease.
-	Defaults to 'RemediateOnFailure'.
+	Defaults to 'RemediateOnFailure', or 'RetryOnFailure' when the
+	DefaultToRetryOnFailure feature gate is enabled.
 	"""
 										properties: {
 											name: {
@@ -3505,8 +3506,13 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										type: "boolean"
 									}
 									force: {
-										description: "Force forces resource updates through a replacement strategy."
-										type:        "boolean"
+										description: """
+	Force forces resource updates through a replacement strategy
+	that avoids 3-way merge conflicts on client-side apply.
+	This field is ignored for server-side apply (which always
+	forces conflicts with other field managers).
+	"""
+										type: "boolean"
 									}
 									recreate: {
 										description: """
@@ -3761,8 +3767,13 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										type: "boolean"
 									}
 									force: {
-										description: "Force forces resource updates through a replacement strategy."
-										type:        "boolean"
+										description: """
+	Force forces resource updates through a replacement strategy
+	that avoids 3-way merge conflicts on client-side apply.
+	This field is ignored for server-side apply (which always
+	forces conflicts with other field managers).
+	"""
+										type: "boolean"
 									}
 									preserveValues: {
 										description: """
@@ -3829,7 +3840,8 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									strategy: {
 										description: """
 	Strategy defines the upgrade strategy to use for this HelmRelease.
-	Defaults to 'RemediateOnFailure'.
+	Defaults to 'RemediateOnFailure', or 'RetryOnFailure' when the
+	DefaultToRetryOnFailure feature gate is enabled.
 	"""
 										properties: {
 											name: {
@@ -9227,7 +9239,10 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 							secretRef: {
 								description: """
 	SecretRef specifies the Secret containing the token used
-	to validate the payload authenticity.
+	to validate the payload authenticity. The Secret must contain a 'token'
+	key. For GCR receivers, the Secret must also contain an 'email' key
+	with the IAM service account email configured on the Pub/Sub push
+	subscription, and an 'audience' key with the expected OIDC token audience.
 	"""
 								properties: name: {
 									description: "Name of the referent."

@@ -149,7 +149,7 @@ vendor-crds-helm: ## Update CRDs for flux-helm-release module
 .PHONY: list-images
 list-images:
 	@echo "ghcr.io/fluxcd/flux-cli:$$(flux version --client | awk '$$2 != "" { print $$2}')"
-	@flux install --export | grep 'image:' | awk '$$2 != "" { print $$2}' | sort -u
+	@flux install --export --components-extra source-watcher | grep 'image:' | awk '$$2 != "" { print $$2}' | sort -u
 
 .PHONY: help
 help:  ## Display this help menu
