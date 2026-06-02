@@ -3,16 +3,16 @@
 package main
 
 values: {
-	version: "v2.8.6"
+	version: "v2.8.8"
 	controllers: {
 		source: image: {
 			repository: "ghcr.io/fluxcd/source-controller"
-			tag:        "v1.8.3"
+			tag:        "v1.8.5"
 			digest:     ""
 		}
 		kustomize: image: {
 			repository: "ghcr.io/fluxcd/kustomize-controller"
-			tag:        "v1.8.4"
+			tag:        "v1.8.5"
 			digest:     ""
 		}
 		notification: image: {
@@ -22,7 +22,7 @@ values: {
 		}
 		helm: image: {
 			repository: "ghcr.io/fluxcd/helm-controller"
-			tag:        "v1.5.4"
+			tag:        "v1.5.5"
 			digest:     ""
 		}
 		watcher: image: {
