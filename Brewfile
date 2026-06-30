@@ -6,9 +6,9 @@ brew "kubectl"
 brew "kind"
 
 # Flux
-tap "fluxcd/tap"
+tap "fluxcd/tap", trusted: true
 brew "fluxcd/tap/flux"
 
 # Timoni
-tap "stefanprodan/tap"
+tap "stefanprodan/tap", trusted: true
 brew "stefanprodan/tap/timoni"
