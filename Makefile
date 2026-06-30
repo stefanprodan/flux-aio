@@ -112,7 +112,8 @@ vendor-crds-git: ## Update CRDs for flux-git-sync module
 	source.toolkit.fluxcd.io/ocirepository \
 	source.toolkit.fluxcd.io/helmrepository \
 	source.toolkit.fluxcd.io/helmchart \
-	source.toolkit.fluxcd.io/externalartifact
+	source.toolkit.fluxcd.io/externalartifact \
+	source.extensions.fluxcd.io
 
 .PHONY: vendor-crds-oci
 vendor-crds-oci: ## Update CRDs for flux-oci-sync module
@@ -128,7 +129,8 @@ vendor-crds-oci: ## Update CRDs for flux-oci-sync module
 	source.toolkit.fluxcd.io/gitrepository \
 	source.toolkit.fluxcd.io/helmrepository \
 	source.toolkit.fluxcd.io/helmchart \
-	source.toolkit.fluxcd.io/externalartifact
+	source.toolkit.fluxcd.io/externalartifact \
+	source.extensions.fluxcd.io
 
 .PHONY: vendor-crds-helm
 vendor-crds-helm: ## Update CRDs for flux-helm-release module
@@ -144,7 +146,8 @@ vendor-crds-helm: ## Update CRDs for flux-helm-release module
 	source.toolkit.fluxcd.io/helmchart/v1beta2 \
 	source.toolkit.fluxcd.io/bucket \
 	source.toolkit.fluxcd.io/gitrepository \
-	source.toolkit.fluxcd.io/externalartifact
+	source.toolkit.fluxcd.io/externalartifact \
+	source.extensions.fluxcd.io
 
 .PHONY: list-images
 list-images:
