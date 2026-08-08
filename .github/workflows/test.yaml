@@ -20,12 +20,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
       - name: Install tools
         run: make tools
-      - name: Run CUE format
-        run: |
-          make fmt
-          if [[ $(git diff --stat) != '' ]]; then
-            echo 'run "make fmt" and commit changes'
-            exit 1
-          fi
+      - name: Check CUE formatting
+        run: make fmt-check
       - name: Vet modules
         run: make vet

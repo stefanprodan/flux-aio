@@ -19,7 +19,15 @@ Versioning follows `<flux version>-<distribution release number>`, e.g. `2.9.0-0
   - `templates/` — CUE templates for the Deployment, RBAC, services, etc.
   - `templates/crds.cue` — **generated** Flux CRDs (do not hand-edit; see below).
 - `modules/flux-git-sync/`, `flux-oci-sync/`, `flux-helm-release/`, `flux-tenant/` — companion modules for Git/OCI sync, Helm releases, and tenant setup.
-  - `*/cue.mod/gen/**/types_gen.cue` — **generated** CUE schemas vendored from Flux CRDs (do not hand-edit; see below).
+- `schemas/` — shared CUE module holding the single copy of every vendored
+  schema: `timoni.sh/core` (`cue.mod/pkg`), the `k8s.io` API schemas and the
+  Flux CRD `types_gen.cue` schemas (`cue.mod/gen`); all **generated**, do not
+  hand-edit (see below). The modules' `cue.mod/pkg/timoni.sh`,
+  `cue.mod/gen/k8s.io` and `cue.mod/gen/*.toolkit.fluxcd.io` entries are
+  **relative symlinks** into this module. Refresh with `make vendor-k8s` /
+  `make vendor-crds` (both prune to what the modules import). Requires
+  Timoni >= v0.30; module pushes must use `--resolve-symlinks` (already set in
+  `make push-mod` and the e2e workflow).
 - `bundles/` — Timoni bundles wiring the modules together.
 - `test/` — kind cluster and addon test fixtures.
 - `Makefile` — all build/codegen/release tasks. `Brewfile` — required CLIs.
@@ -29,16 +37,30 @@ Versioning follows `<flux version>-<distribution release number>`, e.g. `2.9.0-0
 Install the toolchain with `make tools` (uses `Brewfile`): `cue`, `kubectl`,
 `kind`, `flux`, `timoni`.
 
+If the local Docker credential helper blocks anonymous registry pulls (e.g.
+`make vendor-k8s` or `timoni mod init` failing with `error getting
+credentials`), point `DOCKER_CONFIG` at a directory without a Docker config,
+such as the repo root:
+
+```bash
+DOCKER_CONFIG=$PWD make vendor-k8s
+```
+
+Never do this for push operations (`make push-mod`) — those need the real
+credentials.
+
 ## Common commands
 
 | Command | Purpose |
 |---|---|
-| `make fmt` | Format all CUE definitions. Run before committing. |
+| `make fmt` | Format all CUE definitions (`timoni fmt`). Run before committing. |
+| `make fmt-check` | Verify formatting (`timoni fmt --diff`); used by CI. |
 | `make vet` | Vet every module (validates rendered resources). Run before committing. |
 | `make gen-deploy` | Render the single-pod Deployment using `debug_values.cue`. |
 | `make install` / `make uninstall` | Apply / remove Flux on the current cluster. |
 | `make import-crds` | Regenerate `modules/flux-aio/templates/crds.cue`. |
-| `make vendor-crds` | Regenerate the `types_gen.cue` schemas in the sync modules. |
+| `make vendor-crds` | Regenerate the shared Flux CRD schemas in `./schemas`. |
+| `make vendor-k8s` | Regenerate the shared `k8s.io` schemas in `./schemas`. |
 | `make list-images` | Print the controller images for the installed `flux` CLI. |
 
 `VERSION` is derived automatically from the `version:` field in
@@ -46,7 +68,7 @@ Install the toolchain with `make tools` (uses `Brewfile`): `cue`, `kubectl`,
 set there.
 
 **Never hand-edit generated files** (`templates/crds.cue`,
-`*/cue.mod/gen/**/types_gen.cue`); always regenerate them via the Makefile.
+`schemas/cue.mod/gen/**`); always regenerate them via the Makefile.
 
 ## Updating to a new Flux version
 
@@ -71,18 +93,20 @@ This is the canonical workflow (e.g. the `2.8.x` → `2.9.0` upgrade). Replace
 3. **Regenerate the CRDs and vendored schemas:**
    ```bash
    make import-crds    # rewrites modules/flux-aio/templates/crds.cue
-   make vendor-crds    # rewrites the types_gen.cue files in the sync modules
+   make vendor-crds    # rewrites the shared Flux CRD schemas in ./schemas
    ```
 
-4. **Prune any new, unused CRD API groups.** Each sync module vendors only the
-   CRDs it needs; the `vendor-crds-*` targets `rm -rf` the rest. When Flux adds a
-   new API group, `vendor-crds` leaves it as **untracked** files under
-   `modules/*/cue.mod/gen/`. Check `git status` for untracked dirs after step 3.
-   If a new group isn't used by the sync modules, delete the untracked dirs and
-   add the group to the `rm -rf` lists in the three `vendor-crds-*` Makefile
-   targets so it's pruned automatically next time.
-   - Example: Flux 2.9 added `source.extensions.fluxcd.io` (ArtifactGenerator),
-     which was removed from the sync modules and added to the cleanup lists.
+4. **Prune any new, unused CRD API groups.** The `vendor-crds` target vendors
+   all Flux CRDs into `./schemas` and `rm -rf`s the API groups no module
+   imports. When Flux adds a new API group, `vendor-crds` leaves it as
+   **untracked** files under `schemas/cue.mod/gen/`. Check `git status` for
+   untracked dirs after step 3. If the new group isn't used by the modules,
+   delete the untracked dirs and add the group to the `rm -rf` list in the
+   `vendor-crds` Makefile target so it's pruned automatically next time.
+   - Currently pruned: `image.toolkit.fluxcd.io` and
+     `notification.toolkit.fluxcd.io`. The `source.extensions.fluxcd.io` group
+     (ArtifactGenerator) is kept in `./schemas` for future use even though no
+     module imports it yet.
 
 5. **Update `modules/flux-aio/debug_values.cue`** — bump it to the *previous*
    stable release's `version:` and controller tags (it intentionally lags one

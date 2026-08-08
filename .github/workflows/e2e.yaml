@@ -32,13 +32,8 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
       - name: Install tools
         run: make tools
-      - name: Run CUE format
-        run: |
-          make fmt
-          if [[ $(git diff --stat) != '' ]]; then
-            echo 'run "make fmt" and commit changes'
-            exit 1
-          fi
+      - name: Check CUE formatting
+        run: make fmt-check
       - name: Vet modules
         run: make vet
       - name: Create cluster without CNI
@@ -48,11 +43,11 @@ jobs:
           --image ghcr.io/fluxcd/kindest/node:v1.35.1-amd64
       - name: Push modules
         run: |
-          timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION}
-          timoni mod push ./modules/flux-git-sync ${FLUX_SYNC_MODULE_URL} -v ${FLUX_MODULE_VERSION}
-          timoni mod push ./modules/flux-oci-sync ${FLUX_OCI_MODULE_URL} -v ${FLUX_MODULE_VERSION}
-          timoni mod push ./modules/flux-tenant ${FLUX_TENANT_MODULE_URL} -v ${FLUX_MODULE_VERSION}
-          timoni mod push ./modules/flux-helm-release ${FLUX_HR_MODULE_URL} -v ${FLUX_MODULE_VERSION}
+          timoni mod push ./modules/flux-aio ${FLUX_MODULE_URL} -v ${FLUX_MODULE_VERSION} --resolve-symlinks
+          timoni mod push ./modules/flux-git-sync ${FLUX_SYNC_MODULE_URL} -v ${FLUX_MODULE_VERSION} --resolve-symlinks
+          timoni mod push ./modules/flux-oci-sync ${FLUX_OCI_MODULE_URL} -v ${FLUX_MODULE_VERSION} --resolve-symlinks
+          timoni mod push ./modules/flux-tenant ${FLUX_TENANT_MODULE_URL} -v ${FLUX_MODULE_VERSION} --resolve-symlinks
+          timoni mod push ./modules/flux-helm-release ${FLUX_HR_MODULE_URL} -v ${FLUX_MODULE_VERSION} --resolve-symlinks
       - name: Apply flux-aio bundle
         run: |
           PR_NUMBER=${{ github.event.number }}
