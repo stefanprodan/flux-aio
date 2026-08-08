@@ -4,7 +4,10 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "alerts.notification.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -204,7 +207,10 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "artifactgenerators.source.extensions.fluxcd.io"
 	}
 	spec: {
@@ -287,7 +293,10 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 	prefix of 'From'. Patterns without a separator (e.g. "*.md") match
 	the file name at any depth.
 	"""
-														items: type: "string"
+														items: {
+															maxLength: 1024
+															type:      "string"
+														}
 														maxItems: 100
 														type:     "array"
 													}
@@ -328,7 +337,7 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 	"""
 														maxLength: 1024
 														minLength: 1
-														pattern:   "^@(artifact)/(.*)$"
+														pattern:   "^@artifact/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,})(/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,}))*$"
 														type:      "string"
 													}
 												}
@@ -623,7 +632,10 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "buckets.source.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -1087,7 +1099,10 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "externalartifacts.source.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -1329,7 +1344,10 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "gitrepositories.source.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -1931,7 +1949,10 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "helmcharts.source.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -2360,7 +2381,7 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 								description: """
 	URL is the dynamic fetch link for the latest Artifact.
 	It is provided on a "best effort" basis, and using the precise
-	BucketStatus.Artifact data is recommended.
+	HelmChartStatus.Artifact data is recommended.
 	"""
 								type: "string"
 							}
@@ -2380,7 +2401,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "helmreleases.helm.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -4240,7 +4264,10 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "helmrepositories.source.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -4635,7 +4662,10 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "imagepolicies.image.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -5015,7 +5045,10 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "imagerepositories.image.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -5368,7 +5401,7 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 								description: """
 	ObservedExclusionList is a list of observed exclusion list. It reflects
 	the exclusion rules used for the observed scan result in
-	spec.lastScanResult.
+	status.lastScanResult.
 	"""
 								items: type: "string"
 								type: "array"
@@ -5394,7 +5427,10 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "imageupdateautomations.image.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -5634,10 +5670,12 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 	Refspec specifies the Git Refspec to use for a push operation.
 	If both Branch and Refspec are provided, then the commit is pushed
 	to the branch and also using the specified refspec.
+	Deletion refspecs and refspecs prefixed with '+' are not supported.
 	For more details about Git Refspecs, see:
 	https://git-scm.com/book/en/v2/Git-Internals-The-Refspec
 	"""
-												type: "string"
+												pattern: "^$|^[^+:]"
+												type:    "string"
 											}
 										}
 										type: "object"
@@ -5921,7 +5959,6 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 							}
 							observedSourceRevision: {
 								description: """
-	ObservedPolicies []ObservedPolicy `json:"observedPolicies,omitempty"`
 	ObservedSourceRevision is the last observed source revision. This can be
 	used to determine if the source has been updated since last observation.
 	"""
@@ -5943,7 +5980,10 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "kustomizations.kustomize.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -6938,7 +6978,10 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "ocirepositories.source.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -7465,7 +7508,10 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "providers.notification.toolkit.fluxcd.io"
 	}
 	spec: {
@@ -7698,7 +7744,10 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.21.0"
+		annotations: {
+			"controller-gen.kubebuilder.io/version":  "v0.21.0"
+			"kustomize.toolkit.fluxcd.io/substitute": "disabled"
+		}
 		name: "receivers.notification.toolkit.fluxcd.io"
 	}
 	spec: {
