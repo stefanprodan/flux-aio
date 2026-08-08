@@ -65,6 +65,7 @@ values: {
 			image: {
 				repository: "ghcr.io/fluxcd/source-watcher"
 				tag:        "v2.1.1"
+				digest:     ""
 			}
 		}
 	}

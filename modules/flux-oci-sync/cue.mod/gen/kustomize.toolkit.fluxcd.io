@@ -1,0 +1,1 @@
+../../../../schemas/cue.mod/gen/kustomize.toolkit.fluxcd.io

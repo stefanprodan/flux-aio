@@ -21,10 +21,11 @@ uninstall: ## Uninstall Flux
 
 .PHONY: fmt
 fmt: ## Format all CUE definitions
-	@cue fmt ./bundles/...
-	@for dir in ./modules/* ; do
-		cue fmt $$dir/...
-	done
+	@timoni fmt .
+
+.PHONY: fmt-check
+fmt-check: ## Verify that all CUE definitions are formatted
+	@timoni fmt --diff .
 
 .PHONY: vet
 vet: ## Vet modules
@@ -47,38 +48,24 @@ ls: ## List the CUE generated objects
 gen-deploy: ## Print the Flux deployment
 	@timoni -n flux-system build flux ./modules/flux-aio/ -f ./modules/flux-aio/debug_values.cue | yq e '. | select(.kind == "Deployment")'
 
+# $(call push_module,<module name>,<description>)
+define push_module
+	@timoni mod push ./modules/$(1) oci://ghcr.io/$(USER)/modules/$(1) -v=$(VERSION:v%=%) --latest \
+		--resolve-symlinks \
+		--sign cosign \
+		-a 'org.opencontainers.image.source=https://github.com/$(USER)/flux-aio'  \
+		-a 'org.opencontainers.image.licenses=Apache-2.0' \
+		-a 'org.opencontainers.image.description=$(2)' \
+		-a 'org.opencontainers.image.documentation=https://github.com/$(USER)/flux-aio/blob/main/README.md'
+endef
+
 .PHONY: push-mod
 push-mod: ## Push the Timoni modules to GHCR
-	@timoni mod push ./modules/flux-aio oci://ghcr.io/$(USER)/modules/flux-aio -v=$(VERSION:v%=%) --latest \
-		--sign cosign \
-		-a 'org.opencontainers.image.source=https://github.com/stefanprodan/flux-aio'  \
-		-a 'org.opencontainers.image.licenses=Apache-2.0' \
-		-a 'org.opencontainers.image.description=A timoni.sh module for deploying Flux AIO.' \
-		-a 'org.opencontainers.image.documentation=https://github.com/stefanprodan/flux-aio/blob/main/README.md'
-	@timoni mod push ./modules/flux-git-sync oci://ghcr.io/$(USER)/modules/flux-git-sync -v=$(VERSION:v%=%) --latest \
-		--sign cosign \
-		-a 'org.opencontainers.image.source=https://github.com/$(USER)/flux-aio'  \
-		-a 'org.opencontainers.image.licenses=Apache-2.0' \
-		-a 'org.opencontainers.image.description=A timoni.sh module for configuring Flux Git reconciliation.' \
-		-a 'org.opencontainers.image.documentation=https://github.com/$(USER)/flux-aio/blob/main/README.md'
-	@timoni mod push ./modules/flux-oci-sync oci://ghcr.io/$(USER)/modules/flux-oci-sync -v=$(VERSION:v%=%) --latest \
-		--sign cosign \
-		-a 'org.opencontainers.image.source=https://github.com/$(USER)/flux-aio'  \
-		-a 'org.opencontainers.image.licenses=Apache-2.0' \
-		-a 'org.opencontainers.image.description=A timoni.sh module for configuring Flux OCI artifacts reconciliation.' \
-		-a 'org.opencontainers.image.documentation=https://github.com/$(USER)/flux-aio/blob/main/README.md'
-	@timoni mod push ./modules/flux-tenant oci://ghcr.io/$(USER)/modules/flux-tenant -v=$(VERSION:v%=%) --latest \
-		--sign cosign \
-		-a 'org.opencontainers.image.source=https://github.com/$(USER)/flux-aio'  \
-		-a 'org.opencontainers.image.licenses=Apache-2.0' \
-		-a 'org.opencontainers.image.description=A timoni.sh module for managing Flux tenants.' \
-		-a 'org.opencontainers.image.documentation=https://github.com/$(USER)/flux-aio/blob/main/README.md'
-	@timoni mod push ./modules/flux-helm-release oci://ghcr.io/$(USER)/modules/flux-helm-release -v=$(VERSION:v%=%) --latest \
-		--sign cosign \
-		-a 'org.opencontainers.image.source=https://github.com/$(USER)/flux-aio'  \
-		-a 'org.opencontainers.image.licenses=Apache-2.0' \
-		-a 'org.opencontainers.image.description=A timoni.sh module for deploying Flux Helm Releases.' \
-		-a 'org.opencontainers.image.documentation=https://github.com/$(USER)/flux-aio/blob/main/README.md'
+	$(call push_module,flux-aio,A timoni.sh module for deploying Flux AIO.)
+	$(call push_module,flux-git-sync,A timoni.sh module for configuring Flux Git reconciliation.)
+	$(call push_module,flux-oci-sync,A timoni.sh module for configuring Flux OCI artifacts reconciliation.)
+	$(call push_module,flux-tenant,A timoni.sh module for managing Flux tenants.)
+	$(call push_module,flux-helm-release,A timoni.sh module for deploying Flux Helm Releases.)
 
 .PHONY: push-manifests
 push-manifests: ## Build and push the Flux manifests to GHCR
@@ -95,59 +82,24 @@ import-crds: ## Update Flux API CUE definitions
 	@cue import -f -o crds.cue -l 'strings.ToLower(kind)' -l 'metadata.name' -p templates crds.yaml
 	@rm crds.yaml
 
+.PHONY: vendor-k8s
+vendor-k8s: ## Update the shared Kubernetes API schemas in ./schemas
+	@timoni mod vendor k8s ./schemas
+	@cd schemas/cue.mod/gen/k8s.io
+	@for dir in api/* ; do
+		case $$dir in
+			api/core|api/apps|api/rbac) ;;
+			*) rm -rf $$dir ;;
+		esac
+	done
+	@rm -rf apiextensions-apiserver
+
 .PHONY: vendor-crds
-vendor-crds: vendor-crds-git vendor-crds-oci vendor-crds-helm  ## Update CRDs for all modules
-
-.PHONY: vendor-crds-git
-vendor-crds-git: ## Update CRDs for flux-git-sync module
-	@cd modules/flux-git-sync
-	@timoni mod vendor crds -f https://github.com/fluxcd/flux2/releases/download/$(VERSION)/install.yaml
-	@cd cue.mod/gen
+vendor-crds: ## Update the shared Flux CRD schemas in ./schemas
+	@timoni mod vendor crd ./schemas -f https://github.com/fluxcd/flux2/releases/download/$(VERSION)/install.yaml
+	@cd schemas/cue.mod/gen
 	@rm -rf image.toolkit.fluxcd.io \
-	helm.toolkit.fluxcd.io \
-	notification.toolkit.fluxcd.io \
-	kustomize.toolkit.fluxcd.io/kustomization/v1beta2 \
-	source.toolkit.fluxcd.io/gitrepository/v1beta2 \
-	source.toolkit.fluxcd.io/bucket \
-	source.toolkit.fluxcd.io/ocirepository \
-	source.toolkit.fluxcd.io/helmrepository \
-	source.toolkit.fluxcd.io/helmchart \
-	source.toolkit.fluxcd.io/externalartifact \
-	source.extensions.fluxcd.io
-
-.PHONY: vendor-crds-oci
-vendor-crds-oci: ## Update CRDs for flux-oci-sync module
-	@cd modules/flux-oci-sync
-	@timoni mod vendor crds -f https://github.com/fluxcd/flux2/releases/download/$(VERSION)/install.yaml
-	@cd cue.mod/gen
-	@rm -rf image.toolkit.fluxcd.io \
-	helm.toolkit.fluxcd.io \
-	notification.toolkit.fluxcd.io \
-	kustomize.toolkit.fluxcd.io/kustomization/v1beta2 \
-	source.toolkit.fluxcd.io/ocirepository/v1beta2 \
-	source.toolkit.fluxcd.io/bucket \
-	source.toolkit.fluxcd.io/gitrepository \
-	source.toolkit.fluxcd.io/helmrepository \
-	source.toolkit.fluxcd.io/helmchart \
-	source.toolkit.fluxcd.io/externalartifact \
-	source.extensions.fluxcd.io
-
-.PHONY: vendor-crds-helm
-vendor-crds-helm: ## Update CRDs for flux-helm-release module
-	@cd modules/flux-helm-release
-	@timoni mod vendor crds -f https://github.com/fluxcd/flux2/releases/download/$(VERSION)/install.yaml
-	@cd cue.mod/gen
-	@rm -rf image.toolkit.fluxcd.io \
-	kustomize.toolkit.fluxcd.io \
-	notification.toolkit.fluxcd.io \
-	helm.toolkit.fluxcd.io/helmrelease/v2beta2 \
-	source.toolkit.fluxcd.io/ocirepository/v1beta2 \
-	source.toolkit.fluxcd.io/helmrepository/v1beta2 \
-	source.toolkit.fluxcd.io/helmchart/v1beta2 \
-	source.toolkit.fluxcd.io/bucket \
-	source.toolkit.fluxcd.io/gitrepository \
-	source.toolkit.fluxcd.io/externalartifact \
-	source.extensions.fluxcd.io
+	notification.toolkit.fluxcd.io
 
 .PHONY: list-images
 list-images:

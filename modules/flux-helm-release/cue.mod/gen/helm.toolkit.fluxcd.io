@@ -1,0 +1,1 @@
+../../../../schemas/cue.mod/gen/helm.toolkit.fluxcd.io
