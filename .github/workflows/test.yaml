@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup Timoni
-        uses: stefanprodan/timoni/actions/setup@dee817667ba9706be82c43de5a9f9a275490620d # v0.30.0
+        uses: stefanprodan/timoni/actions/setup@74ab9cc2fbee3459505706f5fb7c2742ecffbf5d # v0.33.0
       - name: Check CUE formatting
         run: make fmt-check
       - name: Vet modules
