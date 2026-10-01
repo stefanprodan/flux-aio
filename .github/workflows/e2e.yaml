@@ -31,7 +31,7 @@ jobs:
       - name: Setup Timoni
         uses: stefanprodan/timoni/actions/setup@74ab9cc2fbee3459505706f5fb7c2742ecffbf5d # v0.33.0
       - name: Setup Flux CLI
-        uses: fluxcd/flux2/action@889be9d6cc8afa8ed639e1e1ba4ab678e3b38d8c # v2.9.4
+        uses: fluxcd/flux2/action@dd233c4fadef306a62b7893204f8e3817fecc2b2 # v2.9.5
       - name: Check CUE formatting
         run: make fmt-check
       - name: Vet modules
