@@ -30,7 +30,177 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}]
-			name: "v1beta3"
+			name: "v1"
+			schema: openAPIV3Schema: {
+				description: "Alert is the Schema for the alerts API"
+				properties: {
+					apiVersion: {
+						description: """
+	APIVersion defines the versioned schema of this representation of an object.
+	Servers should convert recognized schemas to the latest internal value, and
+	may reject unrecognized values.
+	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+	"""
+						type: "string"
+					}
+					kind: {
+						description: """
+	Kind is a string value representing the REST resource this object represents.
+	Servers may infer this from the endpoint the client submits requests to.
+	Cannot be updated.
+	In CamelCase.
+	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+	"""
+						type: "string"
+					}
+					metadata: type: "object"
+					spec: {
+						description: "AlertSpec defines an alerting rule for events involving a list of objects."
+						properties: {
+							eventMetadata: {
+								additionalProperties: type: "string"
+								description: """
+	EventMetadata adds metadata to events. Sources, from lowest to highest precedence:
+	`event.toolkit.fluxcd.io/` annotations on the involved object, Alert `.spec.eventMetadata`,
+	and controller-defined `<controller group>.toolkit.fluxcd.io/` event metadata.
+	Higher precedence wins; conflicts produce an info log and a Warning Event.
+	See the Alert API docs (Event metadata section).
+	"""
+								type: "object"
+							}
+							eventSeverity: {
+								default: "info"
+								description: """
+	EventSeverity specifies how to filter events based on severity.
+	If set to 'info' no events will be filtered.
+	"""
+								enum: [
+									"info",
+									"error",
+								]
+								type: "string"
+							}
+							eventSources: {
+								description: """
+	EventSources specifies how to filter events based
+	on the involved object kind, name and namespace.
+	"""
+								items: {
+									description: """
+	CrossNamespaceObjectReference contains enough information to let you locate the
+	typed referenced object at cluster level
+	"""
+									properties: {
+										apiVersion: {
+											description: "API version of the referent"
+											type:        "string"
+										}
+										kind: {
+											description: "Kind of the referent"
+											enum: [
+												"Bucket",
+												"GitRepository",
+												"Kustomization",
+												"HelmRelease",
+												"HelmChart",
+												"HelmRepository",
+												"ImageRepository",
+												"ImagePolicy",
+												"ImageUpdateAutomation",
+												"OCIRepository",
+												"ArtifactGenerator",
+												"ExternalArtifact",
+											]
+											type: "string"
+										}
+										matchLabels: {
+											additionalProperties: type: "string"
+											description: """
+	MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+	map is equivalent to an element of matchExpressions, whose key field is "key", the
+	operator is "In", and the values array contains only "value". The requirements are ANDed.
+	MatchLabels requires the name to be set to `*`.
+	"""
+											type: "object"
+										}
+										name: {
+											description: """
+	Name of the referent
+	If multiple resources are targeted `*` may be set.
+	"""
+											maxLength: 253
+											minLength: 1
+											type:      "string"
+										}
+										namespace: {
+											description: "Namespace of the referent"
+											maxLength:   253
+											minLength:   1
+											type:        "string"
+										}
+									}
+									required: [
+										"kind",
+										"name",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							exclusionList: {
+								description: """
+	ExclusionList specifies a list of Golang regular expressions
+	to be used for excluding messages.
+	"""
+								items: type: "string"
+								type: "array"
+							}
+							inclusionList: {
+								description: """
+	InclusionList specifies a list of Golang regular expressions
+	to be used for including messages.
+	"""
+								items: type: "string"
+								type: "array"
+							}
+							providerRef: {
+								description: "ProviderRef specifies which Provider this Alert should use."
+								properties: name: {
+									description: "Name of the referent."
+									type:        "string"
+								}
+								required: ["name"]
+								type: "object"
+							}
+							suspend: {
+								description: """
+	Suspend tells the controller to suspend subsequent
+	events handling for this Alert.
+	"""
+								type: "boolean"
+							}
+						}
+						required: [
+							"eventSources",
+							"providerRef",
+						]
+						type: "object"
+					}
+				}
+				type: "object"
+			}
+			served:  true
+			storage: true
+			subresources: {}
+		}, {
+			additionalPrinterColumns: [{
+				jsonPath: ".metadata.creationTimestamp"
+				name:     "Age"
+				type:     "date"
+			}]
+			deprecated:         true
+			deprecationWarning: "v1beta3 Alert is deprecated, upgrade to v1"
+			name:               "v1beta3"
 			schema: openAPIV3Schema: {
 				description: "Alert is the Schema for the alerts API"
 				properties: {
@@ -198,7 +368,7 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 				type: "object"
 			}
 			served:  true
-			storage: true
+			storage: false
 			subresources: {}
 		}]
 	}
@@ -311,6 +481,15 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 														pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
 														type:      "string"
 													}
+													optional: {
+														description: """
+	Optional, when set to true, allows the copy operation to silently
+	skip when the source path or glob pattern matches no files.
+	When false (default), the reconciliation fails with an error if
+	no files are matched.
+	"""
+														type: "boolean"
+													}
 													strategy: {
 														description: """
 	Strategy specifies the copy strategy to use.
@@ -350,13 +529,42 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 											minItems: 1
 											type:     "array"
 										}
+										inputsFrom: {
+											description: """
+	InputsFrom specifies a source path to a YAML file whose contents are
+	exported in the ExternalArtifact .status.exportedInputs field.
+	The format is "@<alias>/<path>", where <alias> references a source or
+	"artifact" for the generated artifact itself. When pathPattern is set,
+	the path may use capture placeholders such as "{module}".
+	"""
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
+											type:      "string"
+										}
 										name: {
 											description: """
 	Name is the name of the generated artifact.
 	When pathPattern is set, this field may use capture placeholders such as "{app}".
+	The maximum length accommodates capture placeholders; the effective
+	limits are enforced by the CEL validation when pathPattern is not set.
 	"""
-											maxLength: 253
-											minLength: 1
+											maxLength: 1024
+											type:      "string"
+										}
+										namespace: {
+											description: """
+	Namespace is the namespace of the generated artifact.
+	If not provided, defaults to the same namespace as the ArtifactGenerator.
+	When pathPattern is set, this field may use capture placeholders such as "{app}".
+	The credentials used to reconcile the artifact are described in
+	.spec.serviceAccountName: an explicit ServiceAccount applies to every
+	generated artifact, while the --default-service-account flag only applies
+	to artifacts in a namespace other than the ArtifactGenerator namespace.
+	The maximum length accommodates capture placeholders; the effective
+	limits are enforced by the CEL validation when pathPattern is not set.
+	"""
+											maxLength: 1024
 											type:      "string"
 										}
 										originRevision: {
@@ -413,6 +621,168 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 								}
 								type: "object"
 							}
+							managedNamespaces: {
+								description: """
+	ManagedNamespaces defines how the controller manages the namespaces
+	targeted by the generated artifacts. When omitted, the target namespaces
+	are unmanaged: they must already exist and are left untouched.
+	"""
+								properties: {
+									allowedNames: {
+										description: """
+	AllowedNames is a list of CEL expressions that define the set of
+	namespaces the ArtifactGenerator agrees to manage. Each expression
+	receives the namespace name through the 'ns' string variable and must
+	return a boolean. A namespace is managed only when at least one
+	expression returns true. The 'default', 'kube-system', 'kube-public'
+	and 'flux-system' namespaces are always rejected, regardless of the
+	expressions.
+	"""
+										items: type: "string"
+										minItems: 1
+										type:     "array"
+									}
+									metadata: {
+										description: """
+	Metadata defines how the metadata of the desired namespaces is built,
+	on top of .spec.commonMetadata.
+	"""
+										properties: {
+											from: {
+												description: """
+	From is a list of metadata operations applied in order to the desired
+	namespaces, on top of .spec.commonMetadata and .fromSource.
+	"""
+												items: {
+													description: """
+	NamespaceMetadataFrom defines a metadata operation applied to a desired
+	namespace.
+	"""
+													properties: {
+														annotations: {
+															additionalProperties: type: "string"
+															description: "Annotations to be applied to the namespace."
+															type:        "object"
+														}
+														labels: {
+															additionalProperties: type: "string"
+															description: "Labels to be applied to the namespace."
+															type:        "object"
+														}
+														namespace: {
+															description: """
+	Namespace is the name of the desired namespace the metadata applies to,
+	or '*' to apply the metadata to all desired namespaces.
+	"""
+															maxLength: 63
+															pattern:   "^(\\*|[a-z0-9]([-a-z0-9]*[a-z0-9])?)$"
+															type:      "string"
+														}
+														strategy: {
+															description: """
+	Strategy specifies how the labels and annotations are applied.
+	'Reset' clears all the existing labels and annotations before applying
+	the ones defined in the operation (fields that are not set clear the
+	corresponding metadata), 'Override' merges the ones defined in the
+	operation into the existing values, overriding existing keys, while
+	'Merge' merges only the absent keys, preserving existing values.
+	"""
+															enum: [
+																"Reset",
+																"Override",
+																"Merge",
+															]
+															type: "string"
+														}
+													}
+													required: [
+														"namespace",
+														"strategy",
+													]
+													type: "object"
+												}
+												type: "array"
+											}
+											fromSource: {
+												description: """
+	FromSource sources namespace metadata from a NamespaceMetadata file
+	inside a source artifact.
+	"""
+												properties: {
+													allowedAnnotations: {
+														additionalProperties: type: "string"
+														description: """
+	AllowedAnnotations is a schema for the annotations that the
+	NamespaceMetadata file is allowed to set. Each key is an annotation key
+	and each value is a CEL expression that receives the annotation value
+	through the 'value' string variable and must return a boolean.
+	Annotations whose key is not present in this map are ignored, while
+	annotations whose value does not satisfy the respective expression are
+	rejected.
+	The expressions are compiled, so a malformed expression or one that
+	does not return a boolean fails validation at the start of the
+	reconciliation.
+	"""
+														type: "object"
+													}
+													allowedLabels: {
+														additionalProperties: type: "string"
+														description: """
+	AllowedLabels is a schema for the labels that the NamespaceMetadata
+	file is allowed to set. Each key is a label key and each value is a
+	CEL expression that receives the label value through the 'value' string
+	variable and must return a boolean. Labels whose key is not present in
+	this map are ignored, while labels whose value does not satisfy the
+	respective expression are rejected.
+	The expressions are compiled, so a malformed expression or one that
+	does not return a boolean fails validation at the start of the
+	reconciliation.
+	"""
+														type: "object"
+													}
+													path: {
+														description: """
+	Path is the path to the NamespaceMetadata file inside a source artifact,
+	in the format "@<alias>/<path>". When pathPattern is set, the path may
+	use capture placeholders such as "{namespace}". Only namespace-level
+	captures are allowed, so that every artifact targeting a namespace
+	resolves to the same file.
+	"""
+														maxLength: 1024
+														minLength: 1
+														pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
+														type:      "string"
+													}
+												}
+												required: ["path"]
+												type: "object"
+												"x-kubernetes-validations": [{
+													message: "at least one annotation or label must be set"
+													rule:    "(has(self.allowedAnnotations) && size(self.allowedAnnotations) > 0) || (has(self.allowedLabels) && size(self.allowedLabels) > 0)"
+												}]
+											}
+										}
+										type: "object"
+										"x-kubernetes-validations": [{
+											message: "either fromSource or at least one from operation must be set"
+											rule:    "has(self.fromSource) || (has(self.from) && size(self.from) > 0)"
+										}]
+									}
+									prune: {
+										description: """
+	Prune specifies whether the controller deletes managed namespaces that
+	are no longer targeted by any generated artifact, or when the
+	ArtifactGenerator is deleted.
+	"""
+										type: "boolean"
+									}
+								}
+								required: [
+									"allowedNames",
+									"prune",
+								]
+								type: "object"
+							}
 							pathPattern: {
 								description: """
 	PathPattern specifies a directory traversal pattern to match within the sources.
@@ -421,6 +791,31 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 	"""
 								maxLength: 1024
 								pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
+								type:      "string"
+							}
+							serviceAccountName: {
+								description: """
+	ServiceAccountName is the name of the ServiceAccount used to authorize
+	the reconciliation of the generated ExternalArtifacts and the managed
+	Namespaces. The name is resolved in the ArtifactGenerator namespace. When
+	specified, the controller checks this ServiceAccount with
+	SubjectAccessReview for every namespace targeted by the generated
+	ExternalArtifacts, including the ArtifactGenerator namespace, and its
+	RBAC bindings determine the namespaces in which they can be created,
+	updated and deleted.
+	When not specified, the controller uses its own credentials for
+	ExternalArtifacts in the ArtifactGenerator namespace, and the
+	ServiceAccount configured with the --default-service-account flag
+	(when set) for artifacts targeting another namespace.
+	Namespace management (.spec.managedNamespaces) always requires a
+	ServiceAccount for authorization, so either this field or the
+	--default-service-account flag must be set; otherwise the reconciliation
+	fails with a terminal error. The controller performs the namespace
+	operations with its own credentials.
+	"""
+								maxLength: 63
+								minLength: 1
+								pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
 								type:      "string"
 							}
 							sources: {
@@ -489,7 +884,10 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 						type: "object"
 						"x-kubernetes-validations": [{
 							message: "artifact names must be valid Kubernetes object names when pathPattern is not set"
-							rule:    "has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, a.name.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$'))"
+							rule:    "has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, a.name.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$') && a.name.size() <= 253)"
+						}, {
+							message: "artifact namespaces must be valid Kubernetes namespaces when pathPattern is not set"
+							rule:    "has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, !has(a.__namespace__) || (a.__namespace__.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?$') && a.__namespace__.size() <= 63))"
 						}]
 					}
 					status: {
@@ -567,35 +965,49 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 								type: "array"
 							}
 							inventory: {
-								description: "Inventory contains the list of generated ExternalArtifact references."
+								description: """
+	Inventory contains the list of objects managed by the ArtifactGenerator,
+	such as the generated ExternalArtifacts and the managed Namespaces.
+	"""
 								items: {
 									description: """
-	ExternalArtifactReference contains the reference to a
-	generated ExternalArtifact along with its digest.
+	InventoryEntry contains a reference to an object managed by the
+	ArtifactGenerator, such as a generated ExternalArtifact or a managed
+	Namespace.
 	"""
 									properties: {
 										digest: {
-											description: "Digest of the referent artifact."
-											type:        "string"
+											description: """
+	Digest of the referent object. For generated artifacts this is the
+	artifact content digest; for managed namespaces this is a digest of the
+	metadata applied by the controller.
+	"""
+											type: "string"
 										}
 										filename: {
 											description: "Filename is the name of the artifact file."
 											type:        "string"
 										}
+										kind: {
+											description: "Kind is the kind of the referent object."
+											enum: [
+												"ExternalArtifact",
+												"Namespace",
+											]
+											type: "string"
+										}
 										name: {
-											description: "Name of the referent artifact."
+											description: "Name of the referent object."
 											type:        "string"
 										}
 										namespace: {
-											description: "Namespace of the referent artifact."
+											description: "Namespace of the referent object. Empty for cluster-scoped objects."
 											type:        "string"
 										}
 									}
 									required: [
 										"digest",
-										"filename",
 										"name",
-										"namespace",
 									]
 									type: "object"
 								}
@@ -804,8 +1216,8 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 								description: """
 	ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
 	the bucket. This field is only supported for the 'gcp' and 'aws' providers.
-	For more information about workload identity:
-	https://fluxcd.io/flux/components/source/buckets/#workload-identity
+	For more information about object identity:
+	https://fluxcd.io/flux/integrations/object-identity/
 	"""
 								type: "string"
 							}
@@ -1327,6 +1739,15 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 									type: "object"
 								}
 								type: "array"
+							}
+							exportedInputs: {
+								additionalProperties: "x-kubernetes-preserve-unknown-fields": true
+								description: """
+	ExportedInputs holds a map of structured data optionally extracted from the source resource.
+	It may be used, for example, by downstream consumers such as templating engines like
+	ResourceSet to consume these inputs for implementing templating logic.
+	"""
+								type: "object"
 							}
 						}
 						type: "object"
@@ -1926,6 +2347,15 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 								items: type: "string"
 								type: "array"
 							}
+							sourceVerificationFingerprint: {
+								description: """
+	SourceVerificationFingerprint is the fingerprint of the public keys used
+	to verify the signature of the Git object(s) for the current Artifact.
+	It is used to detect changes to the verification policy, such as a key
+	rotation, that require the current revision to be verified again.
+	"""
+								type: "string"
+							}
 							sourceVerificationMode: {
 								description: """
 	SourceVerificationMode is the last used verification mode indicating
@@ -2465,10 +2895,30 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 						properties: {
 							chart: {
 								description: """
-	Chart defines the template of the v1.HelmChart that should be created
-	for this HelmRelease.
+	Chart defines the template of the source object that should be
+	created for this HelmRelease. The Kind field determines whether a
+	sourcev1.HelmChart or sourcev1.OCIRepository is created.
 	"""
 								properties: {
+									kind: {
+										description: """
+	Kind is the kind of the source object generated from this template. Valid values:
+	  - HelmChart (default): generates a source.toolkit.fluxcd.io/v1 HelmChart from
+	    the HelmChartSpec-compatible fields under .spec.chart.spec. In particular,
+	    .spec.chart.spec.chart and .spec.chart.spec.sourceRef are required.
+	  - OCIRepository: generates a source.toolkit.fluxcd.io/v1 OCIRepository from
+	    the OCIRepositorySpec fields under .spec.chart.spec. In particular,
+	    .spec.chart.spec.url is required, and .spec.chart.spec.interval defaults
+	    to .spec.interval (interval is required in a plain OCIRepository).
+	Use OCIRepository for charts hosted in OCI registries; use HelmChart for
+	HelmRepository, GitRepository or Bucket sources.
+	"""
+										enum: [
+											"HelmChart",
+											"OCIRepository",
+										]
+										type: "string"
+									}
 									metadata: {
 										description: "ObjectMeta holds the template for metadata like labels and annotations."
 										properties: {
@@ -2495,28 +2945,117 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										type: "object"
 									}
 									spec: {
-										description: "Spec holds the template for the v1.HelmChartSpec for this HelmRelease."
+										description: "Spec holds the spec of the object generated for this HelmRelease."
 										properties: {
+											certSecretRef: {
+												description: """
+	CertSecretRef can be given the name of a Secret containing
+	either or both of
+
+	- a PEM-encoded client certificate (`tls.crt`) and private
+	key (`tls.key`);
+	- a PEM-encoded CA certificate (`ca.crt`)
+
+	and whichever are supplied, will be used for connecting to the
+	registry. The client cert and key are useful if you are
+	authenticating with a certificate; the CA cert is useful if
+	you are using a self-signed server certificate. The Secret must
+	be of type `Opaque` or `kubernetes.io/tls`.
+	"""
+												properties: name: {
+													description: "Name of the referent."
+													type:        "string"
+												}
+												required: ["name"]
+												type: "object"
+											}
 											chart: {
 												description: "The name or path the Helm chart is available at in the SourceRef."
 												maxLength:   2048
 												minLength:   1
 												type:        "string"
 											}
+											ignore: {
+												description: """
+	Ignore overrides the set of excluded patterns in the .sourceignore format
+	(which is the same as .gitignore). If not provided, a default will be used,
+	consult the documentation for your version to find out what those are.
+	"""
+												type: "string"
+											}
 											ignoreMissingValuesFiles: {
 												description: "IgnoreMissingValuesFiles controls whether to silently ignore missing values files rather than failing."
 												type:        "boolean"
 											}
+											insecure: {
+												description: "Insecure allows connecting to a non-TLS HTTP container registry."
+												type:        "boolean"
+											}
 											interval: {
 												description: """
-	Interval at which to check the v1.Source for updates. Defaults to
-	'HelmReleaseSpec.Interval'.
+	Interval at which the OCIRepository URL is checked for updates.
+	This interval is approximate and may be subject to jitter to ensure
+	efficient use of resources.
 	"""
 												pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 												type:    "string"
 											}
+											layerSelector: {
+												description: """
+	LayerSelector specifies which layer should be extracted from the OCI artifact.
+	When not specified, the first layer found in the artifact is selected.
+	"""
+												properties: {
+													mediaType: {
+														description: """
+	MediaType specifies the OCI media type of the layer
+	which should be extracted from the OCI Artifact. The
+	first layer matching this type is selected.
+	"""
+														type: "string"
+													}
+													operation: {
+														description: """
+	Operation specifies how the selected layer should be processed.
+	By default, the layer compressed content is extracted to storage.
+	When the operation is set to 'copy', the layer compressed content
+	is persisted to storage as it is.
+	"""
+														enum: [
+															"extract",
+															"copy",
+														]
+														type: "string"
+													}
+												}
+												type: "object"
+											}
+											provider: {
+												description: """
+	The provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
+	When not specified, defaults to 'generic'.
+	"""
+												enum: [
+													"generic",
+													"aws",
+													"azure",
+													"gcp",
+												]
+												type: "string"
+											}
+											proxySecretRef: {
+												description: """
+	ProxySecretRef specifies the Secret containing the proxy configuration
+	to use while communicating with the container registry.
+	"""
+												properties: name: {
+													description: "Name of the referent."
+													type:        "string"
+												}
+												required: ["name"]
+												type: "object"
+											}
 											reconcileStrategy: {
-												default: "ChartVersion"
 												description: """
 	Determines what enables the creation of a new artifact. Valid values are
 	('ChartVersion', 'Revision').
@@ -2527,6 +3066,62 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 													"ChartVersion",
 													"Revision",
 												]
+												type: "string"
+											}
+											ref: {
+												description: """
+	The OCI reference to pull and monitor for changes,
+	defaults to the latest tag.
+	"""
+												properties: {
+													digest: {
+														description: """
+	Digest is the image digest to pull, takes precedence over SemVer.
+	The value should be in the format 'sha256:<HASH>'.
+	"""
+														type: "string"
+													}
+													semver: {
+														description: """
+	SemVer is the range of tags to pull selecting the latest within
+	the range, takes precedence over Tag.
+	"""
+														type: "string"
+													}
+													semverFilter: {
+														description: "SemverFilter is a regex pattern to filter the tags within the SemVer range."
+														type:        "string"
+													}
+													tag: {
+														description: "Tag is the image tag to pull, defaults to latest."
+														type:        "string"
+													}
+												}
+												type: "object"
+											}
+											secretRef: {
+												description: """
+	SecretRef contains the secret name containing the registry login
+	credentials to resolve image metadata.
+	The secret must be of type kubernetes.io/dockerconfigjson.
+	"""
+												properties: name: {
+													description: "Name of the referent."
+													type:        "string"
+												}
+												required: ["name"]
+												type: "object"
+											}
+											serviceAccountName: {
+												description: """
+	ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
+	the image pull, either with the pull secrets attached to the service account or with
+	an object identity.
+	For more information about object identity:
+	https://fluxcd.io/flux/integrations/object-identity/
+	For more information about image pull secrets:
+	https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
+	"""
 												type: "string"
 											}
 											sourceRef: {
@@ -2564,6 +3159,23 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 												]
 												type: "object"
 											}
+											suspend: {
+												description: "This flag tells the controller to suspend the reconciliation of this source."
+												type:        "boolean"
+											}
+											timeout: {
+												description: "The timeout for remote OCI Repository operations like pulling, defaults to 60s."
+												pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+												type:        "string"
+											}
+											url: {
+												description: """
+	URL is a reference to an OCI artifact repository hosted
+	on a remote container registry.
+	"""
+												pattern: "^oci://.*$"
+												type:    "string"
+											}
 											valuesFiles: {
 												description: """
 	Alternative list of values files to use as the chart values (values.yaml
@@ -2579,14 +3191,49 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 	Verify contains the secret name containing the trusted public keys
 	used to verify the signature and specifies which provider to use to check
 	whether OCI image is authentic.
-	This field is only supported for OCI sources.
-	Chart dependencies, which are not bundled in the umbrella chart artifact,
-	are not verified.
 	"""
 												properties: {
+													matchOIDCIdentity: {
+														description: """
+	MatchOIDCIdentity specifies the identity matching criteria to use
+	while verifying an OCI artifact which was signed using Cosign keyless
+	signing. The artifact's identity is deemed to be verified if any of the
+	specified matchers match against the identity.
+	"""
+														items: {
+															description: """
+	OIDCIdentityMatch specifies options for verifying the certificate identity,
+	i.e. the issuer and the subject of the certificate.
+	"""
+															properties: {
+																issuer: {
+																	description: """
+	Issuer specifies the regex pattern to match against to verify
+	the OIDC issuer in the Fulcio certificate. The pattern must be a
+	valid Go regular expression.
+	"""
+																	type: "string"
+																}
+																subject: {
+																	description: """
+	Subject specifies the regex pattern to match against to verify
+	the identity subject in the Fulcio certificate. The pattern must
+	be a valid Go regular expression.
+	"""
+																	type: "string"
+																}
+															}
+															required: [
+																"issuer",
+																"subject",
+															]
+															type: "object"
+														}
+														type: "array"
+													}
 													provider: {
 														default:     "cosign"
-														description: "Provider specifies the technology used to sign the OCI Helm chart."
+														description: "Provider specifies the technology used to sign the OCI Artifact."
 														enum: [
 															"cosign",
 															"notation",
@@ -2605,28 +3252,65 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 														required: ["name"]
 														type: "object"
 													}
+													trustedRootSecretRef: {
+														description: """
+	TrustedRootSecretRef specifies the Kubernetes Secret containing a
+	Sigstore trusted_root.json file. This enables verification against
+	self-hosted Sigstore infrastructure (custom Fulcio CA, self-hosted
+	Rekor instance). The Secret must contain a key named "trusted_root.json".
+	"""
+														properties: name: {
+															description: "Name of the referent."
+															type:        "string"
+														}
+														required: ["name"]
+														type: "object"
+													}
 												}
 												required: ["provider"]
 												type: "object"
 											}
 											version: {
-												default: "*"
 												description: """
 	Version semver expression, ignored for charts from v1.GitRepository and
-	v1beta2.Bucket sources. Defaults to latest when omitted.
+	v1beta2.Bucket sources. Defaults to latest when omitted i.e. to '*'.
 	"""
 												type: "string"
 											}
 										}
-										required: [
-											"chart",
-											"sourceRef",
-										]
 										type: "object"
 									}
 								}
 								required: ["spec"]
 								type: "object"
+								"x-kubernetes-validations": [{
+									message: "chart.spec.url must be set when chart.kind is 'OCIRepository'"
+									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || (has(self.spec.url) && size(self.spec.url) > 0)"
+								}, {
+									message: "chart.spec.url requires chart.kind: 'OCIRepository'; for a HelmChart template set spec.chart and spec.sourceRef instead"
+									rule:    "!has(self.spec.url) || (has(self.kind) && self.kind == 'OCIRepository')"
+								}, {
+									message: "chart.spec.chart and chart.spec.sourceRef must be set when chart.kind is not 'OCIRepository'"
+									rule:    "(has(self.kind) && self.kind == 'OCIRepository') || (has(self.spec.chart) && has(self.spec.sourceRef))"
+								}, {
+									message: "chart.spec.chart cannot be set when chart.kind is 'OCIRepository'"
+									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.chart)"
+								}, {
+									message: "chart.spec.version cannot be set when chart.kind is 'OCIRepository'"
+									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.version) || self.spec.version == '*'"
+								}, {
+									message: "chart.spec.sourceRef cannot be set when chart.kind is 'OCIRepository'"
+									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.sourceRef)"
+								}, {
+									message: "chart.spec.reconcileStrategy cannot be set when chart.kind is 'OCIRepository'"
+									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.reconcileStrategy) || self.spec.reconcileStrategy == 'ChartVersion'"
+								}, {
+									message: "chart.spec.valuesFiles cannot be set when chart.kind is 'OCIRepository'"
+									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.valuesFiles)"
+								}, {
+									message: "chart.spec.ignoreMissingValuesFiles cannot be set when chart.kind is 'OCIRepository'"
+									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.ignoreMissingValuesFiles)"
+								}]
 							}
 							chartRef: {
 								description: """
@@ -3072,8 +3756,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 	forces the controller to act on behalf of that Service Account at the
 	target cluster.
 	If the --default-service-account flag is set, its value will be used as
-	a controller level fallback for when HelmReleaseSpec.ServiceAccountName
-	is empty.
+	the default for HelmReleaseSpec.ServiceAccountName when it is empty.
 	"""
 								properties: {
 									configMapRef: {
@@ -3096,15 +3779,15 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 	- `ca.crt`: the optional PEM-encoded CA certificate for the
 	   Kubernetes API server. If not set, the controller will use the
 	   CA certificate from the cluster resource.
-	- `audiences`: the optional audiences as a list of
-	   line-break-separated strings for the Kubernetes ServiceAccount
-	   token. Defaults to the `address` for the `generic` provider, or
-	   to specific values for the other providers depending on the
-	   provider.
 	-  `serviceAccountName`: the optional name of the Kubernetes
 	   ServiceAccount in the same namespace that should be used
 	   for authentication. If not specified, the controller
 	   ServiceAccount will be used.
+	- `audiences`: the optional audiences as a list of string separated by
+	   commas and/or whitespaces/newlines for the Kubernetes ServiceAccount
+	   token. Defaults to the `address` for the `generic` provider, or
+	   to specific values for the other providers depending on the
+	   provider.
 
 	Mutually exclusive with SecretRef.
 	"""
@@ -3143,10 +3826,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								type: "object"
 								"x-kubernetes-validations": [{
 									message: "exactly one of spec.kubeConfig.configMapRef or spec.kubeConfig.secretRef must be specified"
-									rule:    "has(self.configMapRef) || has(self.secretRef)"
-								}, {
-									message: "exactly one of spec.kubeConfig.configMapRef or spec.kubeConfig.secretRef must be specified"
-									rule:    "!has(self.configMapRef) || !has(self.secretRef)"
+									rule:    "has(self.configMapRef) != has(self.secretRef)"
 								}]
 							}
 							maxHistory: {
@@ -3943,7 +4623,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							helmChart: {
 								description: """
 	HelmChart is the namespaced name of the HelmChart resource created by
-	the controller for the HelmRelease.
+	the controller for the HelmRelease, in the format '<namespace>/<name>',
+	or the typed and namespaced name of the OCIRepository resource, in the
+	format '<kind>/<namespace>/<name>'.
 	"""
 								type: "string"
 							}
@@ -5251,7 +5933,10 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 							serviceAccountName: {
 								description: """
 	ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
-	the image pull if the service account has attached pull secrets.
+	the image pull, either with the pull secrets attached to the service account or with
+	an object identity.
+	For more information about object identity:
+	https://fluxcd.io/flux/integrations/object-identity/
 	"""
 								maxLength: 253
 								type:      "string"
@@ -5688,6 +6373,16 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 								description: """
 	Interval gives an lower bound for how often the automation
 	run should be attempted.
+	"""
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							policyChangeDelay: {
+								description: """
+	PolicyChangeDelay delays the run triggered by ImagePolicy changes, so
+	that image updates arriving within the delay are committed together.
+	If PolicySelector is also set, only changes to the selected policies
+	trigger a run. By default, the automation runs as soon as a policy changes.
 	"""
 								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 								type:    "string"
@@ -6410,8 +7105,7 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 	forces the controller to act on behalf of that Service Account at the
 	target cluster.
 	If the --default-service-account flag is set, its value will be used as
-	a controller level fallback for when KustomizationSpec.ServiceAccountName
-	is empty.
+	the default for KustomizationSpec.ServiceAccountName when it is empty.
 	"""
 								properties: {
 									configMapRef: {
@@ -6434,15 +7128,15 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 	- `ca.crt`: the optional PEM-encoded CA certificate for the
 	   Kubernetes API server. If not set, the controller will use the
 	   CA certificate from the cluster resource.
-	- `audiences`: the optional audiences as a list of
-	   line-break-separated strings for the Kubernetes ServiceAccount
-	   token. Defaults to the `address` for the `generic` provider, or
-	   to specific values for the other providers depending on the
-	   provider.
 	-  `serviceAccountName`: the optional name of the Kubernetes
 	   ServiceAccount in the same namespace that should be used
 	   for authentication. If not specified, the controller
 	   ServiceAccount will be used.
+	- `audiences`: the optional audiences as a list of string separated by
+	   commas and/or whitespaces/newlines for the Kubernetes ServiceAccount
+	   token. Defaults to the `address` for the `generic` provider, or
+	   to specific values for the other providers depending on the
+	   provider.
 
 	Mutually exclusive with SecretRef.
 	"""
@@ -6481,10 +7175,7 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 								type: "object"
 								"x-kubernetes-validations": [{
 									message: "exactly one of spec.kubeConfig.configMapRef or spec.kubeConfig.secretRef must be specified"
-									rule:    "has(self.configMapRef) || has(self.secretRef)"
-								}, {
-									message: "exactly one of spec.kubeConfig.configMapRef or spec.kubeConfig.secretRef must be specified"
-									rule:    "!has(self.configMapRef) || !has(self.secretRef)"
+									rule:    "has(self.configMapRef) != has(self.secretRef)"
 								}]
 							}
 							namePrefix: {
@@ -7118,7 +7809,6 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 								type: "object"
 							}
 							provider: {
-								default: "generic"
 								description: """
 	The provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
 	When not specified, defaults to 'generic'.
@@ -7190,7 +7880,11 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 							serviceAccountName: {
 								description: """
 	ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
-	the image pull if the service account has attached pull secrets. For more information:
+	the image pull, either with the pull secrets attached to the service account or with
+	an object identity.
+	For more information about object identity:
+	https://fluxcd.io/flux/integrations/object-identity/
+	For more information about image pull secrets:
 	https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
 	"""
 								type: "string"
@@ -7200,7 +7894,6 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 								type:        "boolean"
 							}
 							timeout: {
-								default:     "60s"
 								description: "The timeout for remote OCI Repository operations like pulling, defaults to 60s."
 								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
 								type:        "string"
@@ -7298,10 +7991,6 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 								type: "object"
 							}
 						}
-						required: [
-							"interval",
-							"url",
-						]
 						type: "object"
 					}
 					status: {
@@ -7488,6 +8177,15 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 								}
 								type: "object"
 							}
+							sourceVerificationFingerprint: {
+								description: """
+	SourceVerificationFingerprint is the fingerprint of the verification
+	material used to verify the signature of the current Artifact. It is
+	used to detect changes to the verification policy, such as a key
+	rotation, that require the current revision to be verified again.
+	"""
+								type: "string"
+							}
 							url: {
 								description: "URL is the download link for the artifact output of the last OCI Repository sync."
 								type:        "string"
@@ -7497,6 +8195,13 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 					}
 				}
 				type: "object"
+				"x-kubernetes-validations": [{
+					message: "spec.url is required"
+					rule:    "has(self.spec) && has(self.spec.url)"
+				}, {
+					message: "spec.interval is required"
+					rule:    "has(self.spec) && has(self.spec.interval)"
+				}]
 			}
 			served:  true
 			storage: true
@@ -7534,7 +8239,203 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}]
-			name: "v1beta3"
+			name: "v1"
+			schema: openAPIV3Schema: {
+				description: "Provider is the Schema for the providers API"
+				properties: {
+					apiVersion: {
+						description: """
+	APIVersion defines the versioned schema of this representation of an object.
+	Servers should convert recognized schemas to the latest internal value, and
+	may reject unrecognized values.
+	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+	"""
+						type: "string"
+					}
+					kind: {
+						description: """
+	Kind is a string value representing the REST resource this object represents.
+	Servers may infer this from the endpoint the client submits requests to.
+	Cannot be updated.
+	In CamelCase.
+	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+	"""
+						type: "string"
+					}
+					metadata: type: "object"
+					spec: {
+						description: "ProviderSpec defines the desired state of the Provider."
+						properties: {
+							address: {
+								description: """
+	Address specifies the endpoint, in a generic sense, to where alerts are sent.
+	What kind of endpoint depends on the specific Provider type being used.
+	For the generic Provider, for example, this is an HTTP/S address.
+	For other Provider types this could be a project ID or a namespace.
+	"""
+								maxLength: 2048
+								type:      "string"
+							}
+							certSecretRef: {
+								description: """
+	CertSecretRef specifies the Secret containing TLS certificates
+	for secure communication.
+
+	Supported configurations:
+	- CA-only: Server authentication (provide ca.crt only)
+	- mTLS: Mutual authentication (provide ca.crt + tls.crt + tls.key)
+	- Client-only: Client authentication with system CA (provide tls.crt + tls.key only)
+
+	Legacy keys "caFile", "certFile", "keyFile" are supported but deprecated. Use "ca.crt", "tls.crt", "tls.key" instead.
+	"""
+								properties: name: {
+									description: "Name of the referent."
+									type:        "string"
+								}
+								required: ["name"]
+								type: "object"
+							}
+							channel: {
+								description: "Channel specifies the destination channel where events should be posted."
+								maxLength:   2048
+								type:        "string"
+							}
+							commitStatusExpr: {
+								description: """
+	CommitStatusExpr is a CEL expression that evaluates to a string value
+	that can be used to generate a custom commit status message for use
+	with eligible Provider types (github, gitlab, gitea, bitbucketserver,
+	bitbucket, azuredevops). Supported variables are: event, provider,
+	and alert.
+	"""
+								type: "string"
+							}
+							proxySecretRef: {
+								description: """
+	ProxySecretRef specifies the Secret containing the proxy configuration
+	for this Provider. The Secret should contain an 'address' key with the
+	HTTP/S address of the proxy server. Optional 'username' and 'password'
+	keys can be provided for proxy authentication.
+	"""
+								properties: name: {
+									description: "Name of the referent."
+									type:        "string"
+								}
+								required: ["name"]
+								type: "object"
+							}
+							secretRef: {
+								description: """
+	SecretRef specifies the Secret containing the authentication
+	credentials for this Provider.
+	"""
+								properties: name: {
+									description: "Name of the referent."
+									type:        "string"
+								}
+								required: ["name"]
+								type: "object"
+							}
+							serviceAccountName: {
+								description: """
+	ServiceAccountName is the name of the Kubernetes ServiceAccount used to
+	authenticate with cloud provider services through object identity.
+	This enables multi-tenant authentication without storing static credentials.
+
+	Supported provider types: azureeventhub, azuredevops, googlepubsub
+
+	When specified, the controller will:
+	1. Create an OIDC token for the specified ServiceAccount
+	2. Exchange it for cloud provider credentials via STS
+	3. Use the obtained credentials for API authentication
+
+	When unspecified, the controller's workload identity is used (single-tenant).
+
+	An error is thrown if static credentials are also defined in SecretRef.
+	"""
+								type: "string"
+							}
+							suspend: {
+								description: """
+	Suspend tells the controller to suspend subsequent
+	events handling for this Provider.
+	"""
+								type: "boolean"
+							}
+							timeout: {
+								description: "Timeout for sending alerts to the Provider."
+								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								type:        "string"
+							}
+							type: {
+								description: "Type specifies which Provider implementation to use."
+								enum: [
+									"slack",
+									"discord",
+									"msteams",
+									"rocket",
+									"generic",
+									"generic-hmac",
+									"github",
+									"gitlab",
+									"gitea",
+									"giteapullrequestcomment",
+									"bitbucketserver",
+									"bitbucket",
+									"azuredevops",
+									"googlechat",
+									"googlepubsub",
+									"webex",
+									"sentry",
+									"azureeventhub",
+									"telegram",
+									"lark",
+									"matrix",
+									"opsgenie",
+									"alertmanager",
+									"grafana",
+									"githubdispatch",
+									"githubpullrequestcomment",
+									"gitlabmergerequestcomment",
+									"pagerduty",
+									"datadog",
+									"nats",
+									"zulip",
+									"otel",
+									"zoom",
+									"incident.io",
+									"mastodon",
+								]
+								type: "string"
+							}
+							username: {
+								description: "Username specifies the name under which events are posted."
+								maxLength:   2048
+								type:        "string"
+							}
+						}
+						required: ["type"]
+						type: "object"
+						"x-kubernetes-validations": [{
+							message: "spec.commitStatusExpr is only supported for the 'github', 'gitlab', 'gitea', 'bitbucketserver', 'bitbucket', 'azuredevops' provider types"
+							rule:    "self.type == 'github' || self.type == 'gitlab' || self.type == 'gitea' || self.type == 'bitbucketserver' || self.type == 'bitbucket' || self.type == 'azuredevops' || !has(self.commitStatusExpr)"
+						}]
+					}
+				}
+				type: "object"
+			}
+			served:  true
+			storage: true
+			subresources: {}
+		}, {
+			additionalPrinterColumns: [{
+				jsonPath: ".metadata.creationTimestamp"
+				name:     "Age"
+				type:     "date"
+			}]
+			deprecated:         true
+			deprecationWarning: "v1beta3 Provider is deprecated, upgrade to v1"
+			name:               "v1beta3"
 			schema: openAPIV3Schema: {
 				description: "Provider is the Schema for the providers API"
 				properties: {
@@ -7664,7 +8565,6 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 	When unspecified, controller-level authentication is used (single-tenant).
 
 	An error is thrown if static credentials are also defined in SecretRef.
-	This field requires the ObjectLevelWorkloadIdentity feature gate to be enabled.
 	"""
 								type: "string"
 							}
@@ -7715,6 +8615,8 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 									"nats",
 									"zulip",
 									"otel",
+									"zoom",
+									"incident.io",
 								]
 								type: "string"
 							}
@@ -7735,7 +8637,7 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 				type: "object"
 			}
 			served:  true
-			storage: true
+			storage: false
 			subresources: {}
 		}]
 	}
