@@ -19,7 +19,7 @@ jobs:
       - name: Setup Timoni
         uses: stefanprodan/timoni/actions/setup@9f04f5c56a817024dce3f23bdbf8da4516fbe990 # v0.36.0
       - name: Setup Flux CLI
-        uses: fluxcd/flux2/action@3fa784edd773d56630bb9f62645e08f70c2cff0a # v2.10.0
+        uses: fluxcd/flux2/action@23dcfe98fe672acdf44ecd9c60cbac41b57f5de8 # v2.10.1
       - name: Setup Cosign
         uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
       - name: Login to GHCR
