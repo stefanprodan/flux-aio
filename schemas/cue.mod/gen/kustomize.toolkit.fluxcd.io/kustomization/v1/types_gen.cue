@@ -23,18 +23,10 @@ import "strings"
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
 	kind: "Kustomization"
 	metadata!: {
-		name!: strings.MaxRunes(253) & strings.MinRunes(1) & {
-			string
-		}
-		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {
-			string
-		}
-		labels?: {
-			[string]: string
-		}
-		annotations?: {
-			[string]: string
-		}
+		name!:      strings.MaxRunes(253) & strings.MinRunes(1) & {string}
+		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {string}
+		labels?: [string]:      string
+		annotations?: [string]: string
 	}
 
 	// KustomizationSpec defines the configuration to calculate the desired state
@@ -56,14 +48,10 @@ import "strings"
 	// overridden if its key matches a common one.
 	commonMetadata?: {
 		// Annotations to be added to the object's metadata.
-		annotations?: {
-			[string]: string
-		}
+		annotations?: [string]: string
 
 		// Labels to be added to the object's metadata.
-		labels?: {
-			[string]: string
-		}
+		labels?: [string]: string
 	}
 
 	// Components specifies relative paths to kustomize Components.
@@ -324,9 +312,7 @@ import "strings"
 		// defined in the map will be substituted with the set value.
 		// Includes support for bash string replacement functions
 		// e.g. ${var:=default}, ${var:position} and ${var/substring/replacement}.
-		substitute?: {
-			[string]: string
-		}
+		substitute?: [string]: string
 
 		// SubstituteFrom holds references to ConfigMaps and Secrets containing
 		// the variables and their values to be substituted in the YAML manifests.
@@ -406,521 +392,390 @@ import "strings"
 _crd: {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
-	metadata: {
-		name: "kustomizations.kustomize.toolkit.fluxcd.io"
-	}
+	metadata: name: "kustomizations.kustomize.toolkit.fluxcd.io"
 	spec: {
 		group: "kustomize.toolkit.fluxcd.io"
 		names: {
 			categories: ["all", "fluxcd", "fluxcd-appliers"]
-			kind:     "Kustomization"
-			listKind: "KustomizationList"
-			plural:   "kustomizations"
+			kind:       "Kustomization"
+			listKind:   "KustomizationList"
+			plural:     "kustomizations"
 			shortNames: ["ks"]
-			singular: "kustomization"
+			singular:   "kustomization"
 		}
 		scope: "Namespaced"
 		versions: [{
 			name:    "v1"
 			served:  true
 			storage: true
-			schema: {
-				openAPIV3Schema: {
-					properties: {
-						apiVersion: {
-							type: "string"
-						}
-						kind: {
-							type: "string"
-						}
-						metadata: {
-							type: "object"
-						}
-						spec: {
-							properties: {
-								buildMetadata: {
-									items: {
-										enum: ["originAnnotations", "transformerAnnotations"]
+			schema: openAPIV3Schema: {
+				properties: {
+					apiVersion: type: "string"
+					kind: type:       "string"
+					metadata: type:   "object"
+					spec: {
+						properties: {
+							buildMetadata: {
+								items: {
+									enum: ["originAnnotations", "transformerAnnotations"]
+									type: "string"
+								}
+								type: "array"
+							}
+							commonMetadata: {
+								properties: {
+									annotations: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+									labels: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+								}
+								type: "object"
+							}
+							components: {
+								items: type: "string"
+								type: "array"
+							}
+							decryption: {
+								properties: {
+									provider: {
+										enum: ["sops"]
 										type: "string"
 									}
-									type: "array"
-								}
-								commonMetadata: {
-									properties: {
-										annotations: {
-											additionalProperties: {
-												type: "string"
-											}
-											type: "object"
-										}
-										labels: {
-											additionalProperties: {
-												type: "string"
-											}
-											type: "object"
-										}
-									}
-									type: "object"
-								}
-								components: {
-									items: {
-										type: "string"
-									}
-									type: "array"
-								}
-								decryption: {
-									properties: {
-										provider: {
-											enum: ["sops"]
-											type: "string"
-										}
-										secretRef: {
-											properties: {
-												name: {
-													type: "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-										}
-										serviceAccountName: {
-											type: "string"
-										}
-									}
-									required: ["provider"]
-									type: "object"
-								}
-								deletionPolicy: {
-									enum: ["MirrorPrune", "Delete", "WaitForTermination", "Orphan"]
-									type: "string"
-								}
-								dependsOn: {
-									items: {
-										properties: {
-											name: {
-												type: "string"
-											}
-											namespace: {
-												type: "string"
-											}
-											readyExpr: {
-												type: "string"
-											}
-										}
+									secretRef: {
+										properties: name: type: "string"
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
-									type: "array"
+									serviceAccountName: type: "string"
 								}
-								force: {
-									default: false
-									type:    "boolean"
-								}
-								healthCheckExprs: {
-									items: {
-										properties: {
-											apiVersion: {
-												type: "string"
-											}
-											current: {
-												type: "string"
-											}
-											failed: {
-												type: "string"
-											}
-											inProgress: {
-												type: "string"
-											}
-											kind: {
-												type: "string"
-											}
-										}
-										required: ["apiVersion", "current"]
-										type: "object"
-									}
-									type: "array"
-								}
-								healthChecks: {
-									items: {
-										properties: {
-											apiVersion: {
-												type: "string"
-											}
-											kind: {
-												type: "string"
-											}
-											name: {
-												type: "string"
-											}
-											namespace: {
-												type: "string"
-											}
-										}
-										required: ["kind", "name"]
-										type: "object"
-									}
-									type: "array"
-								}
-								ignore: {
-									items: {
-										properties: {
-											paths: {
-												items: {
-													type: "string"
-												}
-												type: "array"
-											}
-											target: {
-												properties: {
-													annotationSelector: {
-														type: "string"
-													}
-													group: {
-														type: "string"
-													}
-													kind: {
-														type: "string"
-													}
-													labelSelector: {
-														type: "string"
-													}
-													name: {
-														type: "string"
-													}
-													namespace: {
-														type: "string"
-													}
-													version: {
-														type: "string"
-													}
-												}
-												type: "object"
-											}
-										}
-										required: ["paths"]
-										type: "object"
-									}
-									type: "array"
-								}
-								ignoreMissingComponents: {
-									type: "boolean"
-								}
-								images: {
-									items: {
-										properties: {
-											digest: {
-												type: "string"
-											}
-											name: {
-												type: "string"
-											}
-											newName: {
-												type: "string"
-											}
-											newTag: {
-												type: "string"
-											}
-										}
-										required: ["name"]
-										type: "object"
-									}
-									type: "array"
-								}
-								interval: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-									type:    "string"
-								}
-								kubeConfig: {
+								required: ["provider"]
+								type:     "object"
+							}
+							deletionPolicy: {
+								enum: ["MirrorPrune", "Delete", "WaitForTermination", "Orphan"]
+								type: "string"
+							}
+							dependsOn: {
+								items: {
 									properties: {
-										configMapRef: {
-											properties: {
-												name: {
-													type: "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-										}
-										secretRef: {
-											properties: {
-												key: {
-													type: "string"
-												}
-												name: {
-													type: "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-										}
+										name: type:      "string"
+										namespace: type: "string"
+										readyExpr: type: "string"
 									}
-									type: "object"
-									"x-kubernetes-validations": [{
-										message: "exactly one of spec.kubeConfig.configMapRef or spec.kubeConfig.secretRef must be specified"
-										rule:    "has(self.configMapRef) != has(self.secretRef)"
-									}]
+									required: ["name"]
+									type:     "object"
 								}
-								namePrefix: {
-									maxLength: 200
-									minLength: 1
-									type:      "string"
-								}
-								nameSuffix: {
-									maxLength: 200
-									minLength: 1
-									type:      "string"
-								}
-								patches: {
-									items: {
-										properties: {
-											patch: {
-												type: "string"
-											}
-											target: {
-												properties: {
-													annotationSelector: {
-														type: "string"
-													}
-													group: {
-														type: "string"
-													}
-													kind: {
-														type: "string"
-													}
-													labelSelector: {
-														type: "string"
-													}
-													name: {
-														type: "string"
-													}
-													namespace: {
-														type: "string"
-													}
-													version: {
-														type: "string"
-													}
-												}
-												type: "object"
-											}
-										}
-										required: ["patch"]
-										type: "object"
-									}
-									type: "array"
-								}
-								path: {
-									type: "string"
-								}
-								postBuild: {
+								type: "array"
+							}
+							force: {
+								default: false
+								type:    "boolean"
+							}
+							healthCheckExprs: {
+								items: {
 									properties: {
-										substitute: {
-											additionalProperties: {
-												type: "string"
-											}
-											type: "object"
-										}
-										substituteFrom: {
-											items: {
-												properties: {
-													kind: {
-														enum: ["Secret", "ConfigMap"]
-														type: "string"
-													}
-													name: {
-														maxLength: 253
-														minLength: 1
-														type:      "string"
-													}
-													optional: {
-														default: false
-														type:    "boolean"
-													}
-												}
-												required: ["kind", "name"]
-												type: "object"
-											}
-											type: "array"
-										}
-										substituteStrategy: {
-											enum: ["WithVariables", "Always"]
-											type: "string"
-										}
+										apiVersion: type: "string"
+										current: type:    "string"
+										failed: type:     "string"
+										inProgress: type: "string"
+										kind: type:       "string"
 									}
-									type: "object"
+									required: ["apiVersion", "current"]
+									type:     "object"
 								}
-								prune: {
-									type: "boolean"
-								}
-								retryInterval: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-									type:    "string"
-								}
-								serviceAccountName: {
-									type: "string"
-								}
-								sourceRef: {
+								type: "array"
+							}
+							healthChecks: {
+								items: {
 									properties: {
-										apiVersion: {
-											type: "string"
-										}
-										kind: {
-											enum: ["OCIRepository", "GitRepository", "Bucket", "ExternalArtifact"]
-											type: "string"
-										}
-										name: {
-											type: "string"
-										}
-										namespace: {
-											type: "string"
-										}
+										apiVersion: type: "string"
+										kind: type:       "string"
+										name: type:       "string"
+										namespace: type:  "string"
 									}
 									required: ["kind", "name"]
-									type: "object"
+									type:     "object"
 								}
-								suspend: {
-									type: "boolean"
-								}
-								targetNamespace: {
-									maxLength: 63
-									minLength: 1
-									type:      "string"
-								}
-								timeout: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-									type:    "string"
-								}
-								wait: {
-									type: "boolean"
-								}
+								type: "array"
 							}
-							required: ["interval", "prune", "sourceRef"]
-							type: "object"
-						}
-						status: {
-							default: {
-								observedGeneration: -1
-							}
-							properties: {
-								conditions: {
-									items: {
-										properties: {
-											lastTransitionTime: {
-												format: "date-time"
-												type:   "string"
-											}
-											message: {
-												maxLength: 32768
-												type:      "string"
-											}
-											observedGeneration: {
-												format:  "int64"
-												minimum: 0
-												type:    "integer"
-											}
-											reason: {
-												maxLength: 1024
-												minLength: 1
-												pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
-												type:      "string"
-											}
-											status: {
-												enum: ["True", "False", "Unknown"]
-												type: "string"
-											}
-											type: {
-												maxLength: 316
-												pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-												type:      "string"
-											}
-										}
-										required: ["lastTransitionTime", "message", "reason", "status", "type"]
-										type: "object"
-									}
-									type: "array"
-								}
-								history: {
-									items: {
-										properties: {
-											digest: {
-												type: "string"
-											}
-											firstReconciled: {
-												format: "date-time"
-												type:   "string"
-											}
-											lastReconciled: {
-												format: "date-time"
-												type:   "string"
-											}
-											lastReconciledDuration: {
-												type: "string"
-											}
-											lastReconciledStatus: {
-												type: "string"
-											}
-											metadata: {
-												additionalProperties: {
-													type: "string"
-												}
-												type: "object"
-											}
-											totalReconciliations: {
-												format: "int64"
-												type:   "integer"
-											}
-										}
-										required: ["digest", "firstReconciled", "lastReconciled", "lastReconciledDuration", "lastReconciledStatus", "totalReconciliations"]
-										type: "object"
-									}
-									type: "array"
-								}
-								inventory: {
+							ignore: {
+								items: {
 									properties: {
-										entries: {
-											items: {
-												properties: {
-													id: {
-														type: "string"
-													}
-													v: {
-														type: "string"
-													}
-												}
-												required: ["id", "v"]
-												type: "object"
-											}
+										paths: {
+											items: type: "string"
 											type: "array"
 										}
+										target: {
+											properties: {
+												annotationSelector: type: "string"
+												group: type:              "string"
+												kind: type:               "string"
+												labelSelector: type:      "string"
+												name: type:               "string"
+												namespace: type:          "string"
+												version: type:            "string"
+											}
+											type: "object"
+										}
 									}
-									required: ["entries"]
+									required: ["paths"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							ignoreMissingComponents: type: "boolean"
+							images: {
+								items: {
+									properties: {
+										digest: type:  "string"
+										name: type:    "string"
+										newName: type: "string"
+										newTag: type:  "string"
+									}
+									required: ["name"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							interval: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							kubeConfig: {
+								properties: {
+									configMapRef: {
+										properties: name: type: "string"
+										required: ["name"]
+										type:     "object"
+									}
+									secretRef: {
+										properties: {
+											key: type:  "string"
+											name: type: "string"
+										}
+										required: ["name"]
+										type:     "object"
+									}
+								}
+								type: "object"
+								"x-kubernetes-validations": [{
+									message:
+										"exactly one of spec.kubeConfig.configMapRef or spec.kubeConfig.secretRef must be specified"
+									rule: "has(self.configMapRef) != has(self.secretRef)"
+								}]
+							}
+							namePrefix: {
+								maxLength: 200
+								minLength: 1
+								type:      "string"
+							}
+							nameSuffix: {
+								maxLength: 200
+								minLength: 1
+								type:      "string"
+							}
+							patches: {
+								items: {
+									properties: {
+										patch: type: "string"
+										target: {
+											properties: {
+												annotationSelector: type: "string"
+												group: type:              "string"
+												kind: type:               "string"
+												labelSelector: type:      "string"
+												name: type:               "string"
+												namespace: type:          "string"
+												version: type:            "string"
+											}
+											type: "object"
+										}
+									}
+									required: ["patch"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							path: type: "string"
+							postBuild: {
+								properties: {
+									substitute: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+									substituteFrom: {
+										items: {
+											properties: {
+												kind: {
+													enum: ["Secret", "ConfigMap"]
+													type: "string"
+												}
+												name: {
+													maxLength: 253
+													minLength: 1
+													type:      "string"
+												}
+												optional: {
+													default: false
+													type:    "boolean"
+												}
+											}
+											required: ["kind", "name"]
+											type:     "object"
+										}
+										type: "array"
+									}
+									substituteStrategy: {
+										enum: ["WithVariables", "Always"]
+										type: "string"
+									}
+								}
+								type: "object"
+							}
+							prune: type: "boolean"
+							retryInterval: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							serviceAccountName: type: "string"
+							sourceRef: {
+								properties: {
+									apiVersion: type: "string"
+									kind: {
+										enum: ["OCIRepository", "GitRepository", "Bucket", "ExternalArtifact"]
+										type: "string"
+									}
+									name: type:      "string"
+									namespace: type: "string"
+								}
+								required: ["kind", "name"]
+								type:     "object"
+							}
+							suspend: type: "boolean"
+							targetNamespace: {
+								maxLength: 63
+								minLength: 1
+								type:      "string"
+							}
+							timeout: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							wait: type: "boolean"
+						}
+						required: ["interval", "prune", "sourceRef"]
+						type:     "object"
+					}
+					status: {
+						default: observedGeneration: -1
+						properties: {
+							conditions: {
+								items: {
+									properties: {
+										lastTransitionTime: {
+											format: "date-time"
+											type:   "string"
+										}
+										message: {
+											maxLength: 32768
+											type:      "string"
+										}
+										observedGeneration: {
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											enum: ["True", "False", "Unknown"]
+											type: "string"
+										}
+										type: {
+											maxLength: 316
+											pattern:
+												"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type: "string"
+										}
+									}
+									required: ["lastTransitionTime", "message", "reason", "status", "type"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							history: {
+								items: {
+									properties: {
+										digest: type: "string"
+										firstReconciled: {
+											format: "date-time"
+											type:   "string"
+										}
+										lastReconciled: {
+											format: "date-time"
+											type:   "string"
+										}
+										lastReconciledDuration: type: "string"
+										lastReconciledStatus: type:   "string"
+										metadata: {
+											additionalProperties: type: "string"
+											type: "object"
+										}
+										totalReconciliations: {
+											format: "int64"
+											type:   "integer"
+										}
+									}
+									required: [
+										"digest",
+										"firstReconciled",
+										"lastReconciled",
+										"lastReconciledDuration",
+										"lastReconciledStatus",
+										"totalReconciliations",
+									]
 									type: "object"
 								}
-								lastAppliedOriginRevision: {
-									type: "string"
-								}
-								lastAppliedRevision: {
-									type: "string"
-								}
-								lastAttemptedRevision: {
-									type: "string"
-								}
-								lastHandledReconcileAt: {
-									type: "string"
-								}
-								observedGeneration: {
-									format: "int64"
-									type:   "integer"
-								}
+								type: "array"
 							}
-							type: "object"
+							inventory: {
+								properties: entries: {
+									items: {
+										properties: {
+											id: type: "string"
+											v: type:  "string"
+										}
+										required: ["id", "v"]
+										type:     "object"
+									}
+									type: "array"
+								}
+								required: ["entries"]
+								type:     "object"
+							}
+							lastAppliedOriginRevision: type: "string"
+							lastAppliedRevision: type:       "string"
+							lastAttemptedRevision: type:     "string"
+							lastHandledReconcileAt: type:    "string"
+							observedGeneration: {
+								format: "int64"
+								type:   "integer"
+							}
 						}
+						type: "object"
 					}
-					type: "object"
 				}
+				type: "object"
 			}
-			subresources: {
-				status: {}
-			}
+			subresources: status: {}
 		}]
 	}
 }

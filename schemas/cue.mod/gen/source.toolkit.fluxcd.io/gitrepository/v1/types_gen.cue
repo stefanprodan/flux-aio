@@ -23,18 +23,10 @@ import "strings"
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
 	kind: "GitRepository"
 	metadata!: {
-		name!: strings.MaxRunes(253) & strings.MinRunes(1) & {
-			string
-		}
-		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {
-			string
-		}
-		labels?: {
-			[string]: string
-		}
-		annotations?: {
-			[string]: string
-		}
+		name!:      strings.MaxRunes(253) & strings.MinRunes(1) & {string}
+		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {string}
+		labels?: [string]:      string
+		annotations?: [string]: string
 	}
 
 	// GitRepositorySpec specifies the required configuration to produce an
@@ -152,169 +144,183 @@ import "strings"
 _crd: {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
-	metadata: {
-		name: "gitrepositories.source.toolkit.fluxcd.io"
-	}
+	metadata: name: "gitrepositories.source.toolkit.fluxcd.io"
 	spec: {
 		group: "source.toolkit.fluxcd.io"
 		names: {
 			categories: ["all", "fluxcd", "fluxcd-sources"]
-			kind:     "GitRepository"
-			listKind: "GitRepositoryList"
-			plural:   "gitrepositories"
+			kind:       "GitRepository"
+			listKind:   "GitRepositoryList"
+			plural:     "gitrepositories"
 			shortNames: ["gitrepo"]
-			singular: "gitrepository"
+			singular:   "gitrepository"
 		}
 		scope: "Namespaced"
 		versions: [{
 			name:    "v1"
 			served:  true
 			storage: true
-			schema: {
-				openAPIV3Schema: {
-					properties: {
-						apiVersion: {
-							type: "string"
-						}
-						kind: {
-							type: "string"
-						}
-						metadata: {
-							type: "object"
-						}
-						spec: {
-							properties: {
-								ignore: {
-									type: "string"
-								}
-								include: {
-									items: {
-										properties: {
-											fromPath: {
-												type: "string"
-											}
-											repository: {
-												properties: {
-													name: {
-														type: "string"
-													}
-												}
-												required: ["name"]
-												type: "object"
-											}
-											toPath: {
-												type: "string"
-											}
+			schema: openAPIV3Schema: {
+				properties: {
+					apiVersion: type: "string"
+					kind: type:       "string"
+					metadata: type:   "object"
+					spec: {
+						properties: {
+							ignore: type: "string"
+							include: {
+								items: {
+									properties: {
+										fromPath: type: "string"
+										repository: {
+											properties: name: type: "string"
+											required: ["name"]
+											type:     "object"
 										}
-										required: ["repository"]
+										toPath: type: "string"
+									}
+									required: ["repository"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							interval: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							provider: {
+								enum: ["generic", "aws", "azure", "github"]
+								type: "string"
+							}
+							proxySecretRef: {
+								properties: name: type: "string"
+								required: ["name"]
+								type:     "object"
+							}
+							recurseSubmodules: type: "boolean"
+							ref: {
+								properties: {
+									branch: type: "string"
+									commit: type: "string"
+									name: type:   "string"
+									semver: type: "string"
+									tag: type:    "string"
+								}
+								type: "object"
+							}
+							secretRef: {
+								properties: name: type: "string"
+								required: ["name"]
+								type:     "object"
+							}
+							serviceAccountName: type: "string"
+							sparseCheckout: {
+								items: type: "string"
+								type: "array"
+							}
+							suspend: type: "boolean"
+							timeout: {
+								default: "60s"
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								type:    "string"
+							}
+							url: {
+								pattern: "^(http|https|ssh)://.*$"
+								type:    "string"
+							}
+							verify: {
+								properties: {
+									mode: {
+										default: "HEAD"
+										enum:    ["head", "HEAD", "Tag", "TagAndHEAD"]
+										type:    "string"
+									}
+									secretRef: {
+										properties: name: type: "string"
+										required: ["name"]
+										type:     "object"
+									}
+								}
+								required: ["secretRef"]
+								type:     "object"
+							}
+						}
+						required: ["interval", "url"]
+						type:     "object"
+						"x-kubernetes-validations": [{
+							message: "serviceAccountName can only be set when provider is 'azure' or 'aws'"
+							rule:
+								"!has(self.serviceAccountName) || (has(self.provider) && (self.provider == 'azure' || self.provider == 'aws'))"
+						}]
+					}
+					status: {
+						default: observedGeneration: -1
+						properties: {
+							artifact: {
+								properties: {
+									digest: {
+										pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
+										type:    "string"
+									}
+									lastUpdateTime: {
+										format: "date-time"
+										type:   "string"
+									}
+									metadata: {
+										additionalProperties: type: "string"
 										type: "object"
 									}
-									type: "array"
-								}
-								interval: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-									type:    "string"
-								}
-								provider: {
-									enum: ["generic", "aws", "azure", "github"]
-									type: "string"
-								}
-								proxySecretRef: {
-									properties: {
-										name: {
-											type: "string"
-										}
+									path: type:     "string"
+									revision: type: "string"
+									size: {
+										format: "int64"
+										type:   "integer"
 									}
-									required: ["name"]
-									type: "object"
+									url: type: "string"
 								}
-								recurseSubmodules: {
-									type: "boolean"
-								}
-								ref: {
-									properties: {
-										branch: {
-											type: "string"
-										}
-										commit: {
-											type: "string"
-										}
-										name: {
-											type: "string"
-										}
-										semver: {
-											type: "string"
-										}
-										tag: {
-											type: "string"
-										}
-									}
-									type: "object"
-								}
-								secretRef: {
-									properties: {
-										name: {
-											type: "string"
-										}
-									}
-									required: ["name"]
-									type: "object"
-								}
-								serviceAccountName: {
-									type: "string"
-								}
-								sparseCheckout: {
-									items: {
-										type: "string"
-									}
-									type: "array"
-								}
-								suspend: {
-									type: "boolean"
-								}
-								timeout: {
-									default: "60s"
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
-									type:    "string"
-								}
-								url: {
-									pattern: "^(http|https|ssh)://.*$"
-									type:    "string"
-								}
-								verify: {
-									properties: {
-										mode: {
-											default: "HEAD"
-											enum: ["head", "HEAD", "Tag", "TagAndHEAD"]
-											type: "string"
-										}
-										secretRef: {
-											properties: {
-												name: {
-													type: "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-										}
-									}
-									required: ["secretRef"]
-									type: "object"
-								}
+								required: ["digest", "lastUpdateTime", "path", "revision", "url"]
+								type:     "object"
 							}
-							required: ["interval", "url"]
-							type: "object"
-							"x-kubernetes-validations": [{
-								message: "serviceAccountName can only be set when provider is 'azure' or 'aws'"
-								rule:    "!has(self.serviceAccountName) || (has(self.provider) && (self.provider == 'azure' || self.provider == 'aws'))"
-							}]
-						}
-						status: {
-							default: {
-								observedGeneration: -1
+							conditions: {
+								items: {
+									properties: {
+										lastTransitionTime: {
+											format: "date-time"
+											type:   "string"
+										}
+										message: {
+											maxLength: 32768
+											type:      "string"
+										}
+										observedGeneration: {
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											enum: ["True", "False", "Unknown"]
+											type: "string"
+										}
+										type: {
+											maxLength: 316
+											pattern:
+												"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type: "string"
+										}
+									}
+									required: ["lastTransitionTime", "message", "reason", "status", "type"]
+									type:     "object"
+								}
+								type: "array"
 							}
-							properties: {
-								artifact: {
+							includedArtifacts: {
+								items: {
 									properties: {
 										digest: {
 											pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
@@ -325,160 +331,58 @@ _crd: {
 											type:   "string"
 										}
 										metadata: {
-											additionalProperties: {
-												type: "string"
-											}
+											additionalProperties: type: "string"
 											type: "object"
 										}
-										path: {
-											type: "string"
-										}
-										revision: {
-											type: "string"
-										}
+										path: type:     "string"
+										revision: type: "string"
 										size: {
 											format: "int64"
 											type:   "integer"
 										}
-										url: {
-											type: "string"
-										}
+										url: type: "string"
 									}
 									required: ["digest", "lastUpdateTime", "path", "revision", "url"]
-									type: "object"
+									type:     "object"
 								}
-								conditions: {
-									items: {
-										properties: {
-											lastTransitionTime: {
-												format: "date-time"
-												type:   "string"
-											}
-											message: {
-												maxLength: 32768
-												type:      "string"
-											}
-											observedGeneration: {
-												format:  "int64"
-												minimum: 0
-												type:    "integer"
-											}
-											reason: {
-												maxLength: 1024
-												minLength: 1
-												pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
-												type:      "string"
-											}
-											status: {
-												enum: ["True", "False", "Unknown"]
-												type: "string"
-											}
-											type: {
-												maxLength: 316
-												pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-												type:      "string"
-											}
-										}
-										required: ["lastTransitionTime", "message", "reason", "status", "type"]
-										type: "object"
-									}
-									type: "array"
-								}
-								includedArtifacts: {
-									items: {
-										properties: {
-											digest: {
-												pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
-												type:    "string"
-											}
-											lastUpdateTime: {
-												format: "date-time"
-												type:   "string"
-											}
-											metadata: {
-												additionalProperties: {
-													type: "string"
-												}
-												type: "object"
-											}
-											path: {
-												type: "string"
-											}
-											revision: {
-												type: "string"
-											}
-											size: {
-												format: "int64"
-												type:   "integer"
-											}
-											url: {
-												type: "string"
-											}
-										}
-										required: ["digest", "lastUpdateTime", "path", "revision", "url"]
-										type: "object"
-									}
-									type: "array"
-								}
-								lastHandledReconcileAt: {
-									type: "string"
-								}
-								observedGeneration: {
-									format: "int64"
-									type:   "integer"
-								}
-								observedIgnore: {
-									type: "string"
-								}
-								observedInclude: {
-									items: {
-										properties: {
-											fromPath: {
-												type: "string"
-											}
-											repository: {
-												properties: {
-													name: {
-														type: "string"
-													}
-												}
-												required: ["name"]
-												type: "object"
-											}
-											toPath: {
-												type: "string"
-											}
-										}
-										required: ["repository"]
-										type: "object"
-									}
-									type: "array"
-								}
-								observedRecurseSubmodules: {
-									type: "boolean"
-								}
-								observedSparseCheckout: {
-									items: {
-										type: "string"
-									}
-									type: "array"
-								}
-								sourceVerificationFingerprint: {
-									type: "string"
-								}
-								sourceVerificationMode: {
-									type: "string"
-								}
+								type: "array"
 							}
-							type: "object"
+							lastHandledReconcileAt: type: "string"
+							observedGeneration: {
+								format: "int64"
+								type:   "integer"
+							}
+							observedIgnore: type: "string"
+							observedInclude: {
+								items: {
+									properties: {
+										fromPath: type: "string"
+										repository: {
+											properties: name: type: "string"
+											required: ["name"]
+											type:     "object"
+										}
+										toPath: type: "string"
+									}
+									required: ["repository"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							observedRecurseSubmodules: type: "boolean"
+							observedSparseCheckout: {
+								items: type: "string"
+								type: "array"
+							}
+							sourceVerificationFingerprint: type: "string"
+							sourceVerificationMode: type:        "string"
 						}
+						type: "object"
 					}
-					type: "object"
 				}
+				type: "object"
 			}
-			subresources: {
-				status: {}
-			}
+			subresources: status: {}
 		}]
 	}
 }

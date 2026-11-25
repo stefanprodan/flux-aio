@@ -33,17 +33,19 @@ import "list"
 			{
 				name:  "HTTPS_PROXY"
 				value: #config.proxy.https
-			}},
+			}
+		},
 		if #config.proxy.http != _|_ {
 			{
 				name:  "HTTP_PROXY"
 				value: #config.proxy.http
-			}},
+			}
+		},
 	]
 
 	extraEnv: [...]
 	if #config.env != _|_ {
-		extraEnv: [for k , v in #config.env {name: k, value: v}]
+		extraEnv: [for k, v in #config.env {name: k, value: v}]
 	}
 
 	env: list.Concat([defaultEnv, extraEnv])

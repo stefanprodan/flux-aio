@@ -6,7 +6,7 @@ import (
 )
 
 #Deployment: appsv1.#Deployment & {
-	#config: #Config
+	#config:     #Config
 	_containers: [...corev1.#Container]
 
 	apiVersion: "apps/v1"

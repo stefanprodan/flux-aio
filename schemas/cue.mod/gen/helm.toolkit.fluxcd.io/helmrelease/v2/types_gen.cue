@@ -23,18 +23,10 @@ import "strings"
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
 	kind: "HelmRelease"
 	metadata!: {
-		name!: strings.MaxRunes(253) & strings.MinRunes(1) & {
-			string
-		}
-		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {
-			string
-		}
-		labels?: {
-			[string]: string
-		}
-		annotations?: {
-			[string]: string
-		}
+		name!:      strings.MaxRunes(253) & strings.MinRunes(1) & {string}
+		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {string}
+		labels?: [string]:      string
+		annotations?: [string]: string
 	}
 
 	// HelmReleaseSpec defines the desired state of a Helm release.
@@ -65,16 +57,12 @@ import "strings"
 			// set by external tools to store and retrieve arbitrary metadata. They are not
 			// queryable and should be preserved when modifying objects.
 			// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-			annotations?: {
-				[string]: string
-			}
+			annotations?: [string]: string
 
 			// Map of string keys and values that can be used to organize and categorize
 			// (scope and select) objects.
 			// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-			labels?: {
-				[string]: string
-			}
+			labels?: [string]: string
 		}
 
 		// Spec holds the spec of the object generated for this HelmRelease.
@@ -255,14 +243,10 @@ import "strings"
 	// overridden if its key matches a common one.
 	commonMetadata?: {
 		// Annotations to be added to the object's metadata.
-		annotations?: {
-			[string]: string
-		}
+		annotations?: [string]: string
 
 		// Labels to be added to the object's metadata.
-		labels?: {
-			[string]: string
-		}
+		labels?: [string]: string
 	}
 
 	// DependsOn may contain a DependencyReference slice with
@@ -852,15 +836,11 @@ import "strings"
 		// TargetPath is the YAML dot notation path the value should be merged at. When
 		// set, the ValuesKey is expected to be a single flat value. Defaults to 'None',
 		// which results in the values getting merged at the root.
-		targetPath?: strings.MaxRunes(250) & {
-			=~"^([a-zA-Z0-9_\\-.\\\\\\/]|\\[[0-9]{1,5}\\])+$"
-		}
+		targetPath?: strings.MaxRunes(250) & {=~"^([a-zA-Z0-9_\\-.\\\\\\/]|\\[[0-9]{1,5}\\])+$"}
 
 		// ValuesKey is the data key where the values.yaml or a specific value can be
 		// found at. Defaults to 'values.yaml'.
-		valuesKey?: strings.MaxRunes(253) & {
-			=~"^[\\-._a-zA-Z0-9]+$"
-		}
+		valuesKey?: strings.MaxRunes(253) & {=~"^[\\-._a-zA-Z0-9]+$"}
 	}]
 	waitStrategy?: {
 		// Name is Helm's wait strategy for waiting for applied resources to
@@ -877,1059 +857,798 @@ import "strings"
 _crd: {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
-	metadata: {
-		name: "helmreleases.helm.toolkit.fluxcd.io"
-	}
+	metadata: name: "helmreleases.helm.toolkit.fluxcd.io"
 	spec: {
 		group: "helm.toolkit.fluxcd.io"
 		names: {
 			categories: ["all", "fluxcd", "fluxcd-appliers"]
-			kind:     "HelmRelease"
-			listKind: "HelmReleaseList"
-			plural:   "helmreleases"
+			kind:       "HelmRelease"
+			listKind:   "HelmReleaseList"
+			plural:     "helmreleases"
 			shortNames: ["hr"]
-			singular: "helmrelease"
+			singular:   "helmrelease"
 		}
 		scope: "Namespaced"
 		versions: [{
 			name:    "v2"
 			served:  true
 			storage: true
-			schema: {
-				openAPIV3Schema: {
-					properties: {
-						apiVersion: {
-							type: "string"
-						}
-						kind: {
-							type: "string"
-						}
-						metadata: {
-							type: "object"
-						}
-						spec: {
-							properties: {
-								chart: {
-									properties: {
-										kind: {
-											enum: ["HelmChart", "OCIRepository"]
-											type: "string"
-										}
-										metadata: {
-											properties: {
-												annotations: {
-													additionalProperties: {
-														type: "string"
-													}
-													type: "object"
-												}
-												labels: {
-													additionalProperties: {
-														type: "string"
-													}
-													type: "object"
-												}
-											}
-											type: "object"
-										}
-										spec: {
-											properties: {
-												certSecretRef: {
-													properties: {
-														name: {
-															type: "string"
-														}
-													}
-													required: ["name"]
-													type: "object"
-												}
-												chart: {
-													maxLength: 2048
-													minLength: 1
-													type:      "string"
-												}
-												ignore: {
-													type: "string"
-												}
-												ignoreMissingValuesFiles: {
-													type: "boolean"
-												}
-												insecure: {
-													type: "boolean"
-												}
-												interval: {
-													pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-													type:    "string"
-												}
-												layerSelector: {
-													properties: {
-														mediaType: {
-															type: "string"
-														}
-														operation: {
-															enum: ["extract", "copy"]
-															type: "string"
-														}
-													}
-													type: "object"
-												}
-												provider: {
-													enum: ["generic", "aws", "azure", "gcp"]
-													type: "string"
-												}
-												proxySecretRef: {
-													properties: {
-														name: {
-															type: "string"
-														}
-													}
-													required: ["name"]
-													type: "object"
-												}
-												reconcileStrategy: {
-													enum: ["ChartVersion", "Revision"]
-													type: "string"
-												}
-												ref: {
-													properties: {
-														digest: {
-															type: "string"
-														}
-														semver: {
-															type: "string"
-														}
-														semverFilter: {
-															type: "string"
-														}
-														tag: {
-															type: "string"
-														}
-													}
-													type: "object"
-												}
-												secretRef: {
-													properties: {
-														name: {
-															type: "string"
-														}
-													}
-													required: ["name"]
-													type: "object"
-												}
-												serviceAccountName: {
-													type: "string"
-												}
-												sourceRef: {
-													properties: {
-														apiVersion: {
-															type: "string"
-														}
-														kind: {
-															enum: ["HelmRepository", "GitRepository", "Bucket"]
-															type: "string"
-														}
-														name: {
-															maxLength: 253
-															minLength: 1
-															type:      "string"
-														}
-														namespace: {
-															maxLength: 63
-															minLength: 1
-															type:      "string"
-														}
-													}
-													required: ["kind", "name"]
-													type: "object"
-												}
-												suspend: {
-													type: "boolean"
-												}
-												timeout: {
-													pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
-													type:    "string"
-												}
-												url: {
-													pattern: "^oci://.*$"
-													type:    "string"
-												}
-												valuesFiles: {
-													items: {
-														type: "string"
-													}
-													type: "array"
-												}
-												verify: {
-													properties: {
-														matchOIDCIdentity: {
-															items: {
-																properties: {
-																	issuer: {
-																		type: "string"
-																	}
-																	subject: {
-																		type: "string"
-																	}
-																}
-																required: ["issuer", "subject"]
-																type: "object"
-															}
-															type: "array"
-														}
-														provider: {
-															default: "cosign"
-															enum: ["cosign", "notation"]
-															type: "string"
-														}
-														secretRef: {
-															properties: {
-																name: {
-																	type: "string"
-																}
-															}
-															required: ["name"]
-															type: "object"
-														}
-														trustedRootSecretRef: {
-															properties: {
-																name: {
-																	type: "string"
-																}
-															}
-															required: ["name"]
-															type: "object"
-														}
-													}
-													required: ["provider"]
-													type: "object"
-												}
-												version: {
-													type: "string"
-												}
-											}
-											type: "object"
-										}
+			schema: openAPIV3Schema: {
+				properties: {
+					apiVersion: type: "string"
+					kind: type:       "string"
+					metadata: type:   "object"
+					spec: {
+						properties: {
+							chart: {
+								properties: {
+									kind: {
+										enum: ["HelmChart", "OCIRepository"]
+										type: "string"
 									}
-									required: ["spec"]
-									type: "object"
-									"x-kubernetes-validations": [{
-										message: "chart.spec.url must be set when chart.kind is 'OCIRepository'"
-										rule:    "!has(self.kind) || self.kind != 'OCIRepository' || (has(self.spec.url) && size(self.spec.url) > 0)"
-									}, {
-										message: "chart.spec.url requires chart.kind: 'OCIRepository'; for a HelmChart template set spec.chart and spec.sourceRef instead"
-										rule:    "!has(self.spec.url) || (has(self.kind) && self.kind == 'OCIRepository')"
-									}, {
-										message: "chart.spec.chart and chart.spec.sourceRef must be set when chart.kind is not 'OCIRepository'"
-										rule:    "(has(self.kind) && self.kind == 'OCIRepository') || (has(self.spec.chart) && has(self.spec.sourceRef))"
-									}, {
-										message: "chart.spec.chart cannot be set when chart.kind is 'OCIRepository'"
-										rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.chart)"
-									}, {
-										message: "chart.spec.version cannot be set when chart.kind is 'OCIRepository'"
-										rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.version) || self.spec.version == '*'"
-									}, {
-										message: "chart.spec.sourceRef cannot be set when chart.kind is 'OCIRepository'"
-										rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.sourceRef)"
-									}, {
-										message: "chart.spec.reconcileStrategy cannot be set when chart.kind is 'OCIRepository'"
-										rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.reconcileStrategy) || self.spec.reconcileStrategy == 'ChartVersion'"
-									}, {
-										message: "chart.spec.valuesFiles cannot be set when chart.kind is 'OCIRepository'"
-										rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.valuesFiles)"
-									}, {
-										message: "chart.spec.ignoreMissingValuesFiles cannot be set when chart.kind is 'OCIRepository'"
-										rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.ignoreMissingValuesFiles)"
-									}]
-								}
-								chartRef: {
-									properties: {
-										apiVersion: {
-											type: "string"
-										}
-										kind: {
-											enum: ["OCIRepository", "HelmChart", "ExternalArtifact"]
-											type: "string"
-										}
-										name: {
-											maxLength: 253
-											minLength: 1
-											type:      "string"
-										}
-										namespace: {
-											maxLength: 63
-											minLength: 1
-											type:      "string"
-										}
-									}
-									required: ["kind", "name"]
-									type: "object"
-								}
-								commonMetadata: {
-									properties: {
-										annotations: {
-											additionalProperties: {
-												type: "string"
-											}
-											type: "object"
-										}
-										labels: {
-											additionalProperties: {
-												type: "string"
-											}
-											type: "object"
-										}
-									}
-									type: "object"
-								}
-								dependsOn: {
-									items: {
+									metadata: {
 										properties: {
-											name: {
-												type: "string"
-											}
-											namespace: {
-												type: "string"
-											}
-											readyExpr: {
-												type: "string"
-											}
-										}
-										required: ["name"]
-										type: "object"
-									}
-									type: "array"
-								}
-								driftDetection: {
-									properties: {
-										ignore: {
-											items: {
-												properties: {
-													paths: {
-														items: {
-															type: "string"
-														}
-														type: "array"
-													}
-													target: {
-														properties: {
-															annotationSelector: {
-																type: "string"
-															}
-															group: {
-																type: "string"
-															}
-															kind: {
-																type: "string"
-															}
-															labelSelector: {
-																type: "string"
-															}
-															name: {
-																type: "string"
-															}
-															namespace: {
-																type: "string"
-															}
-															version: {
-																type: "string"
-															}
-														}
-														type: "object"
-													}
-												}
-												required: ["paths"]
+											annotations: {
+												additionalProperties: type: "string"
 												type: "object"
 											}
-											type: "array"
-										}
-										mode: {
-											enum: ["enabled", "warn", "disabled"]
-											type: "string"
-										}
-									}
-									type: "object"
-								}
-								healthCheckExprs: {
-									items: {
-										properties: {
-											apiVersion: {
-												type: "string"
-											}
-											current: {
-												type: "string"
-											}
-											failed: {
-												type: "string"
-											}
-											inProgress: {
-												type: "string"
-											}
-											kind: {
-												type: "string"
-											}
-										}
-										required: ["apiVersion", "current"]
-										type: "object"
-									}
-									type: "array"
-								}
-								install: {
-									properties: {
-										crds: {
-											enum: ["Skip", "Create", "CreateReplace"]
-											type: "string"
-										}
-										createNamespace: {
-											type: "boolean"
-										}
-										disableHooks: {
-											type: "boolean"
-										}
-										disableOpenAPIValidation: {
-											type: "boolean"
-										}
-										disableSchemaValidation: {
-											type: "boolean"
-										}
-										disableTakeOwnership: {
-											type: "boolean"
-										}
-										disableWait: {
-											type: "boolean"
-										}
-										disableWaitForJobs: {
-											type: "boolean"
-										}
-										remediation: {
-											properties: {
-												ignoreTestFailures: {
-													type: "boolean"
-												}
-												remediateLastFailure: {
-													type: "boolean"
-												}
-												retries: {
-													type: "integer"
-												}
-											}
-											type: "object"
-										}
-										replace: {
-											type: "boolean"
-										}
-										serverSideApply: {
-											type: "boolean"
-										}
-										skipCRDs: {
-											type: "boolean"
-										}
-										strategy: {
-											properties: {
-												name: {
-													enum: ["RemediateOnFailure", "RetryOnFailure"]
-													type: "string"
-												}
-												retryInterval: {
-													pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-													type:    "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-											"x-kubernetes-validations": [{
-												message: ".retryInterval cannot be set when .name is 'RemediateOnFailure'"
-												rule:    "!has(self.retryInterval) || self.name != 'RemediateOnFailure'"
-											}]
-										}
-										timeout: {
-											pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-											type:    "string"
-										}
-									}
-									type: "object"
-								}
-								interval: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-									type:    "string"
-								}
-								kubeConfig: {
-									properties: {
-										configMapRef: {
-											properties: {
-												name: {
-													type: "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-										}
-										secretRef: {
-											properties: {
-												key: {
-													type: "string"
-												}
-												name: {
-													type: "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-										}
-									}
-									type: "object"
-									"x-kubernetes-validations": [{
-										message: "exactly one of spec.kubeConfig.configMapRef or spec.kubeConfig.secretRef must be specified"
-										rule:    "has(self.configMapRef) != has(self.secretRef)"
-									}]
-								}
-								maxHistory: {
-									type: "integer"
-								}
-								persistentClient: {
-									type: "boolean"
-								}
-								postRenderStrategy: {
-									enum: ["nohooks", "combined", "separate"]
-									type: "string"
-								}
-								postRenderers: {
-									items: {
-										properties: {
-											kustomize: {
-												properties: {
-													images: {
-														items: {
-															properties: {
-																digest: {
-																	type: "string"
-																}
-																name: {
-																	type: "string"
-																}
-																newName: {
-																	type: "string"
-																}
-																newTag: {
-																	type: "string"
-																}
-															}
-															required: ["name"]
-															type: "object"
-														}
-														type: "array"
-													}
-													patches: {
-														items: {
-															properties: {
-																patch: {
-																	type: "string"
-																}
-																target: {
-																	properties: {
-																		annotationSelector: {
-																			type: "string"
-																		}
-																		group: {
-																			type: "string"
-																		}
-																		kind: {
-																			type: "string"
-																		}
-																		labelSelector: {
-																			type: "string"
-																		}
-																		name: {
-																			type: "string"
-																		}
-																		namespace: {
-																			type: "string"
-																		}
-																		version: {
-																			type: "string"
-																		}
-																	}
-																	type: "object"
-																}
-															}
-															required: ["patch"]
-															type: "object"
-														}
-														type: "array"
-													}
-												}
+											labels: {
+												additionalProperties: type: "string"
 												type: "object"
 											}
 										}
 										type: "object"
 									}
-									type: "array"
-								}
-								releaseName: {
-									maxLength: 53
-									minLength: 1
-									type:      "string"
-								}
-								rollback: {
-									properties: {
-										cleanupOnFail: {
-											type: "boolean"
-										}
-										disableHooks: {
-											type: "boolean"
-										}
-										disableWait: {
-											type: "boolean"
-										}
-										disableWaitForJobs: {
-											type: "boolean"
-										}
-										force: {
-											type: "boolean"
-										}
-										recreate: {
-											type: "boolean"
-										}
-										serverSideApply: {
-											enum: ["enabled", "disabled", "auto"]
-											type: "string"
-										}
-										timeout: {
-											pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-											type:    "string"
-										}
-									}
-									type: "object"
-								}
-								serviceAccountName: {
-									maxLength: 253
-									minLength: 1
-									type:      "string"
-								}
-								storageNamespace: {
-									maxLength: 63
-									minLength: 1
-									type:      "string"
-								}
-								suspend: {
-									type: "boolean"
-								}
-								targetNamespace: {
-									maxLength: 63
-									minLength: 1
-									type:      "string"
-								}
-								test: {
-									properties: {
-										enable: {
-											type: "boolean"
-										}
-										filters: {
-											items: {
+									spec: {
+										properties: {
+											certSecretRef: {
+												properties: name: type: "string"
+												required: ["name"]
+												type:     "object"
+											}
+											chart: {
+												maxLength: 2048
+												minLength: 1
+												type:      "string"
+											}
+											ignore: type:                   "string"
+											ignoreMissingValuesFiles: type: "boolean"
+											insecure: type:                 "boolean"
+											interval: {
+												pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+												type:    "string"
+											}
+											layerSelector: {
 												properties: {
-													exclude: {
-														type: "boolean"
+													mediaType: type: "string"
+													operation: {
+														enum: ["extract", "copy"]
+														type: "string"
+													}
+												}
+												type: "object"
+											}
+											provider: {
+												enum: ["generic", "aws", "azure", "gcp"]
+												type: "string"
+											}
+											proxySecretRef: {
+												properties: name: type: "string"
+												required: ["name"]
+												type:     "object"
+											}
+											reconcileStrategy: {
+												enum: ["ChartVersion", "Revision"]
+												type: "string"
+											}
+											ref: {
+												properties: {
+													digest: type:       "string"
+													semver: type:       "string"
+													semverFilter: type: "string"
+													tag: type:          "string"
+												}
+												type: "object"
+											}
+											secretRef: {
+												properties: name: type: "string"
+												required: ["name"]
+												type:     "object"
+											}
+											serviceAccountName: type: "string"
+											sourceRef: {
+												properties: {
+													apiVersion: type: "string"
+													kind: {
+														enum: ["HelmRepository", "GitRepository", "Bucket"]
+														type: "string"
 													}
 													name: {
 														maxLength: 253
 														minLength: 1
 														type:      "string"
 													}
+													namespace: {
+														maxLength: 63
+														minLength: 1
+														type:      "string"
+													}
 												}
-												required: ["name"]
-												type: "object"
+												required: ["kind", "name"]
+												type:     "object"
 											}
-											type: "array"
-										}
-										ignoreFailures: {
-											type: "boolean"
-										}
-										timeout: {
-											pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-											type:    "string"
-										}
-									}
-									type: "object"
-								}
-								timeout: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-									type:    "string"
-								}
-								uninstall: {
-									properties: {
-										deletionPropagation: {
-											default: "background"
-											enum: ["background", "foreground", "orphan"]
-											type: "string"
-										}
-										disableHooks: {
-											type: "boolean"
-										}
-										disableWait: {
-											type: "boolean"
-										}
-										keepHistory: {
-											type: "boolean"
-										}
-										timeout: {
-											pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-											type:    "string"
-										}
-									}
-									type: "object"
-								}
-								upgrade: {
-									properties: {
-										chartNameChangeStrategy: {
-											enum: ["InPlaceUpdate", "Reinstall"]
-											type: "string"
-										}
-										cleanupOnFail: {
-											type: "boolean"
-										}
-										crds: {
-											enum: ["Skip", "Create", "CreateReplace"]
-											type: "string"
-										}
-										disableHooks: {
-											type: "boolean"
-										}
-										disableOpenAPIValidation: {
-											type: "boolean"
-										}
-										disableSchemaValidation: {
-											type: "boolean"
-										}
-										disableTakeOwnership: {
-											type: "boolean"
-										}
-										disableWait: {
-											type: "boolean"
-										}
-										disableWaitForJobs: {
-											type: "boolean"
-										}
-										force: {
-											type: "boolean"
-										}
-										preserveValues: {
-											type: "boolean"
-										}
-										remediation: {
-											properties: {
-												ignoreTestFailures: {
-													type: "boolean"
+											suspend: type: "boolean"
+											timeout: {
+												pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+												type:    "string"
+											}
+											url: {
+												pattern: "^oci://.*$"
+												type:    "string"
+											}
+											valuesFiles: {
+												items: type: "string"
+												type: "array"
+											}
+											verify: {
+												properties: {
+													matchOIDCIdentity: {
+														items: {
+															properties: {
+																issuer: type:  "string"
+																subject: type: "string"
+															}
+															required: ["issuer", "subject"]
+															type:     "object"
+														}
+														type: "array"
+													}
+													provider: {
+														default: "cosign"
+														enum:    ["cosign", "notation"]
+														type:    "string"
+													}
+													secretRef: {
+														properties: name: type: "string"
+														required: ["name"]
+														type:     "object"
+													}
+													trustedRootSecretRef: {
+														properties: name: type: "string"
+														required: ["name"]
+														type:     "object"
+													}
 												}
-												remediateLastFailure: {
-													type: "boolean"
-												}
-												retries: {
-													type: "integer"
-												}
-												strategy: {
-													enum: ["rollback", "uninstall"]
-													type: "string"
-												}
+												required: ["provider"]
+												type:     "object"
 											}
-											type: "object"
+											version: type: "string"
 										}
-										serverSideApply: {
-											enum: ["enabled", "disabled", "auto"]
-											type: "string"
-										}
-										strategy: {
-											properties: {
-												name: {
-													enum: ["RemediateOnFailure", "RetryOnFailure"]
-													type: "string"
-												}
-												retryInterval: {
-													pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-													type:    "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-											"x-kubernetes-validations": [{
-												message: ".retryInterval can only be set when .name is 'RetryOnFailure'"
-												rule:    "!has(self.retryInterval) || self.name == 'RetryOnFailure'"
-											}]
-										}
-										timeout: {
-											pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-											type:    "string"
-										}
-									}
-									type: "object"
-								}
-								values: {
-									"x-kubernetes-preserve-unknown-fields": true
-								}
-								valuesFrom: {
-									items: {
-										properties: {
-											kind: {
-												enum: ["Secret", "ConfigMap"]
-												type: "string"
-											}
-											literal: {
-												type: "boolean"
-											}
-											name: {
-												maxLength: 253
-												minLength: 1
-												type:      "string"
-											}
-											optional: {
-												type: "boolean"
-											}
-											targetPath: {
-												maxLength: 250
-												pattern:   "^([a-zA-Z0-9_\\-.\\\\\\/]|\\[[0-9]{1,5}\\])+$"
-												type:      "string"
-											}
-											valuesKey: {
-												maxLength: 253
-												pattern:   "^[\\-._a-zA-Z0-9]+$"
-												type:      "string"
-											}
-										}
-										required: ["kind", "name"]
 										type: "object"
 									}
-									type: "array"
 								}
-								waitStrategy: {
+								required: ["spec"]
+								type:     "object"
+								"x-kubernetes-validations": [{
+									message: "chart.spec.url must be set when chart.kind is 'OCIRepository'"
+									rule:
+										"!has(self.kind) || self.kind != 'OCIRepository' || (has(self.spec.url) && size(self.spec.url) > 0)"
+								}, {
+									message:
+										"chart.spec.url requires chart.kind: 'OCIRepository'; for a HelmChart template set spec.chart and spec.sourceRef instead"
+									rule: "!has(self.spec.url) || (has(self.kind) && self.kind == 'OCIRepository')"
+								}, {
+									message:
+										"chart.spec.chart and chart.spec.sourceRef must be set when chart.kind is not 'OCIRepository'"
+									rule:
+										"(has(self.kind) && self.kind == 'OCIRepository') || (has(self.spec.chart) && has(self.spec.sourceRef))"
+								}, {
+									message: "chart.spec.chart cannot be set when chart.kind is 'OCIRepository'"
+									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.chart)"
+								}, {
+									message: "chart.spec.version cannot be set when chart.kind is 'OCIRepository'"
+									rule:
+										"!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.version) || self.spec.version == '*'"
+								}, {
+									message: "chart.spec.sourceRef cannot be set when chart.kind is 'OCIRepository'"
+									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.sourceRef)"
+								}, {
+									message:
+										"chart.spec.reconcileStrategy cannot be set when chart.kind is 'OCIRepository'"
+									rule:
+										"!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.reconcileStrategy) || self.spec.reconcileStrategy == 'ChartVersion'"
+								}, {
+									message: "chart.spec.valuesFiles cannot be set when chart.kind is 'OCIRepository'"
+									rule:
+										"!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.valuesFiles)"
+								}, {
+									message:
+										"chart.spec.ignoreMissingValuesFiles cannot be set when chart.kind is 'OCIRepository'"
+									rule:
+										"!has(self.kind) || self.kind != 'OCIRepository' || !has(self.spec.ignoreMissingValuesFiles)"
+								}]
+							}
+							chartRef: {
+								properties: {
+									apiVersion: type: "string"
+									kind: {
+										enum: ["OCIRepository", "HelmChart", "ExternalArtifact"]
+										type: "string"
+									}
+									name: {
+										maxLength: 253
+										minLength: 1
+										type:      "string"
+									}
+									namespace: {
+										maxLength: 63
+										minLength: 1
+										type:      "string"
+									}
+								}
+								required: ["kind", "name"]
+								type:     "object"
+							}
+							commonMetadata: {
+								properties: {
+									annotations: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+									labels: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+								}
+								type: "object"
+							}
+							dependsOn: {
+								items: {
 									properties: {
-										name: {
-											enum: ["poller", "legacy"]
-											type: "string"
-										}
+										name: type:      "string"
+										namespace: type: "string"
+										readyExpr: type: "string"
 									}
 									required: ["name"]
-									type: "object"
+									type:     "object"
 								}
+								type: "array"
 							}
-							required: ["interval"]
-							type: "object"
-							"x-kubernetes-validations": [{
-								message: "either chart or chartRef must be set"
-								rule:    "(has(self.chart) && !has(self.chartRef)) || (!has(self.chart) && has(self.chartRef))"
-							}]
-						}
-						status: {
-							default: {
-								observedGeneration: -1
-							}
-							properties: {
-								conditions: {
-									items: {
-										properties: {
-											lastTransitionTime: {
-												format: "date-time"
-												type:   "string"
-											}
-											message: {
-												maxLength: 32768
-												type:      "string"
-											}
-											observedGeneration: {
-												format:  "int64"
-												minimum: 0
-												type:    "integer"
-											}
-											reason: {
-												maxLength: 1024
-												minLength: 1
-												pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
-												type:      "string"
-											}
-											status: {
-												enum: ["True", "False", "Unknown"]
-												type: "string"
-											}
-											type: {
-												maxLength: 316
-												pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-												type:      "string"
-											}
-										}
-										required: ["lastTransitionTime", "message", "reason", "status", "type"]
-										type: "object"
-									}
-									type: "array"
-								}
-								failures: {
-									format: "int64"
-									type:   "integer"
-								}
-								helmChart: {
-									type: "string"
-								}
-								history: {
-									items: {
-										properties: {
-											action: {
-												type: "string"
-											}
-											apiVersion: {
-												type: "string"
-											}
-											appVersion: {
-												type: "string"
-											}
-											chartName: {
-												type: "string"
-											}
-											chartVersion: {
-												type: "string"
-											}
-											configDigest: {
-												type: "string"
-											}
-											deleted: {
-												format: "date-time"
-												type:   "string"
-											}
-											digest: {
-												type: "string"
-											}
-											firstDeployed: {
-												format: "date-time"
-												type:   "string"
-											}
-											lastDeployed: {
-												format: "date-time"
-												type:   "string"
-											}
-											name: {
-												type: "string"
-											}
-											namespace: {
-												type: "string"
-											}
-											ociDigest: {
-												type: "string"
-											}
-											status: {
-												type: "string"
-											}
-											testHooks: {
-												additionalProperties: {
+							driftDetection: {
+								properties: {
+									ignore: {
+										items: {
+											properties: {
+												paths: {
+													items: type: "string"
+													type: "array"
+												}
+												target: {
 													properties: {
-														lastCompleted: {
-															format: "date-time"
-															type:   "string"
-														}
-														lastStarted: {
-															format: "date-time"
-															type:   "string"
-														}
-														phase: {
-															type: "string"
-														}
+														annotationSelector: type: "string"
+														group: type:              "string"
+														kind: type:               "string"
+														labelSelector: type:      "string"
+														name: type:               "string"
+														namespace: type:          "string"
+														version: type:            "string"
 													}
 													type: "object"
 												}
-												type: "object"
 											}
-											version: {
-												type: "integer"
+											required: ["paths"]
+											type:     "object"
+										}
+										type: "array"
+									}
+									mode: {
+										enum: ["enabled", "warn", "disabled"]
+										type: "string"
+									}
+								}
+								type: "object"
+							}
+							healthCheckExprs: {
+								items: {
+									properties: {
+										apiVersion: type: "string"
+										current: type:    "string"
+										failed: type:     "string"
+										inProgress: type: "string"
+										kind: type:       "string"
+									}
+									required: ["apiVersion", "current"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							install: {
+								properties: {
+									crds: {
+										enum: ["Skip", "Create", "CreateReplace"]
+										type: "string"
+									}
+									createNamespace: type:          "boolean"
+									disableHooks: type:             "boolean"
+									disableOpenAPIValidation: type: "boolean"
+									disableSchemaValidation: type:  "boolean"
+									disableTakeOwnership: type:     "boolean"
+									disableWait: type:              "boolean"
+									disableWaitForJobs: type:       "boolean"
+									remediation: {
+										properties: {
+											ignoreTestFailures: type:   "boolean"
+											remediateLastFailure: type: "boolean"
+											retries: type:              "integer"
+										}
+										type: "object"
+									}
+									replace: type:         "boolean"
+									serverSideApply: type: "boolean"
+									skipCRDs: type:        "boolean"
+									strategy: {
+										properties: {
+											name: {
+												enum: ["RemediateOnFailure", "RetryOnFailure"]
+												type: "string"
+											}
+											retryInterval: {
+												pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+												type:    "string"
 											}
 										}
-										required: ["chartName", "chartVersion", "configDigest", "digest", "firstDeployed", "lastDeployed", "name", "namespace", "status", "version"]
+										required: ["name"]
+										type:     "object"
+										"x-kubernetes-validations": [{
+											message: ".retryInterval cannot be set when .name is 'RemediateOnFailure'"
+											rule:    "!has(self.retryInterval) || self.name != 'RemediateOnFailure'"
+										}]
+									}
+									timeout: {
+										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+										type:    "string"
+									}
+								}
+								type: "object"
+							}
+							interval: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							kubeConfig: {
+								properties: {
+									configMapRef: {
+										properties: name: type: "string"
+										required: ["name"]
+										type:     "object"
+									}
+									secretRef: {
+										properties: {
+											key: type:  "string"
+											name: type: "string"
+										}
+										required: ["name"]
+										type:     "object"
+									}
+								}
+								type: "object"
+								"x-kubernetes-validations": [{
+									message:
+										"exactly one of spec.kubeConfig.configMapRef or spec.kubeConfig.secretRef must be specified"
+									rule: "has(self.configMapRef) != has(self.secretRef)"
+								}]
+							}
+							maxHistory: type:       "integer"
+							persistentClient: type: "boolean"
+							postRenderStrategy: {
+								enum: ["nohooks", "combined", "separate"]
+								type: "string"
+							}
+							postRenderers: {
+								items: {
+									properties: kustomize: {
+										properties: {
+											images: {
+												items: {
+													properties: {
+														digest: type:  "string"
+														name: type:    "string"
+														newName: type: "string"
+														newTag: type:  "string"
+													}
+													required: ["name"]
+													type:     "object"
+												}
+												type: "array"
+											}
+											patches: {
+												items: {
+													properties: {
+														patch: type: "string"
+														target: {
+															properties: {
+																annotationSelector: type: "string"
+																group: type:              "string"
+																kind: type:               "string"
+																labelSelector: type:      "string"
+																name: type:               "string"
+																namespace: type:          "string"
+																version: type:            "string"
+															}
+															type: "object"
+														}
+													}
+													required: ["patch"]
+													type:     "object"
+												}
+												type: "array"
+											}
+										}
 										type: "object"
+									}
+									type: "object"
+								}
+								type: "array"
+							}
+							releaseName: {
+								maxLength: 53
+								minLength: 1
+								type:      "string"
+							}
+							rollback: {
+								properties: {
+									cleanupOnFail: type:      "boolean"
+									disableHooks: type:       "boolean"
+									disableWait: type:        "boolean"
+									disableWaitForJobs: type: "boolean"
+									force: type:              "boolean"
+									recreate: type:           "boolean"
+									serverSideApply: {
+										enum: ["enabled", "disabled", "auto"]
+										type: "string"
+									}
+									timeout: {
+										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+										type:    "string"
+									}
+								}
+								type: "object"
+							}
+							serviceAccountName: {
+								maxLength: 253
+								minLength: 1
+								type:      "string"
+							}
+							storageNamespace: {
+								maxLength: 63
+								minLength: 1
+								type:      "string"
+							}
+							suspend: type: "boolean"
+							targetNamespace: {
+								maxLength: 63
+								minLength: 1
+								type:      "string"
+							}
+							test: {
+								properties: {
+									enable: type: "boolean"
+									filters: {
+										items: {
+											properties: {
+												exclude: type: "boolean"
+												name: {
+													maxLength: 253
+													minLength: 1
+													type:      "string"
+												}
+											}
+											required: ["name"]
+											type:     "object"
+										}
+										type: "array"
+									}
+									ignoreFailures: type: "boolean"
+									timeout: {
+										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+										type:    "string"
+									}
+								}
+								type: "object"
+							}
+							timeout: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							uninstall: {
+								properties: {
+									deletionPropagation: {
+										default: "background"
+										enum:    ["background", "foreground", "orphan"]
+										type:    "string"
+									}
+									disableHooks: type: "boolean"
+									disableWait: type:  "boolean"
+									keepHistory: type:  "boolean"
+									timeout: {
+										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+										type:    "string"
+									}
+								}
+								type: "object"
+							}
+							upgrade: {
+								properties: {
+									chartNameChangeStrategy: {
+										enum: ["InPlaceUpdate", "Reinstall"]
+										type: "string"
+									}
+									cleanupOnFail: type: "boolean"
+									crds: {
+										enum: ["Skip", "Create", "CreateReplace"]
+										type: "string"
+									}
+									disableHooks: type:             "boolean"
+									disableOpenAPIValidation: type: "boolean"
+									disableSchemaValidation: type:  "boolean"
+									disableTakeOwnership: type:     "boolean"
+									disableWait: type:              "boolean"
+									disableWaitForJobs: type:       "boolean"
+									force: type:                    "boolean"
+									preserveValues: type:           "boolean"
+									remediation: {
+										properties: {
+											ignoreTestFailures: type:   "boolean"
+											remediateLastFailure: type: "boolean"
+											retries: type:              "integer"
+											strategy: {
+												enum: ["rollback", "uninstall"]
+												type: "string"
+											}
+										}
+										type: "object"
+									}
+									serverSideApply: {
+										enum: ["enabled", "disabled", "auto"]
+										type: "string"
+									}
+									strategy: {
+										properties: {
+											name: {
+												enum: ["RemediateOnFailure", "RetryOnFailure"]
+												type: "string"
+											}
+											retryInterval: {
+												pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+												type:    "string"
+											}
+										}
+										required: ["name"]
+										type:     "object"
+										"x-kubernetes-validations": [{
+											message: ".retryInterval can only be set when .name is 'RetryOnFailure'"
+											rule:    "!has(self.retryInterval) || self.name == 'RetryOnFailure'"
+										}]
+									}
+									timeout: {
+										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+										type:    "string"
+									}
+								}
+								type: "object"
+							}
+							values: "x-kubernetes-preserve-unknown-fields": true
+							valuesFrom: {
+								items: {
+									properties: {
+										kind: {
+											enum: ["Secret", "ConfigMap"]
+											type: "string"
+										}
+										literal: type: "boolean"
+										name: {
+											maxLength: 253
+											minLength: 1
+											type:      "string"
+										}
+										optional: type: "boolean"
+										targetPath: {
+											maxLength: 250
+											pattern:   "^([a-zA-Z0-9_\\-.\\\\\\/]|\\[[0-9]{1,5}\\])+$"
+											type:      "string"
+										}
+										valuesKey: {
+											maxLength: 253
+											pattern:   "^[\\-._a-zA-Z0-9]+$"
+											type:      "string"
+										}
+									}
+									required: ["kind", "name"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							waitStrategy: {
+								properties: name: {
+									enum: ["poller", "legacy"]
+									type: "string"
+								}
+								required: ["name"]
+								type:     "object"
+							}
+						}
+						required: ["interval"]
+						type:     "object"
+						"x-kubernetes-validations": [{
+							message: "either chart or chartRef must be set"
+							rule:    "(has(self.chart) && !has(self.chartRef)) || (!has(self.chart) && has(self.chartRef))"
+						}]
+					}
+					status: {
+						default: observedGeneration: -1
+						properties: {
+							conditions: {
+								items: {
+									properties: {
+										lastTransitionTime: {
+											format: "date-time"
+											type:   "string"
+										}
+										message: {
+											maxLength: 32768
+											type:      "string"
+										}
+										observedGeneration: {
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											enum: ["True", "False", "Unknown"]
+											type: "string"
+										}
+										type: {
+											maxLength: 316
+											pattern:
+												"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type: "string"
+										}
+									}
+									required: ["lastTransitionTime", "message", "reason", "status", "type"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							failures: {
+								format: "int64"
+								type:   "integer"
+							}
+							helmChart: type: "string"
+							history: {
+								items: {
+									properties: {
+										action: type:       "string"
+										apiVersion: type:   "string"
+										appVersion: type:   "string"
+										chartName: type:    "string"
+										chartVersion: type: "string"
+										configDigest: type: "string"
+										deleted: {
+											format: "date-time"
+											type:   "string"
+										}
+										digest: type: "string"
+										firstDeployed: {
+											format: "date-time"
+											type:   "string"
+										}
+										lastDeployed: {
+											format: "date-time"
+											type:   "string"
+										}
+										name: type:      "string"
+										namespace: type: "string"
+										ociDigest: type: "string"
+										status: type:    "string"
+										testHooks: {
+											additionalProperties: {
+												properties: {
+													lastCompleted: {
+														format: "date-time"
+														type:   "string"
+													}
+													lastStarted: {
+														format: "date-time"
+														type:   "string"
+													}
+													phase: type: "string"
+												}
+												type: "object"
+											}
+											type: "object"
+										}
+										version: type: "integer"
+									}
+									required: [
+										"chartName",
+										"chartVersion",
+										"configDigest",
+										"digest",
+										"firstDeployed",
+										"lastDeployed",
+										"name",
+										"namespace",
+										"status",
+										"version",
+									]
+									type: "object"
+								}
+								type: "array"
+							}
+							installFailures: {
+								format: "int64"
+								type:   "integer"
+							}
+							inventory: {
+								properties: entries: {
+									items: {
+										properties: {
+											id: type: "string"
+											v: type:  "string"
+										}
+										required: ["id", "v"]
+										type:     "object"
 									}
 									type: "array"
 								}
-								installFailures: {
-									format: "int64"
-									type:   "integer"
-								}
-								inventory: {
-									properties: {
-										entries: {
-											items: {
-												properties: {
-													id: {
-														type: "string"
-													}
-													v: {
-														type: "string"
-													}
-												}
-												required: ["id", "v"]
-												type: "object"
-											}
-											type: "array"
-										}
-									}
-									required: ["entries"]
-									type: "object"
-								}
-								lastAttemptedConfigDigest: {
-									type: "string"
-								}
-								lastAttemptedGeneration: {
-									format: "int64"
-									type:   "integer"
-								}
-								lastAttemptedReleaseAction: {
-									enum: ["install", "upgrade"]
-									type: "string"
-								}
-								lastAttemptedReleaseActionDuration: {
-									type: "string"
-								}
-								lastAttemptedRevision: {
-									type: "string"
-								}
-								lastAttemptedRevisionDigest: {
-									type: "string"
-								}
-								lastAttemptedValuesChecksum: {
-									type: "string"
-								}
-								lastHandledForceAt: {
-									type: "string"
-								}
-								lastHandledReconcileAt: {
-									type: "string"
-								}
-								lastHandledResetAt: {
-									type: "string"
-								}
-								lastReleaseRevision: {
-									type: "integer"
-								}
-								observedCommonMetadataDigest: {
-									type: "string"
-								}
-								observedGeneration: {
-									format: "int64"
-									type:   "integer"
-								}
-								observedPostRenderersDigest: {
-									type: "string"
-								}
-								storageNamespace: {
-									maxLength: 63
-									minLength: 1
-									type:      "string"
-								}
-								upgradeFailures: {
-									format: "int64"
-									type:   "integer"
-								}
+								required: ["entries"]
+								type:     "object"
 							}
-							type: "object"
+							lastAttemptedConfigDigest: type: "string"
+							lastAttemptedGeneration: {
+								format: "int64"
+								type:   "integer"
+							}
+							lastAttemptedReleaseAction: {
+								enum: ["install", "upgrade"]
+								type: "string"
+							}
+							lastAttemptedReleaseActionDuration: type: "string"
+							lastAttemptedRevision: type:              "string"
+							lastAttemptedRevisionDigest: type:        "string"
+							lastAttemptedValuesChecksum: type:        "string"
+							lastHandledForceAt: type:                 "string"
+							lastHandledReconcileAt: type:             "string"
+							lastHandledResetAt: type:                 "string"
+							lastReleaseRevision: type:                "integer"
+							observedCommonMetadataDigest: type:       "string"
+							observedGeneration: {
+								format: "int64"
+								type:   "integer"
+							}
+							observedPostRenderersDigest: type: "string"
+							storageNamespace: {
+								maxLength: 63
+								minLength: 1
+								type:      "string"
+							}
+							upgradeFailures: {
+								format: "int64"
+								type:   "integer"
+							}
 						}
+						type: "object"
 					}
-					type: "object"
 				}
+				type: "object"
 			}
-			subresources: {
-				status: {}
-			}
+			subresources: status: {}
 		}]
 	}
 }

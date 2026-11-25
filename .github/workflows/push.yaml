@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup Timoni
-        uses: stefanprodan/timoni/actions/setup@9f04f5c56a817024dce3f23bdbf8da4516fbe990 # v0.36.0
+        uses: stefanprodan/timoni/actions/setup@58f38054cc5276178b1426fabaf0b5e066c7c271 # v0.38.0
       - name: Setup Flux CLI
         uses: fluxcd/flux2/action@23dcfe98fe672acdf44ecd9c60cbac41b57f5de8 # v2.10.1
       - name: Setup Cosign

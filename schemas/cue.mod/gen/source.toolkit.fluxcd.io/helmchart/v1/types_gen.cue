@@ -23,18 +23,10 @@ import "strings"
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
 	kind: "HelmChart"
 	metadata!: {
-		name!: strings.MaxRunes(253) & strings.MinRunes(1) & {
-			string
-		}
-		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {
-			string
-		}
-		labels?: {
-			[string]: string
-		}
-		annotations?: {
-			[string]: string
-		}
+		name!:      strings.MaxRunes(253) & strings.MinRunes(1) & {string}
+		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {string}
+		labels?: [string]:      string
+		annotations?: [string]: string
 	}
 
 	// HelmChartSpec specifies the desired state of a Helm chart.
@@ -125,232 +117,181 @@ import "strings"
 _crd: {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
-	metadata: {
-		name: "helmcharts.source.toolkit.fluxcd.io"
-	}
+	metadata: name: "helmcharts.source.toolkit.fluxcd.io"
 	spec: {
 		group: "source.toolkit.fluxcd.io"
 		names: {
 			categories: ["all", "fluxcd", "fluxcd-sources"]
-			kind:     "HelmChart"
-			listKind: "HelmChartList"
-			plural:   "helmcharts"
+			kind:       "HelmChart"
+			listKind:   "HelmChartList"
+			plural:     "helmcharts"
 			shortNames: ["hc"]
-			singular: "helmchart"
+			singular:   "helmchart"
 		}
 		scope: "Namespaced"
 		versions: [{
 			name:    "v1"
 			served:  true
 			storage: true
-			schema: {
-				openAPIV3Schema: {
-					properties: {
-						apiVersion: {
-							type: "string"
-						}
-						kind: {
-							type: "string"
-						}
-						metadata: {
-							type: "object"
-						}
-						spec: {
-							properties: {
-								chart: {
-									type: "string"
-								}
-								ignoreMissingValuesFiles: {
-									type: "boolean"
-								}
-								interval: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-									type:    "string"
-								}
-								reconcileStrategy: {
-									default: "ChartVersion"
-									enum: ["ChartVersion", "Revision"]
-									type: "string"
-								}
-								sourceRef: {
-									properties: {
-										apiVersion: {
-											type: "string"
-										}
-										kind: {
-											enum: ["HelmRepository", "GitRepository", "Bucket"]
-											type: "string"
-										}
-										name: {
-											type: "string"
-										}
-									}
-									required: ["kind", "name"]
-									type: "object"
-								}
-								suspend: {
-									type: "boolean"
-								}
-								valuesFiles: {
-									items: {
+			schema: openAPIV3Schema: {
+				properties: {
+					apiVersion: type: "string"
+					kind: type:       "string"
+					metadata: type:   "object"
+					spec: {
+						properties: {
+							chart: type:                    "string"
+							ignoreMissingValuesFiles: type: "boolean"
+							interval: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							reconcileStrategy: {
+								default: "ChartVersion"
+								enum:    ["ChartVersion", "Revision"]
+								type:    "string"
+							}
+							sourceRef: {
+								properties: {
+									apiVersion: type: "string"
+									kind: {
+										enum: ["HelmRepository", "GitRepository", "Bucket"]
 										type: "string"
 									}
-									type: "array"
+									name: type: "string"
 								}
-								verify: {
-									properties: {
-										matchOIDCIdentity: {
-											items: {
-												properties: {
-													issuer: {
-														type: "string"
-													}
-													subject: {
-														type: "string"
-													}
-												}
-												required: ["issuer", "subject"]
-												type: "object"
-											}
-											type: "array"
-										}
-										provider: {
-											default: "cosign"
-											enum: ["cosign", "notation"]
-											type: "string"
-										}
-										secretRef: {
+								required: ["kind", "name"]
+								type:     "object"
+							}
+							suspend: type: "boolean"
+							valuesFiles: {
+								items: type: "string"
+								type: "array"
+							}
+							verify: {
+								properties: {
+									matchOIDCIdentity: {
+										items: {
 											properties: {
-												name: {
-													type: "string"
-												}
+												issuer: type:  "string"
+												subject: type: "string"
 											}
-											required: ["name"]
-											type: "object"
+											required: ["issuer", "subject"]
+											type:     "object"
 										}
+										type: "array"
 									}
-									required: ["provider"]
-									type: "object"
+									provider: {
+										default: "cosign"
+										enum:    ["cosign", "notation"]
+										type:    "string"
+									}
+									secretRef: {
+										properties: name: type: "string"
+										required: ["name"]
+										type:     "object"
+									}
 								}
-								version: {
-									default: "*"
-									type:    "string"
-								}
+								required: ["provider"]
+								type:     "object"
 							}
-							required: ["chart", "interval", "sourceRef"]
-							type: "object"
-							"x-kubernetes-validations": [{
-								message: "spec.verify is only supported when spec.sourceRef.kind is 'HelmRepository'"
-								rule:    "!has(self.verify) || self.sourceRef.kind == 'HelmRepository'"
-							}]
+							version: {
+								default: "*"
+								type:    "string"
+							}
 						}
-						status: {
-							default: {
-								observedGeneration: -1
+						required: ["chart", "interval", "sourceRef"]
+						type:     "object"
+						"x-kubernetes-validations": [{
+							message: "spec.verify is only supported when spec.sourceRef.kind is 'HelmRepository'"
+							rule:    "!has(self.verify) || self.sourceRef.kind == 'HelmRepository'"
+						}]
+					}
+					status: {
+						default: observedGeneration: -1
+						properties: {
+							artifact: {
+								properties: {
+									digest: {
+										pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
+										type:    "string"
+									}
+									lastUpdateTime: {
+										format: "date-time"
+										type:   "string"
+									}
+									metadata: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+									path: type:     "string"
+									revision: type: "string"
+									size: {
+										format: "int64"
+										type:   "integer"
+									}
+									url: type: "string"
+								}
+								required: ["digest", "lastUpdateTime", "path", "revision", "url"]
+								type:     "object"
 							}
-							properties: {
-								artifact: {
+							conditions: {
+								items: {
 									properties: {
-										digest: {
-											pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
-											type:    "string"
-										}
-										lastUpdateTime: {
+										lastTransitionTime: {
 											format: "date-time"
 											type:   "string"
 										}
-										metadata: {
-											additionalProperties: {
-												type: "string"
-											}
-											type: "object"
+										message: {
+											maxLength: 32768
+											type:      "string"
 										}
-										path: {
+										observedGeneration: {
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											enum: ["True", "False", "Unknown"]
 											type: "string"
 										}
-										revision: {
-											type: "string"
-										}
-										size: {
-											format: "int64"
-											type:   "integer"
-										}
-										url: {
+										type: {
+											maxLength: 316
+											pattern:
+												"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
 											type: "string"
 										}
 									}
-									required: ["digest", "lastUpdateTime", "path", "revision", "url"]
-									type: "object"
+									required: ["lastTransitionTime", "message", "reason", "status", "type"]
+									type:     "object"
 								}
-								conditions: {
-									items: {
-										properties: {
-											lastTransitionTime: {
-												format: "date-time"
-												type:   "string"
-											}
-											message: {
-												maxLength: 32768
-												type:      "string"
-											}
-											observedGeneration: {
-												format:  "int64"
-												minimum: 0
-												type:    "integer"
-											}
-											reason: {
-												maxLength: 1024
-												minLength: 1
-												pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
-												type:      "string"
-											}
-											status: {
-												enum: ["True", "False", "Unknown"]
-												type: "string"
-											}
-											type: {
-												maxLength: 316
-												pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-												type:      "string"
-											}
-										}
-										required: ["lastTransitionTime", "message", "reason", "status", "type"]
-										type: "object"
-									}
-									type: "array"
-								}
-								lastHandledReconcileAt: {
-									type: "string"
-								}
-								observedChartName: {
-									type: "string"
-								}
-								observedGeneration: {
-									format: "int64"
-									type:   "integer"
-								}
-								observedSourceArtifactRevision: {
-									type: "string"
-								}
-								observedValuesFiles: {
-									items: {
-										type: "string"
-									}
-									type: "array"
-								}
-								url: {
-									type: "string"
-								}
+								type: "array"
 							}
-							type: "object"
+							lastHandledReconcileAt: type: "string"
+							observedChartName: type:      "string"
+							observedGeneration: {
+								format: "int64"
+								type:   "integer"
+							}
+							observedSourceArtifactRevision: type: "string"
+							observedValuesFiles: {
+								items: type: "string"
+								type: "array"
+							}
+							url: type: "string"
 						}
+						type: "object"
 					}
-					type: "object"
 				}
+				type: "object"
 			}
-			subresources: {
-				status: {}
-			}
+			subresources: status: {}
 		}]
 	}
 }

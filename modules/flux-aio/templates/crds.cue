@@ -36,21 +36,21 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -60,20 +60,20 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 							eventMetadata: {
 								additionalProperties: type: "string"
 								description: """
-	EventMetadata adds metadata to events. Sources, from lowest to highest precedence:
-	`event.toolkit.fluxcd.io/` annotations on the involved object, Alert `.spec.eventMetadata`,
-	and controller-defined `<controller group>.toolkit.fluxcd.io/` event metadata.
-	Higher precedence wins; conflicts produce an info log and a Warning Event.
-	See the Alert API docs (Event metadata section).
-	"""
+									EventMetadata adds metadata to events. Sources, from lowest to highest precedence:
+									`event.toolkit.fluxcd.io/` annotations on the involved object, Alert `.spec.eventMetadata`,
+									and controller-defined `<controller group>.toolkit.fluxcd.io/` event metadata.
+									Higher precedence wins; conflicts produce an info log and a Warning Event.
+									See the Alert API docs (Event metadata section).
+									"""
 								type: "object"
 							}
 							eventSeverity: {
 								default: "info"
 								description: """
-	EventSeverity specifies how to filter events based on severity.
-	If set to 'info' no events will be filtered.
-	"""
+									EventSeverity specifies how to filter events based on severity.
+									If set to 'info' no events will be filtered.
+									"""
 								enum: [
 									"info",
 									"error",
@@ -82,14 +82,14 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 							}
 							eventSources: {
 								description: """
-	EventSources specifies how to filter events based
-	on the involved object kind, name and namespace.
-	"""
+									EventSources specifies how to filter events based
+									on the involved object kind, name and namespace.
+									"""
 								items: {
 									description: """
-	CrossNamespaceObjectReference contains enough information to let you locate the
-	typed referenced object at cluster level
-	"""
+										CrossNamespaceObjectReference contains enough information to let you locate the
+										typed referenced object at cluster level
+										"""
 									properties: {
 										apiVersion: {
 											description: "API version of the referent"
@@ -116,18 +116,18 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 										matchLabels: {
 											additionalProperties: type: "string"
 											description: """
-	MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
-	map is equivalent to an element of matchExpressions, whose key field is "key", the
-	operator is "In", and the values array contains only "value". The requirements are ANDed.
-	MatchLabels requires the name to be set to `*`.
-	"""
+												MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+												map is equivalent to an element of matchExpressions, whose key field is "key", the
+												operator is "In", and the values array contains only "value". The requirements are ANDed.
+												MatchLabels requires the name to be set to `*`.
+												"""
 											type: "object"
 										}
 										name: {
 											description: """
-	Name of the referent
-	If multiple resources are targeted `*` may be set.
-	"""
+												Name of the referent
+												If multiple resources are targeted `*` may be set.
+												"""
 											maxLength: 253
 											minLength: 1
 											type:      "string"
@@ -149,17 +149,17 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 							}
 							exclusionList: {
 								description: """
-	ExclusionList specifies a list of Golang regular expressions
-	to be used for excluding messages.
-	"""
+									ExclusionList specifies a list of Golang regular expressions
+									to be used for excluding messages.
+									"""
 								items: type: "string"
 								type: "array"
 							}
 							inclusionList: {
 								description: """
-	InclusionList specifies a list of Golang regular expressions
-	to be used for including messages.
-	"""
+									InclusionList specifies a list of Golang regular expressions
+									to be used for including messages.
+									"""
 								items: type: "string"
 								type: "array"
 							}
@@ -170,13 +170,13 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend subsequent
-	events handling for this Alert.
-	"""
+									Suspend tells the controller to suspend subsequent
+									events handling for this Alert.
+									"""
 								type: "boolean"
 							}
 						}
@@ -189,8 +189,8 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 				}
 				type: "object"
 			}
-			served:  true
-			storage: true
+			served:       true
+			storage:      true
 			subresources: {}
 		}, {
 			additionalPrinterColumns: [{
@@ -206,21 +206,21 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -230,20 +230,20 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 							eventMetadata: {
 								additionalProperties: type: "string"
 								description: """
-	EventMetadata is an optional field for adding metadata to events dispatched by the
-	controller. This can be used for enhancing the context of the event. If a field
-	would override one already present on the original event as generated by the emitter,
-	then the override doesn't happen, i.e. the original value is preserved, and an info
-	log is printed.
-	"""
+									EventMetadata is an optional field for adding metadata to events dispatched by the
+									controller. This can be used for enhancing the context of the event. If a field
+									would override one already present on the original event as generated by the emitter,
+									then the override doesn't happen, i.e. the original value is preserved, and an info
+									log is printed.
+									"""
 								type: "object"
 							}
 							eventSeverity: {
 								default: "info"
 								description: """
-	EventSeverity specifies how to filter events based on severity.
-	If set to 'info' no events will be filtered.
-	"""
+									EventSeverity specifies how to filter events based on severity.
+									If set to 'info' no events will be filtered.
+									"""
 								enum: [
 									"info",
 									"error",
@@ -252,14 +252,14 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 							}
 							eventSources: {
 								description: """
-	EventSources specifies how to filter events based
-	on the involved object kind, name and namespace.
-	"""
+									EventSources specifies how to filter events based
+									on the involved object kind, name and namespace.
+									"""
 								items: {
 									description: """
-	CrossNamespaceObjectReference contains enough information to let you locate the
-	typed referenced object at cluster level
-	"""
+										CrossNamespaceObjectReference contains enough information to let you locate the
+										typed referenced object at cluster level
+										"""
 									properties: {
 										apiVersion: {
 											description: "API version of the referent"
@@ -286,18 +286,18 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 										matchLabels: {
 											additionalProperties: type: "string"
 											description: """
-	MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
-	map is equivalent to an element of matchExpressions, whose key field is "key", the
-	operator is "In", and the values array contains only "value". The requirements are ANDed.
-	MatchLabels requires the name to be set to `*`.
-	"""
+												MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+												map is equivalent to an element of matchExpressions, whose key field is "key", the
+												operator is "In", and the values array contains only "value". The requirements are ANDed.
+												MatchLabels requires the name to be set to `*`.
+												"""
 											type: "object"
 										}
 										name: {
 											description: """
-	Name of the referent
-	If multiple resources are targeted `*` may be set.
-	"""
+												Name of the referent
+												If multiple resources are targeted `*` may be set.
+												"""
 											maxLength: 253
 											minLength: 1
 											type:      "string"
@@ -319,17 +319,17 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 							}
 							exclusionList: {
 								description: """
-	ExclusionList specifies a list of Golang regular expressions
-	to be used for excluding messages.
-	"""
+									ExclusionList specifies a list of Golang regular expressions
+									to be used for excluding messages.
+									"""
 								items: type: "string"
 								type: "array"
 							}
 							inclusionList: {
 								description: """
-	InclusionList specifies a list of Golang regular expressions
-	to be used for including messages.
-	"""
+									InclusionList specifies a list of Golang regular expressions
+									to be used for including messages.
+									"""
 								items: type: "string"
 								type: "array"
 							}
@@ -340,21 +340,21 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							summary: {
 								description: """
-	Summary holds a short description of the impact and affected cluster.
-	Deprecated: Use EventMetadata instead.
-	"""
+									Summary holds a short description of the impact and affected cluster.
+									Deprecated: Use EventMetadata instead.
+									"""
 								maxLength: 255
 								type:      "string"
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend subsequent
-	events handling for this Alert.
-	"""
+									Suspend tells the controller to suspend subsequent
+									events handling for this Alert.
+									"""
 								type: "boolean"
 							}
 						}
@@ -367,8 +367,8 @@ customresourcedefinition: "alerts.notification.toolkit.fluxcd.io": {
 				}
 				type: "object"
 			}
-			served:  true
-			storage: false
+			served:       true
+			storage:      false
 			subresources: {}
 		}]
 	}
@@ -391,11 +391,11 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 				"fluxcd",
 				"fluxcd-sources",
 			]
-			kind:     "ArtifactGenerator"
-			listKind: "ArtifactGeneratorList"
-			plural:   "artifactgenerators"
+			kind:       "ArtifactGenerator"
+			listKind:   "ArtifactGeneratorList"
+			plural:     "artifactgenerators"
 			shortNames: ["ag"]
-			singular: "artifactgenerator"
+			singular:   "artifactgenerator"
 		}
 		scope: "Namespaced"
 		versions: [{
@@ -404,11 +404,11 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}]
@@ -418,21 +418,21 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -443,26 +443,26 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 								description: "OutputArtifacts is a list of output artifacts to be generated."
 								items: {
 									description: """
-	OutputArtifact defines the desired state of an ExternalArtifact
-	generated by the ArtifactGenerator.
-	"""
+										OutputArtifact defines the desired state of an ExternalArtifact
+										generated by the ArtifactGenerator.
+										"""
 									properties: {
 										copy: {
 											description: """
-	Copy defines a list of copy operations to perform from the sources to the generated artifact.
-	The copy operations are performed in the order they are listed with existing files
-	being overwritten by later copy operations.
-	"""
+												Copy defines a list of copy operations to perform from the sources to the generated artifact.
+												The copy operations are performed in the order they are listed with existing files
+												being overwritten by later copy operations.
+												"""
 											items: {
 												properties: {
 													exclude: {
 														description: """
-	Exclude specifies a list of glob patterns to exclude
-	files and dirs matched by the 'From' field. Patterns are matched
-	against paths relative to the source alias root or to the non-glob
-	prefix of 'From'. Patterns without a separator (e.g. "*.md") match
-	the file name at any depth.
-	"""
+															Exclude specifies a list of glob patterns to exclude
+															files and dirs matched by the 'From' field. Patterns are matched
+															against paths relative to the source alias root or to the non-glob
+															prefix of 'From'. Patterns without a separator (e.g. "*.md") match
+															the file name at any depth.
+															"""
 														items: {
 															maxLength: 1024
 															type:      "string"
@@ -472,10 +472,10 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 													}
 													from: {
 														description: """
-	From specifies the source (by alias) and the glob pattern to match files.
-	The format is "@<alias>/<glob-pattern>". When pathPattern is set,
-	the path may use capture placeholders such as "{app}".
-	"""
+															From specifies the source (by alias) and the glob pattern to match files.
+															The format is "@<alias>/<glob-pattern>". When pathPattern is set,
+															the path may use capture placeholders such as "{app}".
+															"""
 														maxLength: 1024
 														minLength: 1
 														pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
@@ -483,23 +483,23 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 													}
 													optional: {
 														description: """
-	Optional, when set to true, allows the copy operation to silently
-	skip when the source path or glob pattern matches no files.
-	When false (default), the reconciliation fails with an error if
-	no files are matched.
-	"""
+															Optional, when set to true, allows the copy operation to silently
+															skip when the source path or glob pattern matches no files.
+															When false (default), the reconciliation fails with an error if
+															no files are matched.
+															"""
 														type: "boolean"
 													}
 													strategy: {
 														description: """
-	Strategy specifies the copy strategy to use.
-	'Overwrite' will overwrite existing files in the destination.
-	'Merge' is for merging YAML files using Helm values merge strategy.
-	'Extract' is for extracting the contents of tarball archives (.tar.gz, .tgz)
-	When using glob patterns, non-tarball files are silently skipped. For single file sources,
-	the file must be a tarball or an error is returned. Directories are not supported.
-	If not specified, defaults to 'Overwrite'.
-	"""
+															Strategy specifies the copy strategy to use.
+															'Overwrite' will overwrite existing files in the destination.
+															'Merge' is for merging YAML files using Helm values merge strategy.
+															'Extract' is for extracting the contents of tarball archives (.tar.gz, .tgz)
+															When using glob patterns, non-tarball files are silently skipped. For single file sources,
+															the file must be a tarball or an error is returned. Directories are not supported.
+															If not specified, defaults to 'Overwrite'.
+															"""
 														enum: [
 															"Overwrite",
 															"Merge",
@@ -509,11 +509,11 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 													}
 													to: {
 														description: """
-	To specifies the destination path within the artifact.
-	The format is "@artifact/path", the alias "artifact"
-	refers to the root path of the generated artifact. When pathPattern
-	is set, the path may use capture placeholders such as "{app}".
-	"""
+															To specifies the destination path within the artifact.
+															The format is "@artifact/path", the alias "artifact"
+															refers to the root path of the generated artifact. When pathPattern
+															is set, the path may use capture placeholders such as "{app}".
+															"""
 														maxLength: 1024
 														minLength: 1
 														pattern:   "^@artifact/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,})(/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,}))*$"
@@ -531,12 +531,12 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 										}
 										inputsFrom: {
 											description: """
-	InputsFrom specifies a source path to a YAML file whose contents are
-	exported in the ExternalArtifact .status.exportedInputs field.
-	The format is "@<alias>/<path>", where <alias> references a source or
-	"artifact" for the generated artifact itself. When pathPattern is set,
-	the path may use capture placeholders such as "{module}".
-	"""
+												InputsFrom specifies a source path to a YAML file whose contents are
+												exported in the ExternalArtifact .status.exportedInputs field.
+												The format is "@<alias>/<path>", where <alias> references a source or
+												"artifact" for the generated artifact itself. When pathPattern is set,
+												the path may use capture placeholders such as "{module}".
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
@@ -544,48 +544,48 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 										}
 										name: {
 											description: """
-	Name is the name of the generated artifact.
-	When pathPattern is set, this field may use capture placeholders such as "{app}".
-	The maximum length accommodates capture placeholders; the effective
-	limits are enforced by the CEL validation when pathPattern is not set.
-	"""
+												Name is the name of the generated artifact.
+												When pathPattern is set, this field may use capture placeholders such as "{app}".
+												The maximum length accommodates capture placeholders; the effective
+												limits are enforced by the CEL validation when pathPattern is not set.
+												"""
 											maxLength: 1024
 											type:      "string"
 										}
 										namespace: {
 											description: """
-	Namespace is the namespace of the generated artifact.
-	If not provided, defaults to the same namespace as the ArtifactGenerator.
-	When pathPattern is set, this field may use capture placeholders such as "{app}".
-	The credentials used to reconcile the artifact are described in
-	.spec.serviceAccountName: an explicit ServiceAccount applies to every
-	generated artifact, while the --default-service-account flag only applies
-	to artifacts in a namespace other than the ArtifactGenerator namespace.
-	The maximum length accommodates capture placeholders; the effective
-	limits are enforced by the CEL validation when pathPattern is not set.
-	"""
+												Namespace is the namespace of the generated artifact.
+												If not provided, defaults to the same namespace as the ArtifactGenerator.
+												When pathPattern is set, this field may use capture placeholders such as "{app}".
+												The credentials used to reconcile the artifact are described in
+												.spec.serviceAccountName: an explicit ServiceAccount applies to every
+												generated artifact, while the --default-service-account flag only applies
+												to artifacts in a namespace other than the ArtifactGenerator namespace.
+												The maximum length accommodates capture placeholders; the effective
+												limits are enforced by the CEL validation when pathPattern is not set.
+												"""
 											maxLength: 1024
 											type:      "string"
 										}
 										originRevision: {
 											description: """
-	OriginRevision is used to set the 'org.opencontainers.image.revision'
-	annotation on the generated artifact metadata.
-	If specified, it must point to an existing source alias in the format "@<alias>".
-	If the referenced source has an origin revision (e.g. a Git commit SHA),
-	it will be used to set the annotation on the generated artifact.
-	If the referenced source does not have an origin revision, the field is ignored.
-	"""
+												OriginRevision is used to set the 'org.opencontainers.image.revision'
+												annotation on the generated artifact metadata.
+												If specified, it must point to an existing source alias in the format "@<alias>".
+												If the referenced source has an origin revision (e.g. a Git commit SHA),
+												it will be used to set the annotation on the generated artifact.
+												If the referenced source does not have an origin revision, the field is ignored.
+												"""
 											maxLength: 64
 											pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"
 											type:      "string"
 										}
 										revision: {
 											description: """
-	Revision is the revision of the generated artifact.
-	If specified, it must point to an existing source alias in the format "@<alias>".
-	If not specified, the revision is automatically set to the digest of the artifact content.
-	"""
+												Revision is the revision of the generated artifact.
+												If specified, it must point to an existing source alias in the format "@<alias>".
+												If not specified, the revision is automatically set to the digest of the artifact content.
+												"""
 											maxLength: 64
 											pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"
 											type:      "string"
@@ -603,10 +603,10 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 							}
 							commonMetadata: {
 								description: """
-	CommonMetadata specifies the common labels and annotations that are
-	applied to all resources. Any existing label or annotation will be
-	overridden if its key matches a common one.
-	"""
+									CommonMetadata specifies the common labels and annotations that are
+									applied to all resources. Any existing label or annotation will be
+									overridden if its key matches a common one.
+									"""
 								properties: {
 									annotations: {
 										additionalProperties: type: "string"
@@ -623,41 +623,41 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 							}
 							managedNamespaces: {
 								description: """
-	ManagedNamespaces defines how the controller manages the namespaces
-	targeted by the generated artifacts. When omitted, the target namespaces
-	are unmanaged: they must already exist and are left untouched.
-	"""
+									ManagedNamespaces defines how the controller manages the namespaces
+									targeted by the generated artifacts. When omitted, the target namespaces
+									are unmanaged: they must already exist and are left untouched.
+									"""
 								properties: {
 									allowedNames: {
 										description: """
-	AllowedNames is a list of CEL expressions that define the set of
-	namespaces the ArtifactGenerator agrees to manage. Each expression
-	receives the namespace name through the 'ns' string variable and must
-	return a boolean. A namespace is managed only when at least one
-	expression returns true. The 'default', 'kube-system', 'kube-public'
-	and 'flux-system' namespaces are always rejected, regardless of the
-	expressions.
-	"""
+											AllowedNames is a list of CEL expressions that define the set of
+											namespaces the ArtifactGenerator agrees to manage. Each expression
+											receives the namespace name through the 'ns' string variable and must
+											return a boolean. A namespace is managed only when at least one
+											expression returns true. The 'default', 'kube-system', 'kube-public'
+											and 'flux-system' namespaces are always rejected, regardless of the
+											expressions.
+											"""
 										items: type: "string"
 										minItems: 1
 										type:     "array"
 									}
 									metadata: {
 										description: """
-	Metadata defines how the metadata of the desired namespaces is built,
-	on top of .spec.commonMetadata.
-	"""
+											Metadata defines how the metadata of the desired namespaces is built,
+											on top of .spec.commonMetadata.
+											"""
 										properties: {
 											from: {
 												description: """
-	From is a list of metadata operations applied in order to the desired
-	namespaces, on top of .spec.commonMetadata and .fromSource.
-	"""
+													From is a list of metadata operations applied in order to the desired
+													namespaces, on top of .spec.commonMetadata and .fromSource.
+													"""
 												items: {
 													description: """
-	NamespaceMetadataFrom defines a metadata operation applied to a desired
-	namespace.
-	"""
+														NamespaceMetadataFrom defines a metadata operation applied to a desired
+														namespace.
+														"""
 													properties: {
 														annotations: {
 															additionalProperties: type: "string"
@@ -671,22 +671,22 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 														}
 														namespace: {
 															description: """
-	Namespace is the name of the desired namespace the metadata applies to,
-	or '*' to apply the metadata to all desired namespaces.
-	"""
+																Namespace is the name of the desired namespace the metadata applies to,
+																or '*' to apply the metadata to all desired namespaces.
+																"""
 															maxLength: 63
-															pattern:   "^(\\*|[a-z0-9]([-a-z0-9]*[a-z0-9])?)$"
+															pattern:   #"^(\*|[a-z0-9]([-a-z0-9]*[a-z0-9])?)$"#
 															type:      "string"
 														}
 														strategy: {
 															description: """
-	Strategy specifies how the labels and annotations are applied.
-	'Reset' clears all the existing labels and annotations before applying
-	the ones defined in the operation (fields that are not set clear the
-	corresponding metadata), 'Override' merges the ones defined in the
-	operation into the existing values, overriding existing keys, while
-	'Merge' merges only the absent keys, preserving existing values.
-	"""
+																Strategy specifies how the labels and annotations are applied.
+																'Reset' clears all the existing labels and annotations before applying
+																the ones defined in the operation (fields that are not set clear the
+																corresponding metadata), 'Override' merges the ones defined in the
+																operation into the existing values, overriding existing keys, while
+																'Merge' merges only the absent keys, preserving existing values.
+																"""
 															enum: [
 																"Reset",
 																"Override",
@@ -705,49 +705,49 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 											}
 											fromSource: {
 												description: """
-	FromSource sources namespace metadata from a NamespaceMetadata file
-	inside a source artifact.
-	"""
+													FromSource sources namespace metadata from a NamespaceMetadata file
+													inside a source artifact.
+													"""
 												properties: {
 													allowedAnnotations: {
 														additionalProperties: type: "string"
 														description: """
-	AllowedAnnotations is a schema for the annotations that the
-	NamespaceMetadata file is allowed to set. Each key is an annotation key
-	and each value is a CEL expression that receives the annotation value
-	through the 'value' string variable and must return a boolean.
-	Annotations whose key is not present in this map are ignored, while
-	annotations whose value does not satisfy the respective expression are
-	rejected.
-	The expressions are compiled, so a malformed expression or one that
-	does not return a boolean fails validation at the start of the
-	reconciliation.
-	"""
+															AllowedAnnotations is a schema for the annotations that the
+															NamespaceMetadata file is allowed to set. Each key is an annotation key
+															and each value is a CEL expression that receives the annotation value
+															through the 'value' string variable and must return a boolean.
+															Annotations whose key is not present in this map are ignored, while
+															annotations whose value does not satisfy the respective expression are
+															rejected.
+															The expressions are compiled, so a malformed expression or one that
+															does not return a boolean fails validation at the start of the
+															reconciliation.
+															"""
 														type: "object"
 													}
 													allowedLabels: {
 														additionalProperties: type: "string"
 														description: """
-	AllowedLabels is a schema for the labels that the NamespaceMetadata
-	file is allowed to set. Each key is a label key and each value is a
-	CEL expression that receives the label value through the 'value' string
-	variable and must return a boolean. Labels whose key is not present in
-	this map are ignored, while labels whose value does not satisfy the
-	respective expression are rejected.
-	The expressions are compiled, so a malformed expression or one that
-	does not return a boolean fails validation at the start of the
-	reconciliation.
-	"""
+															AllowedLabels is a schema for the labels that the NamespaceMetadata
+															file is allowed to set. Each key is a label key and each value is a
+															CEL expression that receives the label value through the 'value' string
+															variable and must return a boolean. Labels whose key is not present in
+															this map are ignored, while labels whose value does not satisfy the
+															respective expression are rejected.
+															The expressions are compiled, so a malformed expression or one that
+															does not return a boolean fails validation at the start of the
+															reconciliation.
+															"""
 														type: "object"
 													}
 													path: {
 														description: """
-	Path is the path to the NamespaceMetadata file inside a source artifact,
-	in the format "@<alias>/<path>". When pathPattern is set, the path may
-	use capture placeholders such as "{namespace}". Only namespace-level
-	captures are allowed, so that every artifact targeting a namespace
-	resolves to the same file.
-	"""
+															Path is the path to the NamespaceMetadata file inside a source artifact,
+															in the format "@<alias>/<path>". When pathPattern is set, the path may
+															use capture placeholders such as "{namespace}". Only namespace-level
+															captures are allowed, so that every artifact targeting a namespace
+															resolves to the same file.
+															"""
 														maxLength: 1024
 														minLength: 1
 														pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
@@ -755,7 +755,7 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 													}
 												}
 												required: ["path"]
-												type: "object"
+												type:     "object"
 												"x-kubernetes-validations": [{
 													message: "at least one annotation or label must be set"
 													rule:    "(has(self.allowedAnnotations) && size(self.allowedAnnotations) > 0) || (has(self.allowedLabels) && size(self.allowedLabels) > 0)"
@@ -770,10 +770,10 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 									}
 									prune: {
 										description: """
-	Prune specifies whether the controller deletes managed namespaces that
-	are no longer targeted by any generated artifact, or when the
-	ArtifactGenerator is deleted.
-	"""
+											Prune specifies whether the controller deletes managed namespaces that
+											are no longer targeted by any generated artifact, or when the
+											ArtifactGenerator is deleted.
+											"""
 										type: "boolean"
 									}
 								}
@@ -785,34 +785,34 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 							}
 							pathPattern: {
 								description: """
-	PathPattern specifies a directory traversal pattern to match within the sources.
-	The format is "@<alias>/<pattern>". Named captures in the pattern (e.g. "{app}")
-	can be used as placeholders in OutputArtifacts fields.
-	"""
+									PathPattern specifies a directory traversal pattern to match within the sources.
+									The format is "@<alias>/<pattern>". Named captures in the pattern (e.g. "{app}")
+									can be used as placeholders in OutputArtifacts fields.
+									"""
 								maxLength: 1024
 								pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
 								type:      "string"
 							}
 							serviceAccountName: {
 								description: """
-	ServiceAccountName is the name of the ServiceAccount used to authorize
-	the reconciliation of the generated ExternalArtifacts and the managed
-	Namespaces. The name is resolved in the ArtifactGenerator namespace. When
-	specified, the controller checks this ServiceAccount with
-	SubjectAccessReview for every namespace targeted by the generated
-	ExternalArtifacts, including the ArtifactGenerator namespace, and its
-	RBAC bindings determine the namespaces in which they can be created,
-	updated and deleted.
-	When not specified, the controller uses its own credentials for
-	ExternalArtifacts in the ArtifactGenerator namespace, and the
-	ServiceAccount configured with the --default-service-account flag
-	(when set) for artifacts targeting another namespace.
-	Namespace management (.spec.managedNamespaces) always requires a
-	ServiceAccount for authorization, so either this field or the
-	--default-service-account flag must be set; otherwise the reconciliation
-	fails with a terminal error. The controller performs the namespace
-	operations with its own credentials.
-	"""
+									ServiceAccountName is the name of the ServiceAccount used to authorize
+									the reconciliation of the generated ExternalArtifacts and the managed
+									Namespaces. The name is resolved in the ArtifactGenerator namespace. When
+									specified, the controller checks this ServiceAccount with
+									SubjectAccessReview for every namespace targeted by the generated
+									ExternalArtifacts, including the ArtifactGenerator namespace, and its
+									RBAC bindings determine the namespaces in which they can be created,
+									updated and deleted.
+									When not specified, the controller uses its own credentials for
+									ExternalArtifacts in the ArtifactGenerator namespace, and the
+									ServiceAccount configured with the --default-service-account flag
+									(when set) for artifacts targeting another namespace.
+									Namespace management (.spec.managedNamespaces) always requires a
+									ServiceAccount for authorization, so either this field or the
+									--default-service-account flag must be set; otherwise the reconciliation
+									fails with a terminal error. The controller performs the namespace
+									operations with its own credentials.
+									"""
 								maxLength: 63
 								minLength: 1
 								pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
@@ -820,19 +820,19 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 							}
 							sources: {
 								description: """
-	Sources is a list of references to the Flux source-controller
-	resources that will be used to generate the artifact.
-	"""
+									Sources is a list of references to the Flux source-controller
+									resources that will be used to generate the artifact.
+									"""
 								items: {
 									description: "SourceReference contains the reference to a Flux source-controller resource."
 									properties: {
 										alias: {
 											description: """
-	Alias of the source within the ArtifactGenerator context.
-	The alias must be unique per ArtifactGenerator, and must consist
-	of lower case alphanumeric characters, underscores, and hyphens.
-	It must start and end with an alphanumeric character.
-	"""
+												Alias of the source within the ArtifactGenerator context.
+												The alias must be unique per ArtifactGenerator, and must consist
+												of lower case alphanumeric characters, underscores, and hyphens.
+												It must start and end with an alphanumeric character.
+												"""
 											maxLength: 63
 											pattern:   "^[a-z0-9]([a-z0-9_-]*[a-z0-9])?$"
 											type:      "string"
@@ -856,9 +856,9 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 										}
 										namespace: {
 											description: """
-	Namespace of the source.
-	If not provided, defaults to the same namespace as the ArtifactGenerator.
-	"""
+												Namespace of the source.
+												If not provided, defaults to the same namespace as the ArtifactGenerator.
+												"""
 											maxLength: 63
 											minLength: 1
 											pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
@@ -884,7 +884,7 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 						type: "object"
 						"x-kubernetes-validations": [{
 							message: "artifact names must be valid Kubernetes object names when pathPattern is not set"
-							rule:    "has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, a.name.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$') && a.name.size() <= 253)"
+							rule:    #"has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, a.name.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$') && a.name.size() <= 253)"#
 						}, {
 							message: "artifact namespaces must be valid Kubernetes namespaces when pathPattern is not set"
 							rule:    "has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, !has(a.__namespace__) || (a.__namespace__.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?$') && a.__namespace__.size() <= 63))"
@@ -900,38 +900,38 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -949,7 +949,7 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -966,22 +966,22 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 							}
 							inventory: {
 								description: """
-	Inventory contains the list of objects managed by the ArtifactGenerator,
-	such as the generated ExternalArtifacts and the managed Namespaces.
-	"""
+									Inventory contains the list of objects managed by the ArtifactGenerator,
+									such as the generated ExternalArtifacts and the managed Namespaces.
+									"""
 								items: {
 									description: """
-	InventoryEntry contains a reference to an object managed by the
-	ArtifactGenerator, such as a generated ExternalArtifact or a managed
-	Namespace.
-	"""
+										InventoryEntry contains a reference to an object managed by the
+										ArtifactGenerator, such as a generated ExternalArtifact or a managed
+										Namespace.
+										"""
 									properties: {
 										digest: {
 											description: """
-	Digest of the referent object. For generated artifacts this is the
-	artifact content digest; for managed namespaces this is a digest of the
-	metadata applied by the controller.
-	"""
+												Digest of the referent object. For generated artifacts this is the
+												artifact content digest; for managed namespaces this is a digest of the
+												metadata applied by the controller.
+												"""
 											type: "string"
 										}
 										filename: {
@@ -1015,17 +1015,17 @@ customresourcedefinition: "artifactgenerators.source.extensions.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							observedSourcesDigest: {
 								description: """
-	ObservedSourcesDigest is a hash representing the current state of
-	all the sources referenced by the ArtifactGenerator.
-	"""
+									ObservedSourcesDigest is a hash representing the current state of
+									all the sources referenced by the ArtifactGenerator.
+									"""
 								type: "string"
 							}
 						}
@@ -1074,11 +1074,11 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}]
@@ -1088,29 +1088,29 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
 					spec: {
 						description: """
-	BucketSpec specifies the required configuration to produce an Artifact for
-	an object storage bucket.
-	"""
+							BucketSpec specifies the required configuration to produce an Artifact for
+							an object storage bucket.
+							"""
 						properties: {
 							bucketName: {
 								description: "BucketName is the name of the object storage bucket."
@@ -1118,27 +1118,27 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							}
 							certSecretRef: {
 								description: """
-	CertSecretRef can be given the name of a Secret containing
-	either or both of
+									CertSecretRef can be given the name of a Secret containing
+									either or both of
 
-	- a PEM-encoded client certificate (`tls.crt`) and private
-	key (`tls.key`);
-	- a PEM-encoded CA certificate (`ca.crt`)
+									- a PEM-encoded client certificate (`tls.crt`) and private
+									key (`tls.key`);
+									- a PEM-encoded CA certificate (`ca.crt`)
 
-	and whichever are supplied, will be used for connecting to the
-	bucket. The client cert and key are useful if you are
-	authenticating with a certificate; the CA cert is useful if
-	you are using a self-signed server certificate. The Secret must
-	be of type `Opaque` or `kubernetes.io/tls`.
+									and whichever are supplied, will be used for connecting to the
+									bucket. The client cert and key are useful if you are
+									authenticating with a certificate; the CA cert is useful if
+									you are using a self-signed server certificate. The Secret must
+									be of type `Opaque` or `kubernetes.io/tls`.
 
-	This field is only supported for the `generic` provider.
-	"""
+									This field is only supported for the `generic` provider.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							endpoint: {
 								description: "Endpoint is the object storage address the BucketName is located at."
@@ -1146,10 +1146,10 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							}
 							ignore: {
 								description: """
-	Ignore overrides the set of excluded patterns in the .sourceignore format
-	(which is the same as .gitignore). If not provided, a default will be used,
-	consult the documentation for your version to find out what those are.
-	"""
+									Ignore overrides the set of excluded patterns in the .sourceignore format
+									(which is the same as .gitignore). If not provided, a default will be used,
+									consult the documentation for your version to find out what those are.
+									"""
 								type: "string"
 							}
 							insecure: {
@@ -1158,11 +1158,11 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							}
 							interval: {
 								description: """
-	Interval at which the Bucket Endpoint is checked for updates.
-	This interval is approximate and may be subject to jitter to ensure
-	efficient use of resources.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Interval at which the Bucket Endpoint is checked for updates.
+									This interval is approximate and may be subject to jitter to ensure
+									efficient use of resources.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							prefix: {
@@ -1172,10 +1172,10 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							provider: {
 								default: "generic"
 								description: """
-	Provider of the object storage bucket.
-	Defaults to 'generic', which expects an S3 (API) compatible object
-	storage.
-	"""
+									Provider of the object storage bucket.
+									Defaults to 'generic', which expects an S3 (API) compatible object
+									storage.
+									"""
 								enum: [
 									"generic",
 									"aws",
@@ -1186,15 +1186,15 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							}
 							proxySecretRef: {
 								description: """
-	ProxySecretRef specifies the Secret containing the proxy configuration
-	to use while communicating with the Bucket server.
-	"""
+									ProxySecretRef specifies the Secret containing the proxy configuration
+									to use while communicating with the Bucket server.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							region: {
 								description: "Region of the Endpoint where the BucketName is located in."
@@ -1202,63 +1202,63 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							}
 							secretRef: {
 								description: """
-	SecretRef specifies the Secret containing authentication credentials
-	for the Bucket.
-	"""
+									SecretRef specifies the Secret containing authentication credentials
+									for the Bucket.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							serviceAccountName: {
 								description: """
-	ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
-	the bucket. This field is only supported for the 'gcp' and 'aws' providers.
-	For more information about object identity:
-	https://fluxcd.io/flux/integrations/object-identity/
-	"""
+									ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
+									the bucket. This field is only supported for the 'gcp' and 'aws' providers.
+									For more information about object identity:
+									https://fluxcd.io/flux/integrations/object-identity/
+									"""
 								type: "string"
 							}
 							sts: {
 								description: """
-	STS specifies the required configuration to use a Security Token
-	Service for fetching temporary credentials to authenticate in a
-	Bucket provider.
+									STS specifies the required configuration to use a Security Token
+									Service for fetching temporary credentials to authenticate in a
+									Bucket provider.
 
-	This field is only supported for the `aws` and `generic` providers.
-	"""
+									This field is only supported for the `aws` and `generic` providers.
+									"""
 								properties: {
 									certSecretRef: {
 										description: """
-	CertSecretRef can be given the name of a Secret containing
-	either or both of
+											CertSecretRef can be given the name of a Secret containing
+											either or both of
 
-	- a PEM-encoded client certificate (`tls.crt`) and private
-	key (`tls.key`);
-	- a PEM-encoded CA certificate (`ca.crt`)
+											- a PEM-encoded client certificate (`tls.crt`) and private
+											key (`tls.key`);
+											- a PEM-encoded CA certificate (`ca.crt`)
 
-	and whichever are supplied, will be used for connecting to the
-	STS endpoint. The client cert and key are useful if you are
-	authenticating with a certificate; the CA cert is useful if
-	you are using a self-signed server certificate. The Secret must
-	be of type `Opaque` or `kubernetes.io/tls`.
+											and whichever are supplied, will be used for connecting to the
+											STS endpoint. The client cert and key are useful if you are
+											authenticating with a certificate; the CA cert is useful if
+											you are using a self-signed server certificate. The Secret must
+											be of type `Opaque` or `kubernetes.io/tls`.
 
-	This field is only supported for the `ldap` provider.
-	"""
+											This field is only supported for the `ldap` provider.
+											"""
 										properties: name: {
 											description: "Name of the referent."
 											type:        "string"
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 									endpoint: {
 										description: """
-	Endpoint is the HTTP/S endpoint of the Security Token Service from
-	where temporary credentials will be fetched.
-	"""
+											Endpoint is the HTTP/S endpoint of the Security Token Service from
+											where temporary credentials will be fetched.
+											"""
 										pattern: "^(http|https)://.*$"
 										type:    "string"
 									}
@@ -1272,16 +1272,16 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 									}
 									secretRef: {
 										description: """
-	SecretRef specifies the Secret containing authentication credentials
-	for the STS endpoint. This Secret must contain the fields `username`
-	and `password` and is supported only for the `ldap` provider.
-	"""
+											SecretRef specifies the Secret containing authentication credentials
+											for the STS endpoint. This Secret must contain the fields `username`
+											and `password` and is supported only for the `ldap` provider.
+											"""
 										properties: name: {
 											description: "Name of the referent."
 											type:        "string"
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 								}
 								required: [
@@ -1292,15 +1292,15 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend the reconciliation of this
-	Bucket.
-	"""
+									Suspend tells the controller to suspend the reconciliation of this
+									Bucket.
+									"""
 								type: "boolean"
 							}
 							timeout: {
 								default:     "60s"
 								description: "Timeout for fetch operations, defaults to 60s."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								pattern:     #"^([0-9]+(\.[0-9]+)?(ms|s|m))+$"#
 								type:        "string"
 							}
 						}
@@ -1347,9 +1347,9 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 									}
 									lastUpdateTime: {
 										description: """
-	LastUpdateTime is the timestamp corresponding to the last update of the
-	Artifact.
-	"""
+											LastUpdateTime is the timestamp corresponding to the last update of the
+											Artifact.
+											"""
 										format: "date-time"
 										type:   "string"
 									}
@@ -1360,17 +1360,17 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 									}
 									path: {
 										description: """
-	Path is the relative file path of the Artifact. It can be used to locate
-	the file in the root of the Artifact storage on the local file system of
-	the controller managing the Source.
-	"""
+											Path is the relative file path of the Artifact. It can be used to locate
+											the file in the root of the Artifact storage on the local file system of
+											the controller managing the Source.
+											"""
 										type: "string"
 									}
 									revision: {
 										description: """
-	Revision is a human-readable identifier traceable in the origin source
-	system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
-	"""
+											Revision is a human-readable identifier traceable in the origin source
+											system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
+											"""
 										type: "string"
 									}
 									size: {
@@ -1380,10 +1380,10 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 									}
 									url: {
 										description: """
-	URL is the HTTP address of the Artifact as exposed by the controller
-	managing the Source. It can be used to retrieve the Artifact for
-	consumption, e.g. by another controller applying the Artifact contents.
-	"""
+											URL is the HTTP address of the Artifact as exposed by the controller
+											managing the Source. It can be used to retrieve the Artifact for
+											consumption, e.g. by another controller applying the Artifact contents.
+											"""
 										type: "string"
 									}
 								}
@@ -1403,38 +1403,38 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -1452,7 +1452,7 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -1469,10 +1469,10 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							observedGeneration: {
@@ -1482,17 +1482,17 @@ customresourcedefinition: "buckets.source.toolkit.fluxcd.io": {
 							}
 							observedIgnore: {
 								description: """
-	ObservedIgnore is the observed exclusion patterns used for constructing
-	the source artifact.
-	"""
+									ObservedIgnore is the observed exclusion patterns used for constructing
+									the source artifact.
+									"""
 								type: "string"
 							}
 							url: {
 								description: """
-	URL is the dynamic fetch link for the latest Artifact.
-	It is provided on a "best effort" basis, and using the precise
-	BucketStatus.Artifact data is recommended.
-	"""
+									URL is the dynamic fetch link for the latest Artifact.
+									It is provided on a "best effort" basis, and using the precise
+									BucketStatus.Artifact data is recommended.
+									"""
 								type: "string"
 							}
 						}
@@ -1525,11 +1525,11 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 				"fluxcd",
 				"fluxcd-sources",
 			]
-			kind:     "ExternalArtifact"
-			listKind: "ExternalArtifactList"
-			plural:   "externalartifacts"
+			kind:       "ExternalArtifact"
+			listKind:   "ExternalArtifactList"
+			plural:     "externalartifacts"
 			shortNames: ["ea"]
-			singular: "externalartifact"
+			singular:   "externalartifact"
 		}
 		scope: "Namespaced"
 		versions: [{
@@ -1538,11 +1538,11 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}, {
@@ -1556,21 +1556,21 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -1578,9 +1578,9 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 						description: "ExternalArtifactSpec defines the desired state of ExternalArtifact"
 						properties: sourceRef: {
 							description: """
-	SourceRef points to the Kubernetes custom resource for
-	which the artifact is generated.
-	"""
+								SourceRef points to the Kubernetes custom resource for
+								which the artifact is generated.
+								"""
 							properties: {
 								apiVersion: {
 									description: "API version of the referent, if not specified the Kubernetes preferred version will be used."
@@ -1620,9 +1620,9 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 									}
 									lastUpdateTime: {
 										description: """
-	LastUpdateTime is the timestamp corresponding to the last update of the
-	Artifact.
-	"""
+											LastUpdateTime is the timestamp corresponding to the last update of the
+											Artifact.
+											"""
 										format: "date-time"
 										type:   "string"
 									}
@@ -1633,17 +1633,17 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 									}
 									path: {
 										description: """
-	Path is the relative file path of the Artifact. It can be used to locate
-	the file in the root of the Artifact storage on the local file system of
-	the controller managing the Source.
-	"""
+											Path is the relative file path of the Artifact. It can be used to locate
+											the file in the root of the Artifact storage on the local file system of
+											the controller managing the Source.
+											"""
 										type: "string"
 									}
 									revision: {
 										description: """
-	Revision is a human-readable identifier traceable in the origin source
-	system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
-	"""
+											Revision is a human-readable identifier traceable in the origin source
+											system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
+											"""
 										type: "string"
 									}
 									size: {
@@ -1653,10 +1653,10 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 									}
 									url: {
 										description: """
-	URL is the HTTP address of the Artifact as exposed by the controller
-	managing the Source. It can be used to retrieve the Artifact for
-	consumption, e.g. by another controller applying the Artifact contents.
-	"""
+											URL is the HTTP address of the Artifact as exposed by the controller
+											managing the Source. It can be used to retrieve the Artifact for
+											consumption, e.g. by another controller applying the Artifact contents.
+											"""
 										type: "string"
 									}
 								}
@@ -1676,38 +1676,38 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -1725,7 +1725,7 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -1743,10 +1743,10 @@ customresourcedefinition: "externalartifacts.source.toolkit.fluxcd.io": {
 							exportedInputs: {
 								additionalProperties: "x-kubernetes-preserve-unknown-fields": true
 								description: """
-	ExportedInputs holds a map of structured data optionally extracted from the source resource.
-	It may be used, for example, by downstream consumers such as templating engines like
-	ResourceSet to consume these inputs for implementing templating logic.
-	"""
+									ExportedInputs holds a map of structured data optionally extracted from the source resource.
+									It may be used, for example, by downstream consumers such as templating engines like
+									ResourceSet to consume these inputs for implementing templating logic.
+									"""
 								type: "object"
 							}
 						}
@@ -1779,11 +1779,11 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 				"fluxcd",
 				"fluxcd-sources",
 			]
-			kind:     "GitRepository"
-			listKind: "GitRepositoryList"
-			plural:   "gitrepositories"
+			kind:       "GitRepository"
+			listKind:   "GitRepositoryList"
+			plural:     "gitrepositories"
 			shortNames: ["gitrepo"]
-			singular: "gitrepository"
+			singular:   "gitrepository"
 		}
 		scope: "Namespaced"
 		versions: [{
@@ -1796,11 +1796,11 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}]
@@ -1810,95 +1810,95 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
 					spec: {
 						description: """
-	GitRepositorySpec specifies the required configuration to produce an
-	Artifact for a Git repository.
-	"""
+							GitRepositorySpec specifies the required configuration to produce an
+							Artifact for a Git repository.
+							"""
 						properties: {
 							ignore: {
 								description: """
-	Ignore overrides the set of excluded patterns in the .sourceignore format
-	(which is the same as .gitignore). If not provided, a default will be used,
-	consult the documentation for your version to find out what those are.
-	"""
+									Ignore overrides the set of excluded patterns in the .sourceignore format
+									(which is the same as .gitignore). If not provided, a default will be used,
+									consult the documentation for your version to find out what those are.
+									"""
 								type: "string"
 							}
 							include: {
 								description: """
-	Include specifies a list of GitRepository resources which Artifacts
-	should be included in the Artifact produced for this GitRepository.
-	"""
+									Include specifies a list of GitRepository resources which Artifacts
+									should be included in the Artifact produced for this GitRepository.
+									"""
 								items: {
 									description: """
-	GitRepositoryInclude specifies a local reference to a GitRepository which
-	Artifact (sub-)contents must be included, and where they should be placed.
-	"""
+										GitRepositoryInclude specifies a local reference to a GitRepository which
+										Artifact (sub-)contents must be included, and where they should be placed.
+										"""
 									properties: {
 										fromPath: {
 											description: """
-	FromPath specifies the path to copy contents from, defaults to the root
-	of the Artifact.
-	"""
+												FromPath specifies the path to copy contents from, defaults to the root
+												of the Artifact.
+												"""
 											type: "string"
 										}
 										repository: {
 											description: """
-	GitRepositoryRef specifies the GitRepository which Artifact contents
-	must be included.
-	"""
+												GitRepositoryRef specifies the GitRepository which Artifact contents
+												must be included.
+												"""
 											properties: name: {
 												description: "Name of the referent."
 												type:        "string"
 											}
 											required: ["name"]
-											type: "object"
+											type:     "object"
 										}
 										toPath: {
 											description: """
-	ToPath specifies the path to copy contents to, defaults to the name of
-	the GitRepositoryRef.
-	"""
+												ToPath specifies the path to copy contents to, defaults to the name of
+												the GitRepositoryRef.
+												"""
 											type: "string"
 										}
 									}
 									required: ["repository"]
-									type: "object"
+									type:     "object"
 								}
 								type: "array"
 							}
 							interval: {
 								description: """
-	Interval at which the GitRepository URL is checked for updates.
-	This interval is approximate and may be subject to jitter to ensure
-	efficient use of resources.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Interval at which the GitRepository URL is checked for updates.
+									This interval is approximate and may be subject to jitter to ensure
+									efficient use of resources.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							provider: {
 								description: """
-	Provider used for authentication, can be 'aws', 'azure', 'github', 'generic'.
-	When not specified, defaults to 'generic'.
-	"""
+									Provider used for authentication, can be 'aws', 'azure', 'github', 'generic'.
+									When not specified, defaults to 'generic'.
+									"""
 								enum: [
 									"generic",
 									"aws",
@@ -1909,28 +1909,28 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 							}
 							proxySecretRef: {
 								description: """
-	ProxySecretRef specifies the Secret containing the proxy configuration
-	to use while communicating with the Git server.
-	"""
+									ProxySecretRef specifies the Secret containing the proxy configuration
+									to use while communicating with the Git server.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							recurseSubmodules: {
 								description: """
-	RecurseSubmodules enables the initialization of all submodules within
-	the GitRepository as cloned from the URL, using their default settings.
-	"""
+									RecurseSubmodules enables the initialization of all submodules within
+									the GitRepository as cloned from the URL, using their default settings.
+									"""
 								type: "boolean"
 							}
 							ref: {
 								description: """
-	Reference specifies the Git reference to resolve and monitor for
-	changes, defaults to the 'master' branch.
-	"""
+									Reference specifies the Git reference to resolve and monitor for
+									changes, defaults to the 'master' branch.
+									"""
 								properties: {
 									branch: {
 										description: "Branch to check out, defaults to 'master' if no other field is defined."
@@ -1938,20 +1938,20 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 									}
 									commit: {
 										description: """
-	Commit SHA to check out, takes precedence over all reference fields.
+											Commit SHA to check out, takes precedence over all reference fields.
 
-	This can be combined with Branch to shallow clone the branch, in which
-	the commit is expected to exist.
-	"""
+											This can be combined with Branch to shallow clone the branch, in which
+											the commit is expected to exist.
+											"""
 										type: "string"
 									}
 									name: {
 										description: """
-	Name of the reference to check out; takes precedence over Branch, Tag and SemVer.
+											Name of the reference to check out; takes precedence over Branch, Tag and SemVer.
 
-	It must be a valid Git reference: https://git-scm.com/docs/git-check-ref-format#_description
-	Examples: "refs/heads/main", "refs/tags/v0.1.0", "refs/pull/420/head", "refs/merge-requests/1/head"
-	"""
+											It must be a valid Git reference: https://git-scm.com/docs/git-check-ref-format#_description
+											Examples: "refs/heads/main", "refs/tags/v0.1.0", "refs/pull/420/head", "refs/merge-requests/1/head"
+											"""
 										type: "string"
 									}
 									semver: {
@@ -1967,47 +1967,47 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 							}
 							secretRef: {
 								description: """
-	SecretRef specifies the Secret containing authentication credentials for
-	the GitRepository.
-	For HTTPS repositories the Secret must contain 'username' and 'password'
-	fields for basic auth or 'bearerToken' field for token auth.
-	For SSH repositories the Secret must contain 'identity'
-	and 'known_hosts' fields.
-	"""
+									SecretRef specifies the Secret containing authentication credentials for
+									the GitRepository.
+									For HTTPS repositories the Secret must contain 'username' and 'password'
+									fields for basic auth or 'bearerToken' field for token auth.
+									For SSH repositories the Secret must contain 'identity'
+									and 'known_hosts' fields.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							serviceAccountName: {
 								description: """
-	ServiceAccountName is the name of the Kubernetes ServiceAccount used to
-	authenticate to the GitRepository. This field is only supported for 'azure' and 'aws' providers.
-	"""
+									ServiceAccountName is the name of the Kubernetes ServiceAccount used to
+									authenticate to the GitRepository. This field is only supported for 'azure' and 'aws' providers.
+									"""
 								type: "string"
 							}
 							sparseCheckout: {
 								description: """
-	SparseCheckout specifies a list of directories to checkout when cloning
-	the repository. If specified, only these directories are included in the
-	Artifact produced for this GitRepository.
-	"""
+									SparseCheckout specifies a list of directories to checkout when cloning
+									the repository. If specified, only these directories are included in the
+									Artifact produced for this GitRepository.
+									"""
 								items: type: "string"
 								type: "array"
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend the reconciliation of this
-	GitRepository.
-	"""
+									Suspend tells the controller to suspend the reconciliation of this
+									GitRepository.
+									"""
 								type: "boolean"
 							}
 							timeout: {
 								default:     "60s"
 								description: "Timeout for Git operations like cloning, defaults to 60s."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								pattern:     #"^([0-9]+(\.[0-9]+)?(ms|s|m))+$"#
 								type:        "string"
 							}
 							url: {
@@ -2017,19 +2017,19 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 							}
 							verify: {
 								description: """
-	Verification specifies the configuration to verify the Git commit
-	signature(s).
-	"""
+									Verification specifies the configuration to verify the Git commit
+									signature(s).
+									"""
 								properties: {
 									mode: {
 										default: "HEAD"
 										description: """
-	Mode specifies which Git object(s) should be verified.
+											Mode specifies which Git object(s) should be verified.
 
-	The variants "head" and "HEAD" both imply the same thing, i.e. verify
-	the commit that the HEAD of the Git repository points to. The variant
-	"head" solely exists to ensure backwards compatibility.
-	"""
+											The variants "head" and "HEAD" both imply the same thing, i.e. verify
+											the commit that the HEAD of the Git repository points to. The variant
+											"head" solely exists to ensure backwards compatibility.
+											"""
 										enum: [
 											"head",
 											"HEAD",
@@ -2040,20 +2040,20 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 									}
 									secretRef: {
 										description: """
-	SecretRef specifies the Secret containing the public keys of trusted Git
-	authors. PGP public keys must be stored under keys with the .asc suffix,
-	and SSH public keys must be stored under keys with the .sshpub suffix.
-	"""
+											SecretRef specifies the Secret containing the public keys of trusted Git
+											authors. PGP public keys must be stored under keys with the .asc suffix,
+											and SSH public keys must be stored under keys with the .sshpub suffix.
+											"""
 										properties: name: {
 											description: "Name of the referent."
 											type:        "string"
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 								}
 								required: ["secretRef"]
-								type: "object"
+								type:     "object"
 							}
 						}
 						required: [
@@ -2080,9 +2080,9 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 									}
 									lastUpdateTime: {
 										description: """
-	LastUpdateTime is the timestamp corresponding to the last update of the
-	Artifact.
-	"""
+											LastUpdateTime is the timestamp corresponding to the last update of the
+											Artifact.
+											"""
 										format: "date-time"
 										type:   "string"
 									}
@@ -2093,17 +2093,17 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 									}
 									path: {
 										description: """
-	Path is the relative file path of the Artifact. It can be used to locate
-	the file in the root of the Artifact storage on the local file system of
-	the controller managing the Source.
-	"""
+											Path is the relative file path of the Artifact. It can be used to locate
+											the file in the root of the Artifact storage on the local file system of
+											the controller managing the Source.
+											"""
 										type: "string"
 									}
 									revision: {
 										description: """
-	Revision is a human-readable identifier traceable in the origin source
-	system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
-	"""
+											Revision is a human-readable identifier traceable in the origin source
+											system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
+											"""
 										type: "string"
 									}
 									size: {
@@ -2113,10 +2113,10 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 									}
 									url: {
 										description: """
-	URL is the HTTP address of the Artifact as exposed by the controller
-	managing the Source. It can be used to retrieve the Artifact for
-	consumption, e.g. by another controller applying the Artifact contents.
-	"""
+											URL is the HTTP address of the Artifact as exposed by the controller
+											managing the Source. It can be used to retrieve the Artifact for
+											consumption, e.g. by another controller applying the Artifact contents.
+											"""
 										type: "string"
 									}
 								}
@@ -2136,38 +2136,38 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -2185,7 +2185,7 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -2202,9 +2202,9 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 							}
 							includedArtifacts: {
 								description: """
-	IncludedArtifacts contains a list of the last successfully included
-	Artifacts as instructed by GitRepositorySpec.Include.
-	"""
+									IncludedArtifacts contains a list of the last successfully included
+									Artifacts as instructed by GitRepositorySpec.Include.
+									"""
 								items: {
 									description: "Artifact represents the output of a Source reconciliation."
 									properties: {
@@ -2215,9 +2215,9 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 										}
 										lastUpdateTime: {
 											description: """
-	LastUpdateTime is the timestamp corresponding to the last update of the
-	Artifact.
-	"""
+												LastUpdateTime is the timestamp corresponding to the last update of the
+												Artifact.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
@@ -2228,17 +2228,17 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 										}
 										path: {
 											description: """
-	Path is the relative file path of the Artifact. It can be used to locate
-	the file in the root of the Artifact storage on the local file system of
-	the controller managing the Source.
-	"""
+												Path is the relative file path of the Artifact. It can be used to locate
+												the file in the root of the Artifact storage on the local file system of
+												the controller managing the Source.
+												"""
 											type: "string"
 										}
 										revision: {
 											description: """
-	Revision is a human-readable identifier traceable in the origin source
-	system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
-	"""
+												Revision is a human-readable identifier traceable in the origin source
+												system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
+												"""
 											type: "string"
 										}
 										size: {
@@ -2248,10 +2248,10 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 										}
 										url: {
 											description: """
-	URL is the HTTP address of the Artifact as exposed by the controller
-	managing the Source. It can be used to retrieve the Artifact for
-	consumption, e.g. by another controller applying the Artifact contents.
-	"""
+												URL is the HTTP address of the Artifact as exposed by the controller
+												managing the Source. It can be used to retrieve the Artifact for
+												consumption, e.g. by another controller applying the Artifact contents.
+												"""
 											type: "string"
 										}
 									}
@@ -2268,99 +2268,99 @@ customresourcedefinition: "gitrepositories.source.toolkit.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							observedGeneration: {
 								description: """
-	ObservedGeneration is the last observed generation of the GitRepository
-	object.
-	"""
+									ObservedGeneration is the last observed generation of the GitRepository
+									object.
+									"""
 								format: "int64"
 								type:   "integer"
 							}
 							observedIgnore: {
 								description: """
-	ObservedIgnore is the observed exclusion patterns used for constructing
-	the source artifact.
-	"""
+									ObservedIgnore is the observed exclusion patterns used for constructing
+									the source artifact.
+									"""
 								type: "string"
 							}
 							observedInclude: {
 								description: """
-	ObservedInclude is the observed list of GitRepository resources used to
-	produce the current Artifact.
-	"""
+									ObservedInclude is the observed list of GitRepository resources used to
+									produce the current Artifact.
+									"""
 								items: {
 									description: """
-	GitRepositoryInclude specifies a local reference to a GitRepository which
-	Artifact (sub-)contents must be included, and where they should be placed.
-	"""
+										GitRepositoryInclude specifies a local reference to a GitRepository which
+										Artifact (sub-)contents must be included, and where they should be placed.
+										"""
 									properties: {
 										fromPath: {
 											description: """
-	FromPath specifies the path to copy contents from, defaults to the root
-	of the Artifact.
-	"""
+												FromPath specifies the path to copy contents from, defaults to the root
+												of the Artifact.
+												"""
 											type: "string"
 										}
 										repository: {
 											description: """
-	GitRepositoryRef specifies the GitRepository which Artifact contents
-	must be included.
-	"""
+												GitRepositoryRef specifies the GitRepository which Artifact contents
+												must be included.
+												"""
 											properties: name: {
 												description: "Name of the referent."
 												type:        "string"
 											}
 											required: ["name"]
-											type: "object"
+											type:     "object"
 										}
 										toPath: {
 											description: """
-	ToPath specifies the path to copy contents to, defaults to the name of
-	the GitRepositoryRef.
-	"""
+												ToPath specifies the path to copy contents to, defaults to the name of
+												the GitRepositoryRef.
+												"""
 											type: "string"
 										}
 									}
 									required: ["repository"]
-									type: "object"
+									type:     "object"
 								}
 								type: "array"
 							}
 							observedRecurseSubmodules: {
 								description: """
-	ObservedRecurseSubmodules is the observed resource submodules
-	configuration used to produce the current Artifact.
-	"""
+									ObservedRecurseSubmodules is the observed resource submodules
+									configuration used to produce the current Artifact.
+									"""
 								type: "boolean"
 							}
 							observedSparseCheckout: {
 								description: """
-	ObservedSparseCheckout is the observed list of directories used to
-	produce the current Artifact.
-	"""
+									ObservedSparseCheckout is the observed list of directories used to
+									produce the current Artifact.
+									"""
 								items: type: "string"
 								type: "array"
 							}
 							sourceVerificationFingerprint: {
 								description: """
-	SourceVerificationFingerprint is the fingerprint of the public keys used
-	to verify the signature of the Git object(s) for the current Artifact.
-	It is used to detect changes to the verification policy, such as a key
-	rotation, that require the current revision to be verified again.
-	"""
+									SourceVerificationFingerprint is the fingerprint of the public keys used
+									to verify the signature of the Git object(s) for the current Artifact.
+									It is used to detect changes to the verification policy, such as a key
+									rotation, that require the current revision to be verified again.
+									"""
 								type: "string"
 							}
 							sourceVerificationMode: {
 								description: """
-	SourceVerificationMode is the last used verification mode indicating
-	which Git object(s) have been verified.
-	"""
+									SourceVerificationMode is the last used verification mode indicating
+									which Git object(s) have been verified.
+									"""
 								type: "string"
 							}
 						}
@@ -2393,11 +2393,11 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 				"fluxcd",
 				"fluxcd-sources",
 			]
-			kind:     "HelmChart"
-			listKind: "HelmChartList"
-			plural:   "helmcharts"
+			kind:       "HelmChart"
+			listKind:   "HelmChartList"
+			plural:     "helmcharts"
 			shortNames: ["hc"]
-			singular: "helmchart"
+			singular:   "helmchart"
 		}
 		scope: "Namespaced"
 		versions: [{
@@ -2422,11 +2422,11 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}]
@@ -2436,21 +2436,21 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -2459,35 +2459,35 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 						properties: {
 							chart: {
 								description: """
-	Chart is the name or path the Helm chart is available at in the
-	SourceRef.
-	"""
+									Chart is the name or path the Helm chart is available at in the
+									SourceRef.
+									"""
 								type: "string"
 							}
 							ignoreMissingValuesFiles: {
 								description: """
-	IgnoreMissingValuesFiles controls whether to silently ignore missing values
-	files rather than failing.
-	"""
+									IgnoreMissingValuesFiles controls whether to silently ignore missing values
+									files rather than failing.
+									"""
 								type: "boolean"
 							}
 							interval: {
 								description: """
-	Interval at which the HelmChart SourceRef is checked for updates.
-	This interval is approximate and may be subject to jitter to ensure
-	efficient use of resources.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Interval at which the HelmChart SourceRef is checked for updates.
+									This interval is approximate and may be subject to jitter to ensure
+									efficient use of resources.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							reconcileStrategy: {
 								default: "ChartVersion"
 								description: """
-	ReconcileStrategy determines what enables the creation of a new artifact.
-	Valid values are ('ChartVersion', 'Revision').
-	See the documentation of the values for an explanation on their behavior.
-	Defaults to ChartVersion when omitted.
-	"""
+									ReconcileStrategy determines what enables the creation of a new artifact.
+									Valid values are ('ChartVersion', 'Revision').
+									See the documentation of the values for an explanation on their behavior.
+									Defaults to ChartVersion when omitted.
+									"""
 								enum: [
 									"ChartVersion",
 									"Revision",
@@ -2503,9 +2503,9 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 									}
 									kind: {
 										description: """
-	Kind of the referent, valid values are ('HelmRepository', 'GitRepository',
-	'Bucket').
-	"""
+											Kind of the referent, valid values are ('HelmRepository', 'GitRepository',
+											'Bucket').
+											"""
 										enum: [
 											"HelmRepository",
 											"GitRepository",
@@ -2526,58 +2526,58 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend the reconciliation of this
-	source.
-	"""
+									Suspend tells the controller to suspend the reconciliation of this
+									source.
+									"""
 								type: "boolean"
 							}
 							valuesFiles: {
 								description: """
-	ValuesFiles is an alternative list of values files to use as the chart
-	values (values.yaml is not included by default), expected to be a
-	relative path in the SourceRef.
-	Values files are merged in the order of this list with the last file
-	overriding the first. Ignored when omitted.
-	"""
+									ValuesFiles is an alternative list of values files to use as the chart
+									values (values.yaml is not included by default), expected to be a
+									relative path in the SourceRef.
+									Values files are merged in the order of this list with the last file
+									overriding the first. Ignored when omitted.
+									"""
 								items: type: "string"
 								type: "array"
 							}
 							verify: {
 								description: """
-	Verify contains the secret name containing the trusted public keys
-	used to verify the signature and specifies which provider to use to check
-	whether OCI image is authentic.
-	This field is only supported when using HelmRepository source with spec.type 'oci'.
-	Chart dependencies, which are not bundled in the umbrella chart artifact, are not verified.
-	"""
+									Verify contains the secret name containing the trusted public keys
+									used to verify the signature and specifies which provider to use to check
+									whether OCI image is authentic.
+									This field is only supported when using HelmRepository source with spec.type 'oci'.
+									Chart dependencies, which are not bundled in the umbrella chart artifact, are not verified.
+									"""
 								properties: {
 									matchOIDCIdentity: {
 										description: """
-	MatchOIDCIdentity specifies the identity matching criteria to use
-	while verifying an OCI artifact which was signed using Cosign keyless
-	signing. The artifact's identity is deemed to be verified if any of the
-	specified matchers match against the identity.
-	"""
+											MatchOIDCIdentity specifies the identity matching criteria to use
+											while verifying an OCI artifact which was signed using Cosign keyless
+											signing. The artifact's identity is deemed to be verified if any of the
+											specified matchers match against the identity.
+											"""
 										items: {
 											description: """
-	OIDCIdentityMatch specifies options for verifying the certificate identity,
-	i.e. the issuer and the subject of the certificate.
-	"""
+												OIDCIdentityMatch specifies options for verifying the certificate identity,
+												i.e. the issuer and the subject of the certificate.
+												"""
 											properties: {
 												issuer: {
 													description: """
-	Issuer specifies the regex pattern to match against to verify
-	the OIDC issuer in the Fulcio certificate. The pattern must be a
-	valid Go regular expression.
-	"""
+														Issuer specifies the regex pattern to match against to verify
+														the OIDC issuer in the Fulcio certificate. The pattern must be a
+														valid Go regular expression.
+														"""
 													type: "string"
 												}
 												subject: {
 													description: """
-	Subject specifies the regex pattern to match against to verify
-	the identity subject in the Fulcio certificate. The pattern must
-	be a valid Go regular expression.
-	"""
+														Subject specifies the regex pattern to match against to verify
+														the identity subject in the Fulcio certificate. The pattern must
+														be a valid Go regular expression.
+														"""
 													type: "string"
 												}
 											}
@@ -2600,26 +2600,26 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 									}
 									secretRef: {
 										description: """
-	SecretRef specifies the Kubernetes Secret containing the
-	trusted public keys.
-	"""
+											SecretRef specifies the Kubernetes Secret containing the
+											trusted public keys.
+											"""
 										properties: name: {
 											description: "Name of the referent."
 											type:        "string"
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 								}
 								required: ["provider"]
-								type: "object"
+								type:     "object"
 							}
 							version: {
 								default: "*"
 								description: """
-	Version is the chart version semver expression, ignored for charts from
-	GitRepository and Bucket sources. Defaults to latest when omitted.
-	"""
+									Version is the chart version semver expression, ignored for charts from
+									GitRepository and Bucket sources. Defaults to latest when omitted.
+									"""
 								type: "string"
 							}
 						}
@@ -2648,9 +2648,9 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 									}
 									lastUpdateTime: {
 										description: """
-	LastUpdateTime is the timestamp corresponding to the last update of the
-	Artifact.
-	"""
+											LastUpdateTime is the timestamp corresponding to the last update of the
+											Artifact.
+											"""
 										format: "date-time"
 										type:   "string"
 									}
@@ -2661,17 +2661,17 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 									}
 									path: {
 										description: """
-	Path is the relative file path of the Artifact. It can be used to locate
-	the file in the root of the Artifact storage on the local file system of
-	the controller managing the Source.
-	"""
+											Path is the relative file path of the Artifact. It can be used to locate
+											the file in the root of the Artifact storage on the local file system of
+											the controller managing the Source.
+											"""
 										type: "string"
 									}
 									revision: {
 										description: """
-	Revision is a human-readable identifier traceable in the origin source
-	system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
-	"""
+											Revision is a human-readable identifier traceable in the origin source
+											system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
+											"""
 										type: "string"
 									}
 									size: {
@@ -2681,10 +2681,10 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 									}
 									url: {
 										description: """
-	URL is the HTTP address of the Artifact as exposed by the controller
-	managing the Source. It can be used to retrieve the Artifact for
-	consumption, e.g. by another controller applying the Artifact contents.
-	"""
+											URL is the HTTP address of the Artifact as exposed by the controller
+											managing the Source. It can be used to retrieve the Artifact for
+											consumption, e.g. by another controller applying the Artifact contents.
+											"""
 										type: "string"
 									}
 								}
@@ -2704,38 +2704,38 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -2753,7 +2753,7 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -2770,49 +2770,49 @@ customresourcedefinition: "helmcharts.source.toolkit.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							observedChartName: {
 								description: """
-	ObservedChartName is the last observed chart name as specified by the
-	resolved chart reference.
-	"""
+									ObservedChartName is the last observed chart name as specified by the
+									resolved chart reference.
+									"""
 								type: "string"
 							}
 							observedGeneration: {
 								description: """
-	ObservedGeneration is the last observed generation of the HelmChart
-	object.
-	"""
+									ObservedGeneration is the last observed generation of the HelmChart
+									object.
+									"""
 								format: "int64"
 								type:   "integer"
 							}
 							observedSourceArtifactRevision: {
 								description: """
-	ObservedSourceArtifactRevision is the last observed Artifact.Revision
-	of the HelmChartSpec.SourceRef.
-	"""
+									ObservedSourceArtifactRevision is the last observed Artifact.Revision
+									of the HelmChartSpec.SourceRef.
+									"""
 								type: "string"
 							}
 							observedValuesFiles: {
 								description: """
-	ObservedValuesFiles are the observed value files of the last successful
-	reconciliation.
-	It matches the chart in the last successfully reconciled artifact.
-	"""
+									ObservedValuesFiles are the observed value files of the last successful
+									reconciliation.
+									It matches the chart in the last successfully reconciled artifact.
+									"""
 								items: type: "string"
 								type: "array"
 							}
 							url: {
 								description: """
-	URL is the dynamic fetch link for the latest Artifact.
-	It is provided on a "best effort" basis, and using the precise
-	HelmChartStatus.Artifact data is recommended.
-	"""
+									URL is the dynamic fetch link for the latest Artifact.
+									It is provided on a "best effort" basis, and using the precise
+									HelmChartStatus.Artifact data is recommended.
+									"""
 								type: "string"
 							}
 						}
@@ -2845,11 +2845,11 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 				"fluxcd",
 				"fluxcd-appliers",
 			]
-			kind:     "HelmRelease"
-			listKind: "HelmReleaseList"
-			plural:   "helmreleases"
+			kind:       "HelmRelease"
+			listKind:   "HelmReleaseList"
+			plural:     "helmreleases"
 			shortNames: ["hr"]
-			singular: "helmrelease"
+			singular:   "helmrelease"
 		}
 		scope: "Namespaced"
 		versions: [{
@@ -2858,11 +2858,11 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}]
@@ -2872,21 +2872,21 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -2895,24 +2895,24 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 						properties: {
 							chart: {
 								description: """
-	Chart defines the template of the source object that should be
-	created for this HelmRelease. The Kind field determines whether a
-	sourcev1.HelmChart or sourcev1.OCIRepository is created.
-	"""
+									Chart defines the template of the source object that should be
+									created for this HelmRelease. The Kind field determines whether a
+									sourcev1.HelmChart or sourcev1.OCIRepository is created.
+									"""
 								properties: {
 									kind: {
 										description: """
-	Kind is the kind of the source object generated from this template. Valid values:
-	  - HelmChart (default): generates a source.toolkit.fluxcd.io/v1 HelmChart from
-	    the HelmChartSpec-compatible fields under .spec.chart.spec. In particular,
-	    .spec.chart.spec.chart and .spec.chart.spec.sourceRef are required.
-	  - OCIRepository: generates a source.toolkit.fluxcd.io/v1 OCIRepository from
-	    the OCIRepositorySpec fields under .spec.chart.spec. In particular,
-	    .spec.chart.spec.url is required, and .spec.chart.spec.interval defaults
-	    to .spec.interval (interval is required in a plain OCIRepository).
-	Use OCIRepository for charts hosted in OCI registries; use HelmChart for
-	HelmRepository, GitRepository or Bucket sources.
-	"""
+											Kind is the kind of the source object generated from this template. Valid values:
+											  - HelmChart (default): generates a source.toolkit.fluxcd.io/v1 HelmChart from
+											    the HelmChartSpec-compatible fields under .spec.chart.spec. In particular,
+											    .spec.chart.spec.chart and .spec.chart.spec.sourceRef are required.
+											  - OCIRepository: generates a source.toolkit.fluxcd.io/v1 OCIRepository from
+											    the OCIRepositorySpec fields under .spec.chart.spec. In particular,
+											    .spec.chart.spec.url is required, and .spec.chart.spec.interval defaults
+											    to .spec.interval (interval is required in a plain OCIRepository).
+											Use OCIRepository for charts hosted in OCI registries; use HelmChart for
+											HelmRepository, GitRepository or Bucket sources.
+											"""
 										enum: [
 											"HelmChart",
 											"OCIRepository",
@@ -2925,20 +2925,20 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											annotations: {
 												additionalProperties: type: "string"
 												description: """
-	Annotations is an unstructured key value map stored with a resource that may be
-	set by external tools to store and retrieve arbitrary metadata. They are not
-	queryable and should be preserved when modifying objects.
-	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-	"""
+													Annotations is an unstructured key value map stored with a resource that may be
+													set by external tools to store and retrieve arbitrary metadata. They are not
+													queryable and should be preserved when modifying objects.
+													More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+													"""
 												type: "object"
 											}
 											labels: {
 												additionalProperties: type: "string"
 												description: """
-	Map of string keys and values that can be used to organize and categorize
-	(scope and select) objects.
-	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-	"""
+													Map of string keys and values that can be used to organize and categorize
+													(scope and select) objects.
+													More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+													"""
 												type: "object"
 											}
 										}
@@ -2949,25 +2949,25 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										properties: {
 											certSecretRef: {
 												description: """
-	CertSecretRef can be given the name of a Secret containing
-	either or both of
+													CertSecretRef can be given the name of a Secret containing
+													either or both of
 
-	- a PEM-encoded client certificate (`tls.crt`) and private
-	key (`tls.key`);
-	- a PEM-encoded CA certificate (`ca.crt`)
+													- a PEM-encoded client certificate (`tls.crt`) and private
+													key (`tls.key`);
+													- a PEM-encoded CA certificate (`ca.crt`)
 
-	and whichever are supplied, will be used for connecting to the
-	registry. The client cert and key are useful if you are
-	authenticating with a certificate; the CA cert is useful if
-	you are using a self-signed server certificate. The Secret must
-	be of type `Opaque` or `kubernetes.io/tls`.
-	"""
+													and whichever are supplied, will be used for connecting to the
+													registry. The client cert and key are useful if you are
+													authenticating with a certificate; the CA cert is useful if
+													you are using a self-signed server certificate. The Secret must
+													be of type `Opaque` or `kubernetes.io/tls`.
+													"""
 												properties: name: {
 													description: "Name of the referent."
 													type:        "string"
 												}
 												required: ["name"]
-												type: "object"
+												type:     "object"
 											}
 											chart: {
 												description: "The name or path the Helm chart is available at in the SourceRef."
@@ -2977,10 +2977,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 											ignore: {
 												description: """
-	Ignore overrides the set of excluded patterns in the .sourceignore format
-	(which is the same as .gitignore). If not provided, a default will be used,
-	consult the documentation for your version to find out what those are.
-	"""
+													Ignore overrides the set of excluded patterns in the .sourceignore format
+													(which is the same as .gitignore). If not provided, a default will be used,
+													consult the documentation for your version to find out what those are.
+													"""
 												type: "string"
 											}
 											ignoreMissingValuesFiles: {
@@ -2993,34 +2993,34 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 											interval: {
 												description: """
-	Interval at which the OCIRepository URL is checked for updates.
-	This interval is approximate and may be subject to jitter to ensure
-	efficient use of resources.
-	"""
-												pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+													Interval at which the OCIRepository URL is checked for updates.
+													This interval is approximate and may be subject to jitter to ensure
+													efficient use of resources.
+													"""
+												pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 												type:    "string"
 											}
 											layerSelector: {
 												description: """
-	LayerSelector specifies which layer should be extracted from the OCI artifact.
-	When not specified, the first layer found in the artifact is selected.
-	"""
+													LayerSelector specifies which layer should be extracted from the OCI artifact.
+													When not specified, the first layer found in the artifact is selected.
+													"""
 												properties: {
 													mediaType: {
 														description: """
-	MediaType specifies the OCI media type of the layer
-	which should be extracted from the OCI Artifact. The
-	first layer matching this type is selected.
-	"""
+															MediaType specifies the OCI media type of the layer
+															which should be extracted from the OCI Artifact. The
+															first layer matching this type is selected.
+															"""
 														type: "string"
 													}
 													operation: {
 														description: """
-	Operation specifies how the selected layer should be processed.
-	By default, the layer compressed content is extracted to storage.
-	When the operation is set to 'copy', the layer compressed content
-	is persisted to storage as it is.
-	"""
+															Operation specifies how the selected layer should be processed.
+															By default, the layer compressed content is extracted to storage.
+															When the operation is set to 'copy', the layer compressed content
+															is persisted to storage as it is.
+															"""
 														enum: [
 															"extract",
 															"copy",
@@ -3032,9 +3032,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 											provider: {
 												description: """
-	The provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
-	When not specified, defaults to 'generic'.
-	"""
+													The provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
+													When not specified, defaults to 'generic'.
+													"""
 												enum: [
 													"generic",
 													"aws",
@@ -3045,23 +3045,23 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 											proxySecretRef: {
 												description: """
-	ProxySecretRef specifies the Secret containing the proxy configuration
-	to use while communicating with the container registry.
-	"""
+													ProxySecretRef specifies the Secret containing the proxy configuration
+													to use while communicating with the container registry.
+													"""
 												properties: name: {
 													description: "Name of the referent."
 													type:        "string"
 												}
 												required: ["name"]
-												type: "object"
+												type:     "object"
 											}
 											reconcileStrategy: {
 												description: """
-	Determines what enables the creation of a new artifact. Valid values are
-	('ChartVersion', 'Revision').
-	See the documentation of the values for an explanation on their behavior.
-	Defaults to ChartVersion when omitted.
-	"""
+													Determines what enables the creation of a new artifact. Valid values are
+													('ChartVersion', 'Revision').
+													See the documentation of the values for an explanation on their behavior.
+													Defaults to ChartVersion when omitted.
+													"""
 												enum: [
 													"ChartVersion",
 													"Revision",
@@ -3070,22 +3070,22 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 											ref: {
 												description: """
-	The OCI reference to pull and monitor for changes,
-	defaults to the latest tag.
-	"""
+													The OCI reference to pull and monitor for changes,
+													defaults to the latest tag.
+													"""
 												properties: {
 													digest: {
 														description: """
-	Digest is the image digest to pull, takes precedence over SemVer.
-	The value should be in the format 'sha256:<HASH>'.
-	"""
+															Digest is the image digest to pull, takes precedence over SemVer.
+															The value should be in the format 'sha256:<HASH>'.
+															"""
 														type: "string"
 													}
 													semver: {
 														description: """
-	SemVer is the range of tags to pull selecting the latest within
-	the range, takes precedence over Tag.
-	"""
+															SemVer is the range of tags to pull selecting the latest within
+															the range, takes precedence over Tag.
+															"""
 														type: "string"
 													}
 													semverFilter: {
@@ -3101,27 +3101,27 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 											secretRef: {
 												description: """
-	SecretRef contains the secret name containing the registry login
-	credentials to resolve image metadata.
-	The secret must be of type kubernetes.io/dockerconfigjson.
-	"""
+													SecretRef contains the secret name containing the registry login
+													credentials to resolve image metadata.
+													The secret must be of type kubernetes.io/dockerconfigjson.
+													"""
 												properties: name: {
 													description: "Name of the referent."
 													type:        "string"
 												}
 												required: ["name"]
-												type: "object"
+												type:     "object"
 											}
 											serviceAccountName: {
 												description: """
-	ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
-	the image pull, either with the pull secrets attached to the service account or with
-	an object identity.
-	For more information about object identity:
-	https://fluxcd.io/flux/integrations/object-identity/
-	For more information about image pull secrets:
-	https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
-	"""
+													ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
+													the image pull, either with the pull secrets attached to the service account or with
+													an object identity.
+													For more information about object identity:
+													https://fluxcd.io/flux/integrations/object-identity/
+													For more information about image pull secrets:
+													https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
+													"""
 												type: "string"
 											}
 											sourceRef: {
@@ -3165,61 +3165,61 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 											timeout: {
 												description: "The timeout for remote OCI Repository operations like pulling, defaults to 60s."
-												pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+												pattern:     #"^([0-9]+(\.[0-9]+)?(ms|s|m))+$"#
 												type:        "string"
 											}
 											url: {
 												description: """
-	URL is a reference to an OCI artifact repository hosted
-	on a remote container registry.
-	"""
+													URL is a reference to an OCI artifact repository hosted
+													on a remote container registry.
+													"""
 												pattern: "^oci://.*$"
 												type:    "string"
 											}
 											valuesFiles: {
 												description: """
-	Alternative list of values files to use as the chart values (values.yaml
-	is not included by default), expected to be a relative path in the SourceRef.
-	Values files are merged in the order of this list with the last file overriding
-	the first. Ignored when omitted.
-	"""
+													Alternative list of values files to use as the chart values (values.yaml
+													is not included by default), expected to be a relative path in the SourceRef.
+													Values files are merged in the order of this list with the last file overriding
+													the first. Ignored when omitted.
+													"""
 												items: type: "string"
 												type: "array"
 											}
 											verify: {
 												description: """
-	Verify contains the secret name containing the trusted public keys
-	used to verify the signature and specifies which provider to use to check
-	whether OCI image is authentic.
-	"""
+													Verify contains the secret name containing the trusted public keys
+													used to verify the signature and specifies which provider to use to check
+													whether OCI image is authentic.
+													"""
 												properties: {
 													matchOIDCIdentity: {
 														description: """
-	MatchOIDCIdentity specifies the identity matching criteria to use
-	while verifying an OCI artifact which was signed using Cosign keyless
-	signing. The artifact's identity is deemed to be verified if any of the
-	specified matchers match against the identity.
-	"""
+															MatchOIDCIdentity specifies the identity matching criteria to use
+															while verifying an OCI artifact which was signed using Cosign keyless
+															signing. The artifact's identity is deemed to be verified if any of the
+															specified matchers match against the identity.
+															"""
 														items: {
 															description: """
-	OIDCIdentityMatch specifies options for verifying the certificate identity,
-	i.e. the issuer and the subject of the certificate.
-	"""
+																OIDCIdentityMatch specifies options for verifying the certificate identity,
+																i.e. the issuer and the subject of the certificate.
+																"""
 															properties: {
 																issuer: {
 																	description: """
-	Issuer specifies the regex pattern to match against to verify
-	the OIDC issuer in the Fulcio certificate. The pattern must be a
-	valid Go regular expression.
-	"""
+																		Issuer specifies the regex pattern to match against to verify
+																		the OIDC issuer in the Fulcio certificate. The pattern must be a
+																		valid Go regular expression.
+																		"""
 																	type: "string"
 																}
 																subject: {
 																	description: """
-	Subject specifies the regex pattern to match against to verify
-	the identity subject in the Fulcio certificate. The pattern must
-	be a valid Go regular expression.
-	"""
+																		Subject specifies the regex pattern to match against to verify
+																		the identity subject in the Fulcio certificate. The pattern must
+																		be a valid Go regular expression.
+																		"""
 																	type: "string"
 																}
 															}
@@ -3242,39 +3242,39 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 													}
 													secretRef: {
 														description: """
-	SecretRef specifies the Kubernetes Secret containing the
-	trusted public keys.
-	"""
+															SecretRef specifies the Kubernetes Secret containing the
+															trusted public keys.
+															"""
 														properties: name: {
 															description: "Name of the referent."
 															type:        "string"
 														}
 														required: ["name"]
-														type: "object"
+														type:     "object"
 													}
 													trustedRootSecretRef: {
 														description: """
-	TrustedRootSecretRef specifies the Kubernetes Secret containing a
-	Sigstore trusted_root.json file. This enables verification against
-	self-hosted Sigstore infrastructure (custom Fulcio CA, self-hosted
-	Rekor instance). The Secret must contain a key named "trusted_root.json".
-	"""
+															TrustedRootSecretRef specifies the Kubernetes Secret containing a
+															Sigstore trusted_root.json file. This enables verification against
+															self-hosted Sigstore infrastructure (custom Fulcio CA, self-hosted
+															Rekor instance). The Secret must contain a key named "trusted_root.json".
+															"""
 														properties: name: {
 															description: "Name of the referent."
 															type:        "string"
 														}
 														required: ["name"]
-														type: "object"
+														type:     "object"
 													}
 												}
 												required: ["provider"]
-												type: "object"
+												type:     "object"
 											}
 											version: {
 												description: """
-	Version semver expression, ignored for charts from v1.GitRepository and
-	v1beta2.Bucket sources. Defaults to latest when omitted i.e. to '*'.
-	"""
+													Version semver expression, ignored for charts from v1.GitRepository and
+													v1beta2.Bucket sources. Defaults to latest when omitted i.e. to '*'.
+													"""
 												type: "string"
 											}
 										}
@@ -3282,7 +3282,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 								}
 								required: ["spec"]
-								type: "object"
+								type:     "object"
 								"x-kubernetes-validations": [{
 									message: "chart.spec.url must be set when chart.kind is 'OCIRepository'"
 									rule:    "!has(self.kind) || self.kind != 'OCIRepository' || (has(self.spec.url) && size(self.spec.url) > 0)"
@@ -3314,9 +3314,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							chartRef: {
 								description: """
-	ChartRef holds a reference to a source controller resource containing the
-	Helm chart artifact.
-	"""
+									ChartRef holds a reference to a source controller resource containing the
+									Helm chart artifact.
+									"""
 								properties: {
 									apiVersion: {
 										description: "APIVersion of the referent."
@@ -3339,9 +3339,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									namespace: {
 										description: """
-	Namespace of the referent, defaults to the namespace of the Kubernetes
-	resource object that contains the reference.
-	"""
+											Namespace of the referent, defaults to the namespace of the Kubernetes
+											resource object that contains the reference.
+											"""
 										maxLength: 63
 										minLength: 1
 										type:      "string"
@@ -3355,10 +3355,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							commonMetadata: {
 								description: """
-	CommonMetadata specifies the common labels and annotations that are
-	applied to all resources. Any existing label or annotation will be
-	overridden if its key matches a common one.
-	"""
+									CommonMetadata specifies the common labels and annotations that are
+									applied to all resources. Any existing label or annotation will be
+									overridden if its key matches a common one.
+									"""
 								properties: {
 									annotations: {
 										additionalProperties: type: "string"
@@ -3375,15 +3375,15 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							dependsOn: {
 								description: """
-	DependsOn may contain a DependencyReference slice with
-	references to HelmRelease resources that must be ready before this HelmRelease
-	can be reconciled.
-	"""
+									DependsOn may contain a DependencyReference slice with
+									references to HelmRelease resources that must be ready before this HelmRelease
+									can be reconciled.
+									"""
 								items: {
 									description: """
-	DependencyReference contains enough information to locate the referenced Kubernetes resource object
-	and optional CEL expression to assess its readiness.
-	"""
+										DependencyReference contains enough information to locate the referenced Kubernetes resource object
+										and optional CEL expression to assess its readiness.
+										"""
 									properties: {
 										name: {
 											description: "Name of the referent."
@@ -3391,92 +3391,92 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										}
 										namespace: {
 											description: """
-	Namespace of the referent, defaults to the namespace of the resource
-	object that contains the reference.
-	"""
+												Namespace of the referent, defaults to the namespace of the resource
+												object that contains the reference.
+												"""
 											type: "string"
 										}
 										readyExpr: {
 											description: """
-	ReadyExpr is a CEL expression that can be used to assess the readiness
-	of a dependency. When specified, the built-in readiness check
-	is replaced by the logic defined in the CEL expression.
-	To make the CEL expression additive to the built-in readiness check,
-	the feature gate `AdditiveCELDependencyCheck` must be set to `true`.
-	"""
+												ReadyExpr is a CEL expression that can be used to assess the readiness
+												of a dependency. When specified, the built-in readiness check
+												is replaced by the logic defined in the CEL expression.
+												To make the CEL expression additive to the built-in readiness check,
+												the feature gate `AdditiveCELDependencyCheck` must be set to `true`.
+												"""
 											type: "string"
 										}
 									}
 									required: ["name"]
-									type: "object"
+									type:     "object"
 								}
 								type: "array"
 							}
 							driftDetection: {
 								description: """
-	DriftDetection holds the configuration for detecting and handling
-	differences between the manifest in the Helm storage and the resources
-	currently existing in the cluster.
-	"""
+									DriftDetection holds the configuration for detecting and handling
+									differences between the manifest in the Helm storage and the resources
+									currently existing in the cluster.
+									"""
 								properties: {
 									ignore: {
 										description: """
-	Ignore contains a list of rules for specifying which changes to ignore
-	during diffing.
-	"""
+											Ignore contains a list of rules for specifying which changes to ignore
+											during diffing.
+											"""
 										items: {
 											description: """
-	IgnoreRule defines a rule to selectively disregard specific changes during
-	the drift detection process.
-	"""
+												IgnoreRule defines a rule to selectively disregard specific changes during
+												the drift detection process.
+												"""
 											properties: {
 												paths: {
 													description: """
-	Paths is a list of JSON Pointer (RFC 6901) paths to be excluded from
-	consideration in a Kubernetes object.
-	"""
+														Paths is a list of JSON Pointer (RFC 6901) paths to be excluded from
+														consideration in a Kubernetes object.
+														"""
 													items: type: "string"
 													type: "array"
 												}
 												target: {
 													description: """
-	Target is a selector for specifying Kubernetes objects to which this
-	rule applies.
-	If Target is not set, the Paths will be ignored for all Kubernetes
-	objects within the manifest of the Helm release.
-	"""
+														Target is a selector for specifying Kubernetes objects to which this
+														rule applies.
+														If Target is not set, the Paths will be ignored for all Kubernetes
+														objects within the manifest of the Helm release.
+														"""
 													properties: {
 														annotationSelector: {
 															description: """
-	AnnotationSelector is a string that follows the label selection expression
-	https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
-	It matches with the resource annotations.
-	"""
+																AnnotationSelector is a string that follows the label selection expression
+																https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
+																It matches with the resource annotations.
+																"""
 															type: "string"
 														}
 														group: {
 															description: """
-	Group is the API group to select resources from.
-	Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+																Group is the API group to select resources from.
+																Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources.
+																https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+																"""
 															type: "string"
 														}
 														kind: {
 															description: """
-	Kind of the API Group to select resources from.
-	Together with Group and Version it is capable of unambiguously
-	identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+																Kind of the API Group to select resources from.
+																Together with Group and Version it is capable of unambiguously
+																identifying and/or selecting resources.
+																https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+																"""
 															type: "string"
 														}
 														labelSelector: {
 															description: """
-	LabelSelector is a string that follows the label selection expression
-	https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
-	It matches with the resource labels.
-	"""
+																LabelSelector is a string that follows the label selection expression
+																https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
+																It matches with the resource labels.
+																"""
 															type: "string"
 														}
 														name: {
@@ -3489,10 +3489,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 														}
 														version: {
 															description: """
-	Version of the API Group to select resources from.
-	Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+																Version of the API Group to select resources from.
+																Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources.
+																https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+																"""
 															type: "string"
 														}
 													}
@@ -3500,16 +3500,16 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 												}
 											}
 											required: ["paths"]
-											type: "object"
+											type:     "object"
 										}
 										type: "array"
 									}
 									mode: {
 										description: """
-	Mode defines how differences should be handled between the Helm manifest
-	and the manifest currently applied to the cluster.
-	If not explicitly set, it defaults to DiffModeDisabled.
-	"""
+											Mode defines how differences should be handled between the Helm manifest
+											and the manifest currently applied to the cluster.
+											If not explicitly set, it defaults to DiffModeDisabled.
+											"""
 										enum: [
 											"enabled",
 											"warn",
@@ -3522,12 +3522,12 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							healthCheckExprs: {
 								description: """
-	HealthCheckExprs is a list of healthcheck expressions for evaluating the
-	health of custom resources using Common Expression Language (CEL).
-	The expressions are evaluated only when the specific Helm action
-	taking place has wait enabled, i.e. DisableWait is false, and the
-	'poller' WaitStrategy is used.
-	"""
+									HealthCheckExprs is a list of healthcheck expressions for evaluating the
+									health of custom resources using Common Expression Language (CEL).
+									The expressions are evaluated only when the specific Helm action
+									taking place has wait enabled, i.e. DisableWait is false, and the
+									'poller' WaitStrategy is used.
+									"""
 								items: {
 									description: "CustomHealthCheck defines the health check for custom resources."
 									properties: {
@@ -3537,23 +3537,23 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										}
 										current: {
 											description: """
-	Current is the CEL expression that determines if the status
-	of the custom resource has reached the desired state.
-	"""
+												Current is the CEL expression that determines if the status
+												of the custom resource has reached the desired state.
+												"""
 											type: "string"
 										}
 										failed: {
 											description: """
-	Failed is the CEL expression that determines if the status
-	of the custom resource has failed to reach the desired state.
-	"""
+												Failed is the CEL expression that determines if the status
+												of the custom resource has failed to reach the desired state.
+												"""
 											type: "string"
 										}
 										inProgress: {
 											description: """
-	InProgress is the CEL expression that determines if the status
-	of the custom resource has not yet reached the desired state.
-	"""
+												InProgress is the CEL expression that determines if the status
+												of the custom resource has not yet reached the desired state.
+												"""
 											type: "string"
 										}
 										kind: {
@@ -3574,23 +3574,23 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								properties: {
 									crds: {
 										description: """
-	CRDs upgrade CRDs from the Helm Chart's crds directory according
-	to the CRD upgrade policy provided here. Valid values are `Skip`,
-	`Create` or `CreateReplace`. Default is `Create` and if omitted
-	CRDs are installed but not updated.
+											CRDs upgrade CRDs from the Helm Chart's crds directory according
+											to the CRD upgrade policy provided here. Valid values are `Skip`,
+											`Create` or `CreateReplace`. Default is `Create` and if omitted
+											CRDs are installed but not updated.
 
-	Skip: do neither install nor replace (update) any CRDs.
+											Skip: do neither install nor replace (update) any CRDs.
 
-	Create: new CRDs are created, existing CRDs are neither updated nor deleted.
+											Create: new CRDs are created, existing CRDs are neither updated nor deleted.
 
-	CreateReplace: new CRDs are created, existing CRDs are updated (replaced)
-	but not deleted.
+											CreateReplace: new CRDs are created, existing CRDs are updated (replaced)
+											but not deleted.
 
-	By default, CRDs are applied (installed) during Helm install action.
-	With this option users can opt in to CRD replace existing CRDs on Helm
-	install actions, which is not (yet) natively supported by Helm.
-	https://helm.sh/docs/chart_best_practices/custom_resource_definitions.
-	"""
+											By default, CRDs are applied (installed) during Helm install action.
+											With this option users can opt in to CRD replace existing CRDs on Helm
+											install actions, which is not (yet) natively supported by Helm.
+											https://helm.sh/docs/chart_best_practices/custom_resource_definitions.
+											"""
 										enum: [
 											"Skip",
 											"Create",
@@ -3600,10 +3600,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									createNamespace: {
 										description: """
-	CreateNamespace tells the Helm install action to create the
-	HelmReleaseSpec.TargetNamespace if it does not exist yet.
-	On uninstall, the namespace will not be garbage collected.
-	"""
+											CreateNamespace tells the Helm install action to create the
+											HelmReleaseSpec.TargetNamespace if it does not exist yet.
+											On uninstall, the namespace will not be garbage collected.
+											"""
 										type: "boolean"
 									}
 									disableHooks: {
@@ -3612,66 +3612,66 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									disableOpenAPIValidation: {
 										description: """
-	DisableOpenAPIValidation prevents the Helm install action from validating
-	rendered templates against the Kubernetes OpenAPI Schema.
-	"""
+											DisableOpenAPIValidation prevents the Helm install action from validating
+											rendered templates against the Kubernetes OpenAPI Schema.
+											"""
 										type: "boolean"
 									}
 									disableSchemaValidation: {
 										description: """
-	DisableSchemaValidation prevents the Helm install action from validating
-	the values against the JSON Schema.
-	"""
+											DisableSchemaValidation prevents the Helm install action from validating
+											the values against the JSON Schema.
+											"""
 										type: "boolean"
 									}
 									disableTakeOwnership: {
 										description: """
-	DisableTakeOwnership disables taking ownership of existing resources
-	during the Helm install action. Defaults to false.
-	"""
+											DisableTakeOwnership disables taking ownership of existing resources
+											during the Helm install action. Defaults to false.
+											"""
 										type: "boolean"
 									}
 									disableWait: {
 										description: """
-	DisableWait disables the waiting for resources to be ready after a Helm
-	install has been performed.
-	"""
+											DisableWait disables the waiting for resources to be ready after a Helm
+											install has been performed.
+											"""
 										type: "boolean"
 									}
 									disableWaitForJobs: {
 										description: """
-	DisableWaitForJobs disables waiting for jobs to complete after a Helm
-	install has been performed.
-	"""
+											DisableWaitForJobs disables waiting for jobs to complete after a Helm
+											install has been performed.
+											"""
 										type: "boolean"
 									}
 									remediation: {
 										description: """
-	Remediation holds the remediation configuration for when the Helm install
-	action for the HelmRelease fails. The default is to not perform any action.
-	"""
+											Remediation holds the remediation configuration for when the Helm install
+											action for the HelmRelease fails. The default is to not perform any action.
+											"""
 										properties: {
 											ignoreTestFailures: {
 												description: """
-	IgnoreTestFailures tells the controller to skip remediation when the Helm
-	tests are run after an install action but fail. Defaults to
-	'Test.IgnoreFailures'.
-	"""
+													IgnoreTestFailures tells the controller to skip remediation when the Helm
+													tests are run after an install action but fail. Defaults to
+													'Test.IgnoreFailures'.
+													"""
 												type: "boolean"
 											}
 											remediateLastFailure: {
 												description: """
-	RemediateLastFailure tells the controller to remediate the last failure, when
-	no retries remain. Defaults to 'false'.
-	"""
+													RemediateLastFailure tells the controller to remediate the last failure, when
+													no retries remain. Defaults to 'false'.
+													"""
 												type: "boolean"
 											}
 											retries: {
 												description: """
-	Retries is the number of retries that should be attempted on failures before
-	bailing. Remediation, using an uninstall, is performed between each attempt.
-	Defaults to '0', a negative integer equals to unlimited retries.
-	"""
+													Retries is the number of retries that should be attempted on failures before
+													bailing. Remediation, using an uninstall, is performed between each attempt.
+													Defaults to '0', a negative integer equals to unlimited retries.
+													"""
 												type: "integer"
 											}
 										}
@@ -3679,33 +3679,33 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									replace: {
 										description: """
-	Replace tells the Helm install action to re-use the 'ReleaseName', but only
-	if that name is a deleted release which remains in the history.
-	"""
+											Replace tells the Helm install action to re-use the 'ReleaseName', but only
+											if that name is a deleted release which remains in the history.
+											"""
 										type: "boolean"
 									}
 									serverSideApply: {
 										description: """
-	ServerSideApply enables server-side apply for resources during install.
-	Defaults to true (or false when UseHelm3Defaults feature gate is enabled).
-	"""
+											ServerSideApply enables server-side apply for resources during install.
+											Defaults to true (or false when UseHelm3Defaults feature gate is enabled).
+											"""
 										type: "boolean"
 									}
 									skipCRDs: {
 										description: """
-	SkipCRDs tells the Helm install action to not install any CRDs. By default,
-	CRDs are installed if not already present.
+											SkipCRDs tells the Helm install action to not install any CRDs. By default,
+											CRDs are installed if not already present.
 
-	Deprecated use CRD policy (`crds`) attribute with value `Skip` instead.
-	"""
+											Deprecated use CRD policy (`crds`) attribute with value `Skip` instead.
+											"""
 										type: "boolean"
 									}
 									strategy: {
 										description: """
-	Strategy defines the install strategy to use for this HelmRelease.
-	Defaults to 'RemediateOnFailure', or 'RetryOnFailure' when the
-	DefaultToRetryOnFailure feature gate is enabled.
-	"""
+											Strategy defines the install strategy to use for this HelmRelease.
+											Defaults to 'RemediateOnFailure', or 'RetryOnFailure' when the
+											DefaultToRetryOnFailure feature gate is enabled.
+											"""
 										properties: {
 											name: {
 												description: "Name of the install strategy."
@@ -3717,16 +3717,16 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 											retryInterval: {
 												description: """
-	RetryInterval is the interval at which to retry a failed install.
-	Can be used only when Name is set to RetryOnFailure.
-	Defaults to '5m'.
-	"""
-												pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+													RetryInterval is the interval at which to retry a failed install.
+													Can be used only when Name is set to RetryOnFailure.
+													Defaults to '5m'.
+													"""
+												pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 												type:    "string"
 											}
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 										"x-kubernetes-validations": [{
 											message: ".retryInterval cannot be set when .name is 'RemediateOnFailure'"
 											rule:    "!has(self.retryInterval) || self.name != 'RemediateOnFailure'"
@@ -3734,11 +3734,11 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									timeout: {
 										description: """
-	Timeout is the time to wait for any individual Kubernetes operation (like
-	Jobs for hooks) during the performance of a Helm install action. Defaults to
-	'HelmReleaseSpec.Timeout'.
-	"""
-										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+											Timeout is the time to wait for any individual Kubernetes operation (like
+											Jobs for hooks) during the performance of a Helm install action. Defaults to
+											'HelmReleaseSpec.Timeout'.
+											"""
+										pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 										type:    "string"
 									}
 								}
@@ -3746,69 +3746,69 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							interval: {
 								description: "Interval at which to reconcile the Helm release."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								pattern:     #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:        "string"
 							}
 							kubeConfig: {
 								description: """
-	KubeConfig for reconciling the HelmRelease on a remote cluster.
-	When used in combination with HelmReleaseSpec.ServiceAccountName,
-	forces the controller to act on behalf of that Service Account at the
-	target cluster.
-	If the --default-service-account flag is set, its value will be used as
-	the default for HelmReleaseSpec.ServiceAccountName when it is empty.
-	"""
+									KubeConfig for reconciling the HelmRelease on a remote cluster.
+									When used in combination with HelmReleaseSpec.ServiceAccountName,
+									forces the controller to act on behalf of that Service Account at the
+									target cluster.
+									If the --default-service-account flag is set, its value will be used as
+									the default for HelmReleaseSpec.ServiceAccountName when it is empty.
+									"""
 								properties: {
 									configMapRef: {
 										description: """
-	ConfigMapRef holds an optional name of a ConfigMap that contains
-	the following keys:
+											ConfigMapRef holds an optional name of a ConfigMap that contains
+											the following keys:
 
-	- `provider`: the provider to use. One of `aws`, `azure`, `gcp`, or
-	   `generic`. Required.
-	- `cluster`: the fully qualified resource name of the Kubernetes
-	   cluster in the cloud provider API. Not used by the `generic`
-	   provider. Required when one of `address` or `ca.crt` is not set.
-	- `address`: the address of the Kubernetes API server. Required
-	   for `generic`. For the other providers, if not specified, the
-	   first address in the cluster resource will be used, and if
-	   specified, it must match one of the addresses in the cluster
-	   resource.
-	   If audiences is not set, will be used as the audience for the
-	   `generic` provider.
-	- `ca.crt`: the optional PEM-encoded CA certificate for the
-	   Kubernetes API server. If not set, the controller will use the
-	   CA certificate from the cluster resource.
-	-  `serviceAccountName`: the optional name of the Kubernetes
-	   ServiceAccount in the same namespace that should be used
-	   for authentication. If not specified, the controller
-	   ServiceAccount will be used.
-	- `audiences`: the optional audiences as a list of string separated by
-	   commas and/or whitespaces/newlines for the Kubernetes ServiceAccount
-	   token. Defaults to the `address` for the `generic` provider, or
-	   to specific values for the other providers depending on the
-	   provider.
+											- `provider`: the provider to use. One of `aws`, `azure`, `gcp`, or
+											   `generic`. Required.
+											- `cluster`: the fully qualified resource name of the Kubernetes
+											   cluster in the cloud provider API. Not used by the `generic`
+											   provider. Required when one of `address` or `ca.crt` is not set.
+											- `address`: the address of the Kubernetes API server. Required
+											   for `generic`. For the other providers, if not specified, the
+											   first address in the cluster resource will be used, and if
+											   specified, it must match one of the addresses in the cluster
+											   resource.
+											   If audiences is not set, will be used as the audience for the
+											   `generic` provider.
+											- `ca.crt`: the optional PEM-encoded CA certificate for the
+											   Kubernetes API server. If not set, the controller will use the
+											   CA certificate from the cluster resource.
+											-  `serviceAccountName`: the optional name of the Kubernetes
+											   ServiceAccount in the same namespace that should be used
+											   for authentication. If not specified, the controller
+											   ServiceAccount will be used.
+											- `audiences`: the optional audiences as a list of string separated by
+											   commas and/or whitespaces/newlines for the Kubernetes ServiceAccount
+											   token. Defaults to the `address` for the `generic` provider, or
+											   to specific values for the other providers depending on the
+											   provider.
 
-	Mutually exclusive with SecretRef.
-	"""
+											Mutually exclusive with SecretRef.
+											"""
 										properties: name: {
 											description: "Name of the referent."
 											type:        "string"
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 									secretRef: {
 										description: """
-	SecretRef holds an optional name of a secret that contains a key with
-	the kubeconfig file as the value. If no key is set, the key will default
-	to 'value'. Mutually exclusive with ConfigMapRef.
-	It is recommended that the kubeconfig is self-contained, and the secret
-	is regularly updated if credentials such as a cloud-access-token expire.
-	Cloud specific `cmd-path` auth helpers will not function without adding
-	binaries and credentials to the Pod that is responsible for reconciling
-	Kubernetes resources. Supported only for the generic provider.
-	"""
+											SecretRef holds an optional name of a secret that contains a key with
+											the kubeconfig file as the value. If no key is set, the key will default
+											to 'value'. Mutually exclusive with ConfigMapRef.
+											It is recommended that the kubeconfig is self-contained, and the secret
+											is regularly updated if credentials such as a cloud-access-token expire.
+											Cloud specific `cmd-path` auth helpers will not function without adding
+											binaries and credentials to the Pod that is responsible for reconciling
+											Kubernetes resources. Supported only for the generic provider.
+											"""
 										properties: {
 											key: {
 												description: "Key in the Secret, when not specified an implementation-specific default key is used."
@@ -3820,7 +3820,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 								}
 								type: "object"
@@ -3831,35 +3831,35 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							maxHistory: {
 								description: """
-	MaxHistory is the number of revisions saved by Helm for this HelmRelease.
-	Use '0' for an unlimited number of revisions; defaults to '5'.
-	"""
+									MaxHistory is the number of revisions saved by Helm for this HelmRelease.
+									Use '0' for an unlimited number of revisions; defaults to '5'.
+									"""
 								type: "integer"
 							}
 							persistentClient: {
 								description: """
-	PersistentClient tells the controller to use a persistent Kubernetes
-	client for this release. When enabled, the client will be reused for the
-	duration of the reconciliation, instead of being created and destroyed
-	for each (step of a) Helm action.
+									PersistentClient tells the controller to use a persistent Kubernetes
+									client for this release. When enabled, the client will be reused for the
+									duration of the reconciliation, instead of being created and destroyed
+									for each (step of a) Helm action.
 
-	This can improve performance, but may cause issues with some Helm charts
-	that for example do create Custom Resource Definitions during installation
-	outside Helm's CRD lifecycle hooks, which are then not observed to be
-	available by e.g. post-install hooks.
+									This can improve performance, but may cause issues with some Helm charts
+									that for example do create Custom Resource Definitions during installation
+									outside Helm's CRD lifecycle hooks, which are then not observed to be
+									available by e.g. post-install hooks.
 
-	If not set, it defaults to true.
-	"""
+									If not set, it defaults to true.
+									"""
 								type: "boolean"
 							}
 							postRenderStrategy: {
 								description: """
-	PostRenderStrategy defines the strategy for sending hooks to post-renderers.
-	Valid values are 'nohooks' (hooks not sent to post-renderers, Helm 3 behavior),
-	'combined' (hooks and templates sent together, Helm 4 default), and 'separate'
-	(hooks and templates sent in separate streams, Helm 4.2 opt-in).
-	Defaults to 'combined', or 'nohooks' when the UseHelm3Defaults feature gate is enabled.
-	"""
+									PostRenderStrategy defines the strategy for sending hooks to post-renderers.
+									Valid values are 'nohooks' (hooks not sent to post-renderers, Helm 3 behavior),
+									'combined' (hooks and templates sent together, Helm 4 default), and 'separate'
+									(hooks and templates sent in separate streams, Helm 4.2 opt-in).
+									Defaults to 'combined', or 'nohooks' when the UseHelm3Defaults feature gate is enabled.
+									"""
 								enum: [
 									"nohooks",
 									"combined",
@@ -3869,9 +3869,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							postRenderers: {
 								description: """
-	PostRenderers holds an array of Helm PostRenderers, which will be applied in order
-	of their definition.
-	"""
+									PostRenderers holds an array of Helm PostRenderers, which will be applied in order
+									of their definition.
+									"""
 								items: {
 									description: "PostRenderer contains a Helm PostRenderer specification."
 									properties: kustomize: {
@@ -3879,18 +3879,18 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										properties: {
 											images: {
 												description: """
-	Images is a list of (image name, new name, new tag or digest)
-	for changing image names, tags or digests. This can also be achieved with a
-	patch, but this operator is simpler to specify.
-	"""
+													Images is a list of (image name, new name, new tag or digest)
+													for changing image names, tags or digests. This can also be achieved with a
+													patch, but this operator is simpler to specify.
+													"""
 												items: {
 													description: "Image contains an image name, a new name, a new tag or digest, which will replace the original name and tag."
 													properties: {
 														digest: {
 															description: """
-	Digest is the value used to replace the original image tag.
-	If digest is present NewTag value is ignored.
-	"""
+																Digest is the value used to replace the original image tag.
+																If digest is present NewTag value is ignored.
+																"""
 															type: "string"
 														}
 														name: {
@@ -3907,26 +3907,26 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 														}
 													}
 													required: ["name"]
-													type: "object"
+													type:     "object"
 												}
 												type: "array"
 											}
 											patches: {
 												description: """
-	Strategic merge and JSON patches, defined as inline YAML objects,
-	capable of targeting objects based on kind, label and annotation selectors.
-	"""
+													Strategic merge and JSON patches, defined as inline YAML objects,
+													capable of targeting objects based on kind, label and annotation selectors.
+													"""
 												items: {
 													description: """
-	Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should
-	be applied to.
-	"""
+														Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should
+														be applied to.
+														"""
 													properties: {
 														patch: {
 															description: """
-	Patch contains an inline StrategicMerge patch or an inline JSON6902 patch with
-	an array of operation objects.
-	"""
+																Patch contains an inline StrategicMerge patch or an inline JSON6902 patch with
+																an array of operation objects.
+																"""
 															type: "string"
 														}
 														target: {
@@ -3934,35 +3934,35 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 															properties: {
 																annotationSelector: {
 																	description: """
-	AnnotationSelector is a string that follows the label selection expression
-	https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
-	It matches with the resource annotations.
-	"""
+																		AnnotationSelector is a string that follows the label selection expression
+																		https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
+																		It matches with the resource annotations.
+																		"""
 																	type: "string"
 																}
 																group: {
 																	description: """
-	Group is the API group to select resources from.
-	Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+																		Group is the API group to select resources from.
+																		Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources.
+																		https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+																		"""
 																	type: "string"
 																}
 																kind: {
 																	description: """
-	Kind of the API Group to select resources from.
-	Together with Group and Version it is capable of unambiguously
-	identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+																		Kind of the API Group to select resources from.
+																		Together with Group and Version it is capable of unambiguously
+																		identifying and/or selecting resources.
+																		https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+																		"""
 																	type: "string"
 																}
 																labelSelector: {
 																	description: """
-	LabelSelector is a string that follows the label selection expression
-	https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
-	It matches with the resource labels.
-	"""
+																		LabelSelector is a string that follows the label selection expression
+																		https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
+																		It matches with the resource labels.
+																		"""
 																	type: "string"
 																}
 																name: {
@@ -3975,10 +3975,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 																}
 																version: {
 																	description: """
-	Version of the API Group to select resources from.
-	Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+																		Version of the API Group to select resources from.
+																		Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources.
+																		https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+																		"""
 																	type: "string"
 																}
 															}
@@ -3986,7 +3986,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 														}
 													}
 													required: ["patch"]
-													type: "object"
+													type:     "object"
 												}
 												type: "array"
 											}
@@ -3999,9 +3999,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							releaseName: {
 								description: """
-	ReleaseName used for the Helm release. Defaults to a composition of
-	'[TargetNamespace-]Name'.
-	"""
+									ReleaseName used for the Helm release. Defaults to a composition of
+									'[TargetNamespace-]Name'.
+									"""
 								maxLength: 53
 								minLength: 1
 								type:      "string"
@@ -4011,9 +4011,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								properties: {
 									cleanupOnFail: {
 										description: """
-	CleanupOnFail allows deletion of new resources created during the Helm
-	rollback action when it fails.
-	"""
+											CleanupOnFail allows deletion of new resources created during the Helm
+											rollback action when it fails.
+											"""
 										type: "boolean"
 									}
 									disableHooks: {
@@ -4022,48 +4022,48 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									disableWait: {
 										description: """
-	DisableWait disables the waiting for resources to be ready after a Helm
-	rollback has been performed.
-	"""
+											DisableWait disables the waiting for resources to be ready after a Helm
+											rollback has been performed.
+											"""
 										type: "boolean"
 									}
 									disableWaitForJobs: {
 										description: """
-	DisableWaitForJobs disables waiting for jobs to complete after a Helm
-	rollback has been performed.
-	"""
+											DisableWaitForJobs disables waiting for jobs to complete after a Helm
+											rollback has been performed.
+											"""
 										type: "boolean"
 									}
 									force: {
 										description: """
-	Force forces resource updates through a replacement strategy
-	that avoids 3-way merge conflicts on client-side apply.
-	This field is ignored for server-side apply (which always
-	forces conflicts with other field managers).
-	"""
+											Force forces resource updates through a replacement strategy
+											that avoids 3-way merge conflicts on client-side apply.
+											This field is ignored for server-side apply (which always
+											forces conflicts with other field managers).
+											"""
 										type: "boolean"
 									}
 									recreate: {
 										description: """
-	Recreate performs pod restarts for any managed workloads.
+											Recreate performs pod restarts for any managed workloads.
 
-	Deprecated: This behavior was deprecated in Helm 3:
-	  - Deprecation: https://github.com/helm/helm/pull/6463
-	  - Removal: https://github.com/helm/helm/pull/31023
-	After helm-controller was upgraded to the Helm 4 SDK,
-	this field is no longer functional and will print a
-	warning if set to true. It will also be removed in a
-	future release.
-	"""
+											Deprecated: This behavior was deprecated in Helm 3:
+											  - Deprecation: https://github.com/helm/helm/pull/6463
+											  - Removal: https://github.com/helm/helm/pull/31023
+											After helm-controller was upgraded to the Helm 4 SDK,
+											this field is no longer functional and will print a
+											warning if set to true. It will also be removed in a
+											future release.
+											"""
 										type: "boolean"
 									}
 									serverSideApply: {
 										description: """
-	ServerSideApply enables server-side apply for resources during rollback.
-	Can be "enabled", "disabled", or "auto".
-	When "auto", server-side apply usage will be based on the release's previous usage.
-	Defaults to "auto".
-	"""
+											ServerSideApply enables server-side apply for resources during rollback.
+											Can be "enabled", "disabled", or "auto".
+											When "auto", server-side apply usage will be based on the release's previous usage.
+											Defaults to "auto".
+											"""
 										enum: [
 											"enabled",
 											"disabled",
@@ -4073,11 +4073,11 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									timeout: {
 										description: """
-	Timeout is the time to wait for any individual Kubernetes operation (like
-	Jobs for hooks) during the performance of a Helm rollback action. Defaults to
-	'HelmReleaseSpec.Timeout'.
-	"""
-										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+											Timeout is the time to wait for any individual Kubernetes operation (like
+											Jobs for hooks) during the performance of a Helm rollback action. Defaults to
+											'HelmReleaseSpec.Timeout'.
+											"""
+										pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 										type:    "string"
 									}
 								}
@@ -4085,34 +4085,34 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							serviceAccountName: {
 								description: """
-	The name of the Kubernetes service account to impersonate
-	when reconciling this HelmRelease.
-	"""
+									The name of the Kubernetes service account to impersonate
+									when reconciling this HelmRelease.
+									"""
 								maxLength: 253
 								minLength: 1
 								type:      "string"
 							}
 							storageNamespace: {
 								description: """
-	StorageNamespace used for the Helm storage.
-	Defaults to the namespace of the HelmRelease.
-	"""
+									StorageNamespace used for the Helm storage.
+									Defaults to the namespace of the HelmRelease.
+									"""
 								maxLength: 63
 								minLength: 1
 								type:      "string"
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend reconciliation for this HelmRelease,
-	it does not apply to already started reconciliations. Defaults to false.
-	"""
+									Suspend tells the controller to suspend reconciliation for this HelmRelease,
+									it does not apply to already started reconciliations. Defaults to false.
+									"""
 								type: "boolean"
 							}
 							targetNamespace: {
 								description: """
-	TargetNamespace to target when performing operations for the HelmRelease.
-	Defaults to the namespace of the HelmRelease.
-	"""
+									TargetNamespace to target when performing operations for the HelmRelease.
+									Defaults to the namespace of the HelmRelease.
+									"""
 								maxLength: 63
 								minLength: 1
 								type:      "string"
@@ -4122,9 +4122,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								properties: {
 									enable: {
 										description: """
-	Enable enables Helm test actions for this HelmRelease after an Helm install
-	or upgrade action has been performed.
-	"""
+											Enable enables Helm test actions for this HelmRelease after an Helm install
+											or upgrade action has been performed.
+											"""
 										type: "boolean"
 									}
 									filters: {
@@ -4144,24 +4144,24 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 												}
 											}
 											required: ["name"]
-											type: "object"
+											type:     "object"
 										}
 										type: "array"
 									}
 									ignoreFailures: {
 										description: """
-	IgnoreFailures tells the controller to skip remediation when the Helm tests
-	are run but fail. Can be overwritten for tests run after install or upgrade
-	actions in 'Install.IgnoreTestFailures' and 'Upgrade.IgnoreTestFailures'.
-	"""
+											IgnoreFailures tells the controller to skip remediation when the Helm tests
+											are run but fail. Can be overwritten for tests run after install or upgrade
+											actions in 'Install.IgnoreTestFailures' and 'Upgrade.IgnoreTestFailures'.
+											"""
 										type: "boolean"
 									}
 									timeout: {
 										description: """
-	Timeout is the time to wait for any individual Kubernetes operation during
-	the performance of a Helm test action. Defaults to 'HelmReleaseSpec.Timeout'.
-	"""
-										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+											Timeout is the time to wait for any individual Kubernetes operation during
+											the performance of a Helm test action. Defaults to 'HelmReleaseSpec.Timeout'.
+											"""
+										pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 										type:    "string"
 									}
 								}
@@ -4169,10 +4169,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							timeout: {
 								description: """
-	Timeout is the time to wait for any individual Kubernetes operation (like Jobs
-	for hooks) during the performance of a Helm action. Defaults to '5m0s'.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Timeout is the time to wait for any individual Kubernetes operation (like Jobs
+									for hooks) during the performance of a Helm action. Defaults to '5m0s'.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							uninstall: {
@@ -4181,9 +4181,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									deletionPropagation: {
 										default: "background"
 										description: """
-	DeletionPropagation specifies the deletion propagation policy when
-	a Helm uninstall is performed.
-	"""
+											DeletionPropagation specifies the deletion propagation policy when
+											a Helm uninstall is performed.
+											"""
 										enum: [
 											"background",
 											"foreground",
@@ -4197,25 +4197,25 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									disableWait: {
 										description: """
-	DisableWait disables waiting for all the resources to be deleted after
-	a Helm uninstall is performed.
-	"""
+											DisableWait disables waiting for all the resources to be deleted after
+											a Helm uninstall is performed.
+											"""
 										type: "boolean"
 									}
 									keepHistory: {
 										description: """
-	KeepHistory tells Helm to remove all associated resources and mark the
-	release as deleted, but retain the release history.
-	"""
+											KeepHistory tells Helm to remove all associated resources and mark the
+											release as deleted, but retain the release history.
+											"""
 										type: "boolean"
 									}
 									timeout: {
 										description: """
-	Timeout is the time to wait for any individual Kubernetes operation (like
-	Jobs for hooks) during the performance of a Helm uninstall action. Defaults
-	to 'HelmReleaseSpec.Timeout'.
-	"""
-										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+											Timeout is the time to wait for any individual Kubernetes operation (like
+											Jobs for hooks) during the performance of a Helm uninstall action. Defaults
+											to 'HelmReleaseSpec.Timeout'.
+											"""
+										pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 										type:    "string"
 									}
 								}
@@ -4226,13 +4226,13 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 								properties: {
 									chartNameChangeStrategy: {
 										description: """
-	ChartNameChangeStrategy defines the strategy to use when a Helm chart name changes.
-	Valid values are 'Reinstall' or 'InPlaceUpdate'. Defaults to 'Reinstall' if omitted.
+											ChartNameChangeStrategy defines the strategy to use when a Helm chart name changes.
+											Valid values are 'Reinstall' or 'InPlaceUpdate'. Defaults to 'Reinstall' if omitted.
 
-	Reinstall: Reinstall the Helm release, uninstalling the existing Helm release.
+											Reinstall: Reinstall the Helm release, uninstalling the existing Helm release.
 
-	InPlaceUpdate: Update the Helm release in place.
-	"""
+											InPlaceUpdate: Update the Helm release in place.
+											"""
 										enum: [
 											"InPlaceUpdate",
 											"Reinstall",
@@ -4241,29 +4241,29 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									cleanupOnFail: {
 										description: """
-	CleanupOnFail allows deletion of new resources created during the Helm
-	upgrade action when it fails.
-	"""
+											CleanupOnFail allows deletion of new resources created during the Helm
+											upgrade action when it fails.
+											"""
 										type: "boolean"
 									}
 									crds: {
 										description: """
-	CRDs upgrade CRDs from the Helm Chart's crds directory according
-	to the CRD upgrade policy provided here. Valid values are `Skip`,
-	`Create` or `CreateReplace`. Default is `Skip` and if omitted
-	CRDs are neither installed nor upgraded.
+											CRDs upgrade CRDs from the Helm Chart's crds directory according
+											to the CRD upgrade policy provided here. Valid values are `Skip`,
+											`Create` or `CreateReplace`. Default is `Skip` and if omitted
+											CRDs are neither installed nor upgraded.
 
-	Skip: do neither install nor replace (update) any CRDs.
+											Skip: do neither install nor replace (update) any CRDs.
 
-	Create: new CRDs are created, existing CRDs are neither updated nor deleted.
+											Create: new CRDs are created, existing CRDs are neither updated nor deleted.
 
-	CreateReplace: new CRDs are created, existing CRDs are updated (replaced)
-	but not deleted.
+											CreateReplace: new CRDs are created, existing CRDs are updated (replaced)
+											but not deleted.
 
-	By default, CRDs are not applied during Helm upgrade action. With this
-	option users can opt-in to CRD upgrade, which is not (yet) natively supported by Helm.
-	https://helm.sh/docs/chart_best_practices/custom_resource_definitions.
-	"""
+											By default, CRDs are not applied during Helm upgrade action. With this
+											option users can opt-in to CRD upgrade, which is not (yet) natively supported by Helm.
+											https://helm.sh/docs/chart_best_practices/custom_resource_definitions.
+											"""
 										enum: [
 											"Skip",
 											"Create",
@@ -4277,83 +4277,83 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									disableOpenAPIValidation: {
 										description: """
-	DisableOpenAPIValidation prevents the Helm upgrade action from validating
-	rendered templates against the Kubernetes OpenAPI Schema.
-	"""
+											DisableOpenAPIValidation prevents the Helm upgrade action from validating
+											rendered templates against the Kubernetes OpenAPI Schema.
+											"""
 										type: "boolean"
 									}
 									disableSchemaValidation: {
 										description: """
-	DisableSchemaValidation prevents the Helm upgrade action from validating
-	the values against the JSON Schema.
-	"""
+											DisableSchemaValidation prevents the Helm upgrade action from validating
+											the values against the JSON Schema.
+											"""
 										type: "boolean"
 									}
 									disableTakeOwnership: {
 										description: """
-	DisableTakeOwnership disables taking ownership of existing resources
-	during the Helm upgrade action. Defaults to false.
-	"""
+											DisableTakeOwnership disables taking ownership of existing resources
+											during the Helm upgrade action. Defaults to false.
+											"""
 										type: "boolean"
 									}
 									disableWait: {
 										description: """
-	DisableWait disables the waiting for resources to be ready after a Helm
-	upgrade has been performed.
-	"""
+											DisableWait disables the waiting for resources to be ready after a Helm
+											upgrade has been performed.
+											"""
 										type: "boolean"
 									}
 									disableWaitForJobs: {
 										description: """
-	DisableWaitForJobs disables waiting for jobs to complete after a Helm
-	upgrade has been performed.
-	"""
+											DisableWaitForJobs disables waiting for jobs to complete after a Helm
+											upgrade has been performed.
+											"""
 										type: "boolean"
 									}
 									force: {
 										description: """
-	Force forces resource updates through a replacement strategy
-	that avoids 3-way merge conflicts on client-side apply.
-	This field is ignored for server-side apply (which always
-	forces conflicts with other field managers).
-	"""
+											Force forces resource updates through a replacement strategy
+											that avoids 3-way merge conflicts on client-side apply.
+											This field is ignored for server-side apply (which always
+											forces conflicts with other field managers).
+											"""
 										type: "boolean"
 									}
 									preserveValues: {
 										description: """
-	PreserveValues will make Helm reuse the last release's values and merge in
-	overrides from 'Values'. Setting this flag makes the HelmRelease
-	non-declarative.
-	"""
+											PreserveValues will make Helm reuse the last release's values and merge in
+											overrides from 'Values'. Setting this flag makes the HelmRelease
+											non-declarative.
+											"""
 										type: "boolean"
 									}
 									remediation: {
 										description: """
-	Remediation holds the remediation configuration for when the Helm upgrade
-	action for the HelmRelease fails. The default is to not perform any action.
-	"""
+											Remediation holds the remediation configuration for when the Helm upgrade
+											action for the HelmRelease fails. The default is to not perform any action.
+											"""
 										properties: {
 											ignoreTestFailures: {
 												description: """
-	IgnoreTestFailures tells the controller to skip remediation when the Helm
-	tests are run after an upgrade action but fail.
-	Defaults to 'Test.IgnoreFailures'.
-	"""
+													IgnoreTestFailures tells the controller to skip remediation when the Helm
+													tests are run after an upgrade action but fail.
+													Defaults to 'Test.IgnoreFailures'.
+													"""
 												type: "boolean"
 											}
 											remediateLastFailure: {
 												description: """
-	RemediateLastFailure tells the controller to remediate the last failure, when
-	no retries remain. Defaults to 'false' unless 'Retries' is greater than 0.
-	"""
+													RemediateLastFailure tells the controller to remediate the last failure, when
+													no retries remain. Defaults to 'false' unless 'Retries' is greater than 0.
+													"""
 												type: "boolean"
 											}
 											retries: {
 												description: """
-	Retries is the number of retries that should be attempted on failures before
-	bailing. Remediation, using 'Strategy', is performed between each attempt.
-	Defaults to '0', a negative integer equals to unlimited retries.
-	"""
+													Retries is the number of retries that should be attempted on failures before
+													bailing. Remediation, using 'Strategy', is performed between each attempt.
+													Defaults to '0', a negative integer equals to unlimited retries.
+													"""
 												type: "integer"
 											}
 											strategy: {
@@ -4369,11 +4369,11 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									serverSideApply: {
 										description: """
-	ServerSideApply enables server-side apply for resources during upgrade.
-	Can be "enabled", "disabled", or "auto".
-	When "auto", server-side apply usage will be based on the release's previous usage.
-	Defaults to "auto".
-	"""
+											ServerSideApply enables server-side apply for resources during upgrade.
+											Can be "enabled", "disabled", or "auto".
+											When "auto", server-side apply usage will be based on the release's previous usage.
+											Defaults to "auto".
+											"""
 										enum: [
 											"enabled",
 											"disabled",
@@ -4383,10 +4383,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									strategy: {
 										description: """
-	Strategy defines the upgrade strategy to use for this HelmRelease.
-	Defaults to 'RemediateOnFailure', or 'RetryOnFailure' when the
-	DefaultToRetryOnFailure feature gate is enabled.
-	"""
+											Strategy defines the upgrade strategy to use for this HelmRelease.
+											Defaults to 'RemediateOnFailure', or 'RetryOnFailure' when the
+											DefaultToRetryOnFailure feature gate is enabled.
+											"""
 										properties: {
 											name: {
 												description: "Name of the upgrade strategy."
@@ -4398,16 +4398,16 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 											}
 											retryInterval: {
 												description: """
-	RetryInterval is the interval at which to retry a failed upgrade.
-	Can be used only when Name is set to RetryOnFailure.
-	Defaults to '5m'.
-	"""
-												pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+													RetryInterval is the interval at which to retry a failed upgrade.
+													Can be used only when Name is set to RetryOnFailure.
+													Defaults to '5m'.
+													"""
+												pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 												type:    "string"
 											}
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 										"x-kubernetes-validations": [{
 											message: ".retryInterval can only be set when .name is 'RetryOnFailure'"
 											rule:    "!has(self.retryInterval) || self.name == 'RetryOnFailure'"
@@ -4415,11 +4415,11 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									}
 									timeout: {
 										description: """
-	Timeout is the time to wait for any individual Kubernetes operation (like
-	Jobs for hooks) during the performance of a Helm upgrade action. Defaults to
-	'HelmReleaseSpec.Timeout'.
-	"""
-										pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+											Timeout is the time to wait for any individual Kubernetes operation (like
+											Jobs for hooks) during the performance of a Helm upgrade action. Defaults to
+											'HelmReleaseSpec.Timeout'.
+											"""
+										pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 										type:    "string"
 									}
 								}
@@ -4431,14 +4431,14 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							valuesFrom: {
 								description: """
-	ValuesFrom holds references to resources containing Helm values for this HelmRelease,
-	and information about how they should be merged.
-	"""
+									ValuesFrom holds references to resources containing Helm values for this HelmRelease,
+									and information about how they should be merged.
+									"""
 								items: {
 									description: """
-	ValuesReference contains a reference to a resource containing Helm values,
-	and optionally the key they can be found at.
-	"""
+										ValuesReference contains a reference to a resource containing Helm values,
+										and optionally the key they can be found at.
+										"""
 									properties: {
 										kind: {
 											description: "Kind of the values referent, valid values are ('Secret', 'ConfigMap')."
@@ -4450,51 +4450,51 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										}
 										literal: {
 											description: """
-	Literal marks this ValuesReference as a literal value. When set in
-	combination with TargetPath, the referenced value is merged at the target
-	path without interpreting Helm's `--set` syntax (commas, brackets, dots,
-	equal signs, etc.), mirroring the behavior of `helm --set-literal`. This
-	is the only safe way to inject arbitrary file content (config files, JSON
-	blobs, multi-line strings containing special characters) through
-	`valuesFrom`. Has no effect when TargetPath is empty: in that mode the
-	referenced value is always YAML-merged at the root.
-	"""
+												Literal marks this ValuesReference as a literal value. When set in
+												combination with TargetPath, the referenced value is merged at the target
+												path without interpreting Helm's `--set` syntax (commas, brackets, dots,
+												equal signs, etc.), mirroring the behavior of `helm --set-literal`. This
+												is the only safe way to inject arbitrary file content (config files, JSON
+												blobs, multi-line strings containing special characters) through
+												`valuesFrom`. Has no effect when TargetPath is empty: in that mode the
+												referenced value is always YAML-merged at the root.
+												"""
 											type: "boolean"
 										}
 										name: {
 											description: """
-	Name of the values referent. Should reside in the same namespace as the
-	referring resource.
-	"""
+												Name of the values referent. Should reside in the same namespace as the
+												referring resource.
+												"""
 											maxLength: 253
 											minLength: 1
 											type:      "string"
 										}
 										optional: {
 											description: """
-	Optional marks this ValuesReference as optional. When set, a not found error
-	for the values reference is ignored, but any ValuesKey, TargetPath or
-	transient error will still result in a reconciliation failure.
-	"""
+												Optional marks this ValuesReference as optional. When set, a not found error
+												for the values reference is ignored, but any ValuesKey, TargetPath or
+												transient error will still result in a reconciliation failure.
+												"""
 											type: "boolean"
 										}
 										targetPath: {
 											description: """
-	TargetPath is the YAML dot notation path the value should be merged at. When
-	set, the ValuesKey is expected to be a single flat value. Defaults to 'None',
-	which results in the values getting merged at the root.
-	"""
+												TargetPath is the YAML dot notation path the value should be merged at. When
+												set, the ValuesKey is expected to be a single flat value. Defaults to 'None',
+												which results in the values getting merged at the root.
+												"""
 											maxLength: 250
-											pattern:   "^([a-zA-Z0-9_\\-.\\\\\\/]|\\[[0-9]{1,5}\\])+$"
+											pattern:   #"^([a-zA-Z0-9_\-.\\\/]|\[[0-9]{1,5}\])+$"#
 											type:      "string"
 										}
 										valuesKey: {
 											description: """
-	ValuesKey is the data key where the values.yaml or a specific value can be
-	found at. Defaults to 'values.yaml'.
-	"""
+												ValuesKey is the data key where the values.yaml or a specific value can be
+												found at. Defaults to 'values.yaml'.
+												"""
 											maxLength: 253
-											pattern:   "^[\\-._a-zA-Z0-9]+$"
+											pattern:   #"^[\-._a-zA-Z0-9]+$"#
 											type:      "string"
 										}
 									}
@@ -4508,18 +4508,18 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							waitStrategy: {
 								description: """
-	WaitStrategy defines Helm's wait strategy for waiting for applied
-	resources to become ready.
-	"""
+									WaitStrategy defines Helm's wait strategy for waiting for applied
+									resources to become ready.
+									"""
 								properties: name: {
 									description: """
-	Name is Helm's wait strategy for waiting for applied resources to
-	become ready. One of 'poller' or 'legacy'. The 'poller' strategy uses
-	kstatus to poll resource statuses, while the 'legacy' strategy uses
-	Helm v3's waiting logic.
-	Defaults to 'poller', or to 'legacy' when UseHelm3Defaults feature
-	gate is enabled.
-	"""
+										Name is Helm's wait strategy for waiting for applied resources to
+										become ready. One of 'poller' or 'legacy'. The 'poller' strategy uses
+										kstatus to poll resource statuses, while the 'legacy' strategy uses
+										Helm v3's waiting logic.
+										Defaults to 'poller', or to 'legacy' when UseHelm3Defaults feature
+										gate is enabled.
+										"""
 									enum: [
 										"poller",
 										"legacy",
@@ -4527,11 +4527,11 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									type: "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 						}
 						required: ["interval"]
-						type: "object"
+						type:     "object"
 						"x-kubernetes-validations": [{
 							message: "either chart or chartRef must be set"
 							rule:    "(has(self.chart) && !has(self.chartRef)) || (!has(self.chart) && has(self.chartRef))"
@@ -4548,38 +4548,38 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -4597,7 +4597,7 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -4614,31 +4614,31 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							failures: {
 								description: """
-	Failures is the reconciliation failure count against the latest desired
-	state. It is reset after a successful reconciliation.
-	"""
+									Failures is the reconciliation failure count against the latest desired
+									state. It is reset after a successful reconciliation.
+									"""
 								format: "int64"
 								type:   "integer"
 							}
 							helmChart: {
 								description: """
-	HelmChart is the namespaced name of the HelmChart resource created by
-	the controller for the HelmRelease, in the format '<namespace>/<name>',
-	or the typed and namespaced name of the OCIRepository resource, in the
-	format '<kind>/<namespace>/<name>'.
-	"""
+									HelmChart is the namespaced name of the HelmChart resource created by
+									the controller for the HelmRelease, in the format '<namespace>/<name>',
+									or the typed and namespaced name of the OCIRepository resource, in the
+									format '<kind>/<namespace>/<name>'.
+									"""
 								type: "string"
 							}
 							history: {
 								description: """
-	History holds the history of Helm releases performed for this HelmRelease
-	up to the last successfully completed release.
-	"""
+									History holds the history of Helm releases performed for this HelmRelease
+									up to the last successfully completed release.
+									"""
 								items: {
 									description: """
-	Snapshot captures a point-in-time copy of the status information for a Helm release,
-	as managed by the controller.
-	"""
+										Snapshot captures a point-in-time copy of the status information for a Helm release,
+										as managed by the controller.
+										"""
 									properties: {
 										action: {
 											description: "Action is the action that resulted in this snapshot being created."
@@ -4646,10 +4646,10 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										}
 										apiVersion: {
 											description: """
-	APIVersion is the API version of the Snapshot.
-	When the calculation method of the Digest field is changed, this
-	field will be used to distinguish between the old and new methods.
-	"""
+												APIVersion is the API version of the Snapshot.
+												When the calculation method of the Digest field is changed, this
+												field will be used to distinguish between the old and new methods.
+												"""
 											type: "string"
 										}
 										appVersion: {
@@ -4662,17 +4662,17 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										}
 										chartVersion: {
 											description: """
-	ChartVersion is the chart version of the release object in
-	storage.
-	"""
+												ChartVersion is the chart version of the release object in
+												storage.
+												"""
 											type: "string"
 										}
 										configDigest: {
 											description: """
-	ConfigDigest is the checksum of the config (better known as
-	"values") of the release object in storage.
-	It has the format of `<algo>:<checksum>`.
-	"""
+												ConfigDigest is the checksum of the config (better known as
+												"values") of the release object in storage.
+												It has the format of `<algo>:<checksum>`.
+												"""
 											type: "string"
 										}
 										deleted: {
@@ -4682,9 +4682,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										}
 										digest: {
 											description: """
-	Digest is the checksum of the release object in storage.
-	It has the format of `<algo>:<checksum>`.
-	"""
+												Digest is the checksum of the release object in storage.
+												It has the format of `<algo>:<checksum>`.
+												"""
 											type: "string"
 										}
 										firstDeployed: {
@@ -4716,9 +4716,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										testHooks: {
 											additionalProperties: {
 												description: """
-	TestHookStatus holds the status information for a test hook as observed
-	to be run by the controller.
-	"""
+													TestHookStatus holds the status information for a test hook as observed
+													to be run by the controller.
+													"""
 												properties: {
 													lastCompleted: {
 														description: "LastCompleted is the time the test hook last completed."
@@ -4738,9 +4738,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 												type: "object"
 											}
 											description: """
-	TestHooks is the list of test hooks for the release as observed to be
-	run by the controller.
-	"""
+												TestHooks is the list of test hooks for the release as observed to be
+												run by the controller.
+												"""
 											type: "object"
 										}
 										version: {
@@ -4766,17 +4766,17 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							installFailures: {
 								description: """
-	InstallFailures is the install failure count against the latest desired
-	state. It is reset after a successful reconciliation.
-	"""
+									InstallFailures is the install failure count against the latest desired
+									state. It is reset after a successful reconciliation.
+									"""
 								format: "int64"
 								type:   "integer"
 							}
 							inventory: {
 								description: """
-	Inventory contains the list of Kubernetes resource object references
-	that have been applied for this release.
-	"""
+									Inventory contains the list of Kubernetes resource object references
+									that have been applied for this release.
+									"""
 								properties: entries: {
 									description: "Entries of Kubernetes resource object references."
 									items: {
@@ -4784,9 +4784,9 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 										properties: {
 											id: {
 												description: """
-	ID is the string representation of the Kubernetes resource object's metadata,
-	in the format '<namespace>_<name>_<group>_<kind>'.
-	"""
+													ID is the string representation of the Kubernetes resource object's metadata,
+													in the format '<namespace>_<name>_<group>_<kind>'.
+													"""
 												type: "string"
 											}
 											v: {
@@ -4803,29 +4803,29 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 									type: "array"
 								}
 								required: ["entries"]
-								type: "object"
+								type:     "object"
 							}
 							lastAttemptedConfigDigest: {
 								description: """
-	LastAttemptedConfigDigest is the digest for the config (better known as
-	"values") of the last reconciliation attempt.
-	"""
+									LastAttemptedConfigDigest is the digest for the config (better known as
+									"values") of the last reconciliation attempt.
+									"""
 								type: "string"
 							}
 							lastAttemptedGeneration: {
 								description: """
-	LastAttemptedGeneration is the last generation the controller attempted
-	to reconcile.
-	"""
+									LastAttemptedGeneration is the last generation the controller attempted
+									to reconcile.
+									"""
 								format: "int64"
 								type:   "integer"
 							}
 							lastAttemptedReleaseAction: {
 								description: """
-	LastAttemptedReleaseAction is the last release action performed for this
-	HelmRelease. It is used to determine the active retry or remediation
-	strategy.
-	"""
+									LastAttemptedReleaseAction is the last release action performed for this
+									HelmRelease. It is used to determine the active retry or remediation
+									strategy.
+									"""
 								enum: [
 									"install",
 									"upgrade",
@@ -4834,71 +4834,71 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							lastAttemptedReleaseActionDuration: {
 								description: """
-	LastAttemptedReleaseActionDuration is the duration of the last
-	release action performed for this HelmRelease.
-	"""
+									LastAttemptedReleaseActionDuration is the duration of the last
+									release action performed for this HelmRelease.
+									"""
 								type: "string"
 							}
 							lastAttemptedRevision: {
 								description: """
-	LastAttemptedRevision is the Source revision of the last reconciliation
-	attempt. For OCIRepository  sources, the 12 first characters of the digest are
-	appended to the chart version e.g. "1.2.3+1234567890ab".
-	"""
+									LastAttemptedRevision is the Source revision of the last reconciliation
+									attempt. For OCIRepository  sources, the 12 first characters of the digest are
+									appended to the chart version e.g. "1.2.3+1234567890ab".
+									"""
 								type: "string"
 							}
 							lastAttemptedRevisionDigest: {
 								description: """
-	LastAttemptedRevisionDigest is the digest of the last reconciliation attempt.
-	This is only set for OCIRepository sources.
-	"""
+									LastAttemptedRevisionDigest is the digest of the last reconciliation attempt.
+									This is only set for OCIRepository sources.
+									"""
 								type: "string"
 							}
 							lastAttemptedValuesChecksum: {
 								description: """
-	LastAttemptedValuesChecksum is the SHA1 checksum for the values of the last
-	reconciliation attempt.
+									LastAttemptedValuesChecksum is the SHA1 checksum for the values of the last
+									reconciliation attempt.
 
-	Deprecated: Use LastAttemptedConfigDigest instead.
-	"""
+									Deprecated: Use LastAttemptedConfigDigest instead.
+									"""
 								type: "string"
 							}
 							lastHandledForceAt: {
 								description: """
-	LastHandledForceAt holds the value of the most recent
-	force request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledForceAt holds the value of the most recent
+									force request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							lastHandledResetAt: {
 								description: """
-	LastHandledResetAt holds the value of the most recent reset request
-	value, so a change of the annotation value can be detected.
-	"""
+									LastHandledResetAt holds the value of the most recent reset request
+									value, so a change of the annotation value can be detected.
+									"""
 								type: "string"
 							}
 							lastReleaseRevision: {
 								description: """
-	LastReleaseRevision is the revision of the last successful Helm release.
+									LastReleaseRevision is the revision of the last successful Helm release.
 
-	Deprecated: Use History instead.
-	"""
+									Deprecated: Use History instead.
+									"""
 								type: "integer"
 							}
 							observedCommonMetadataDigest: {
 								description: """
-	ObservedCommonMetadataDigest is the digest for the common metadata of
-	the last successful reconciliation attempt.
-	"""
+									ObservedCommonMetadataDigest is the digest for the common metadata of
+									the last successful reconciliation attempt.
+									"""
 								type: "string"
 							}
 							observedGeneration: {
@@ -4908,25 +4908,25 @@ customresourcedefinition: "helmreleases.helm.toolkit.fluxcd.io": {
 							}
 							observedPostRenderersDigest: {
 								description: """
-	ObservedPostRenderersDigest is the digest for the post-renderers of
-	the last successful reconciliation attempt.
-	"""
+									ObservedPostRenderersDigest is the digest for the post-renderers of
+									the last successful reconciliation attempt.
+									"""
 								type: "string"
 							}
 							storageNamespace: {
 								description: """
-	StorageNamespace is the namespace of the Helm release storage for the
-	current release.
-	"""
+									StorageNamespace is the namespace of the Helm release storage for the
+									current release.
+									"""
 								maxLength: 63
 								minLength: 1
 								type:      "string"
 							}
 							upgradeFailures: {
 								description: """
-	UpgradeFailures is the upgrade failure count against the latest desired
-	state. It is reset after a successful reconciliation.
-	"""
+									UpgradeFailures is the upgrade failure count against the latest desired
+									state. It is reset after a successful reconciliation.
+									"""
 								format: "int64"
 								type:   "integer"
 							}
@@ -4960,11 +4960,11 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 				"fluxcd",
 				"fluxcd-sources",
 			]
-			kind:     "HelmRepository"
-			listKind: "HelmRepositoryList"
-			plural:   "helmrepositories"
+			kind:       "HelmRepository"
+			listKind:   "HelmRepositoryList"
+			plural:     "helmrepositories"
 			shortNames: ["helmrepo"]
-			singular: "helmrepository"
+			singular:   "helmrepository"
 		}
 		scope: "Namespaced"
 		versions: [{
@@ -4977,11 +4977,11 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}]
@@ -4991,53 +4991,53 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
 					spec: {
 						description: """
-	HelmRepositorySpec specifies the required configuration to produce an
-	Artifact for a Helm repository index YAML.
-	"""
+							HelmRepositorySpec specifies the required configuration to produce an
+							Artifact for a Helm repository index YAML.
+							"""
 						properties: {
 							accessFrom: {
 								description: """
-	AccessFrom specifies an Access Control List for allowing cross-namespace
-	references to this object.
-	NOTE: Not implemented, provisional as of https://github.com/fluxcd/flux2/pull/2092
-	"""
+									AccessFrom specifies an Access Control List for allowing cross-namespace
+									references to this object.
+									NOTE: Not implemented, provisional as of https://github.com/fluxcd/flux2/pull/2092
+									"""
 								properties: namespaceSelectors: {
 									description: """
-	NamespaceSelectors is the list of namespace selectors to which this ACL applies.
-	Items in this list are evaluated using a logical OR operation.
-	"""
+										NamespaceSelectors is the list of namespace selectors to which this ACL applies.
+										Items in this list are evaluated using a logical OR operation.
+										"""
 									items: {
 										description: """
-	NamespaceSelector selects the namespaces to which this ACL applies.
-	An empty map of MatchLabels matches all namespaces in a cluster.
-	"""
+											NamespaceSelector selects the namespaces to which this ACL applies.
+											An empty map of MatchLabels matches all namespaces in a cluster.
+											"""
 										properties: matchLabels: {
 											additionalProperties: type: "string"
 											description: """
-	MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
-	map is equivalent to an element of matchExpressions, whose key field is "key", the
-	operator is "In", and the values array contains only "value". The requirements are ANDed.
-	"""
+												MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+												map is equivalent to an element of matchExpressions, whose key field is "key", the
+												operator is "In", and the values array contains only "value". The requirements are ANDed.
+												"""
 											type: "object"
 										}
 										type: "object"
@@ -5045,67 +5045,67 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 									type: "array"
 								}
 								required: ["namespaceSelectors"]
-								type: "object"
+								type:     "object"
 							}
 							certSecretRef: {
 								description: """
-	CertSecretRef can be given the name of a Secret containing
-	either or both of
+									CertSecretRef can be given the name of a Secret containing
+									either or both of
 
-	- a PEM-encoded client certificate (`tls.crt`) and private
-	key (`tls.key`);
-	- a PEM-encoded CA certificate (`ca.crt`)
+									- a PEM-encoded client certificate (`tls.crt`) and private
+									key (`tls.key`);
+									- a PEM-encoded CA certificate (`ca.crt`)
 
-	and whichever are supplied, will be used for connecting to the
-	registry. The client cert and key are useful if you are
-	authenticating with a certificate; the CA cert is useful if
-	you are using a self-signed server certificate. The Secret must
-	be of type `Opaque` or `kubernetes.io/tls`.
+									and whichever are supplied, will be used for connecting to the
+									registry. The client cert and key are useful if you are
+									authenticating with a certificate; the CA cert is useful if
+									you are using a self-signed server certificate. The Secret must
+									be of type `Opaque` or `kubernetes.io/tls`.
 
-	It takes precedence over the values specified in the Secret referred
-	to by `.spec.secretRef`.
-	"""
+									It takes precedence over the values specified in the Secret referred
+									to by `.spec.secretRef`.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							insecure: {
 								description: """
-	Insecure allows connecting to a non-TLS HTTP container registry.
-	This field is only taken into account if the .spec.type field is set to 'oci'.
-	"""
+									Insecure allows connecting to a non-TLS HTTP container registry.
+									This field is only taken into account if the .spec.type field is set to 'oci'.
+									"""
 								type: "boolean"
 							}
 							interval: {
 								description: """
-	Interval at which the HelmRepository URL is checked for updates.
-	This interval is approximate and may be subject to jitter to ensure
-	efficient use of resources.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Interval at which the HelmRepository URL is checked for updates.
+									This interval is approximate and may be subject to jitter to ensure
+									efficient use of resources.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							passCredentials: {
 								description: """
-	PassCredentials allows the credentials from the SecretRef to be passed
-	on to a host that does not match the host as defined in URL.
-	This may be required if the host of the advertised chart URLs in the
-	index differ from the defined URL.
-	Enabling this should be done with caution, as it can potentially result
-	in credentials getting stolen in a MITM-attack.
-	"""
+									PassCredentials allows the credentials from the SecretRef to be passed
+									on to a host that does not match the host as defined in URL.
+									This may be required if the host of the advertised chart URLs in the
+									index differ from the defined URL.
+									Enabling this should be done with caution, as it can potentially result
+									in credentials getting stolen in a MITM-attack.
+									"""
 								type: "boolean"
 							}
 							provider: {
 								default: "generic"
 								description: """
-	Provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
-	This field is optional, and only taken into account if the .spec.type field is set to 'oci'.
-	When not specified, defaults to 'generic'.
-	"""
+									Provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
+									This field is optional, and only taken into account if the .spec.type field is set to 'oci'.
+									When not specified, defaults to 'generic'.
+									"""
 								enum: [
 									"generic",
 									"aws",
@@ -5116,42 +5116,42 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 							}
 							secretRef: {
 								description: """
-	SecretRef specifies the Secret containing authentication credentials
-	for the HelmRepository.
-	For HTTP/S basic auth the secret must contain 'username' and 'password'
-	fields.
-	Support for TLS auth using the 'certFile' and 'keyFile', and/or 'caFile'
-	keys is deprecated. Please use `.spec.certSecretRef` instead.
-	"""
+									SecretRef specifies the Secret containing authentication credentials
+									for the HelmRepository.
+									For HTTP/S basic auth the secret must contain 'username' and 'password'
+									fields.
+									Support for TLS auth using the 'certFile' and 'keyFile', and/or 'caFile'
+									keys is deprecated. Please use `.spec.certSecretRef` instead.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend the reconciliation of this
-	HelmRepository.
-	"""
+									Suspend tells the controller to suspend the reconciliation of this
+									HelmRepository.
+									"""
 								type: "boolean"
 							}
 							timeout: {
 								description: """
-	Timeout is used for the index fetch operation for an HTTPS helm repository,
-	and for remote OCI Repository operations like pulling for an OCI helm
-	chart by the associated HelmChart.
-	Its default value is 60s.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+									Timeout is used for the index fetch operation for an HTTPS helm repository,
+									and for remote OCI Repository operations like pulling for an OCI helm
+									chart by the associated HelmChart.
+									Its default value is 60s.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m))+$"#
 								type:    "string"
 							}
 							type: {
 								description: """
-	Type of the HelmRepository.
-	When this field is set to  "oci", the URL field value must be prefixed with "oci://".
-	"""
+									Type of the HelmRepository.
+									When this field is set to  "oci", the URL field value must be prefixed with "oci://".
+									"""
 								enum: [
 									"default",
 									"oci",
@@ -5160,15 +5160,15 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 							}
 							url: {
 								description: """
-	URL of the Helm repository, a valid URL contains at least a protocol and
-	host.
-	"""
+									URL of the Helm repository, a valid URL contains at least a protocol and
+									host.
+									"""
 								pattern: "^(http|https|oci)://.*$"
 								type:    "string"
 							}
 						}
 						required: ["url"]
-						type: "object"
+						type:     "object"
 					}
 					status: {
 						default: observedGeneration: -1
@@ -5184,9 +5184,9 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 									}
 									lastUpdateTime: {
 										description: """
-	LastUpdateTime is the timestamp corresponding to the last update of the
-	Artifact.
-	"""
+											LastUpdateTime is the timestamp corresponding to the last update of the
+											Artifact.
+											"""
 										format: "date-time"
 										type:   "string"
 									}
@@ -5197,17 +5197,17 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 									}
 									path: {
 										description: """
-	Path is the relative file path of the Artifact. It can be used to locate
-	the file in the root of the Artifact storage on the local file system of
-	the controller managing the Source.
-	"""
+											Path is the relative file path of the Artifact. It can be used to locate
+											the file in the root of the Artifact storage on the local file system of
+											the controller managing the Source.
+											"""
 										type: "string"
 									}
 									revision: {
 										description: """
-	Revision is a human-readable identifier traceable in the origin source
-	system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
-	"""
+											Revision is a human-readable identifier traceable in the origin source
+											system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
+											"""
 										type: "string"
 									}
 									size: {
@@ -5217,10 +5217,10 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 									}
 									url: {
 										description: """
-	URL is the HTTP address of the Artifact as exposed by the controller
-	managing the Source. It can be used to retrieve the Artifact for
-	consumption, e.g. by another controller applying the Artifact contents.
-	"""
+											URL is the HTTP address of the Artifact as exposed by the controller
+											managing the Source. It can be used to retrieve the Artifact for
+											consumption, e.g. by another controller applying the Artifact contents.
+											"""
 										type: "string"
 									}
 								}
@@ -5240,38 +5240,38 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -5289,7 +5289,7 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -5306,26 +5306,26 @@ customresourcedefinition: "helmrepositories.source.toolkit.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							observedGeneration: {
 								description: """
-	ObservedGeneration is the last observed generation of the HelmRepository
-	object.
-	"""
+									ObservedGeneration is the last observed generation of the HelmRepository
+									object.
+									"""
 								format: "int64"
 								type:   "integer"
 							}
 							url: {
 								description: """
-	URL is the dynamic fetch link for the latest Artifact.
-	It is provided on a "best effort" basis, and using the precise
-	HelmRepositoryStatus.Artifact data is recommended.
-	"""
+									URL is the dynamic fetch link for the latest Artifact.
+									It is provided on a "best effort" basis, and using the precise
+									HelmRepositoryStatus.Artifact data is recommended.
+									"""
 								type: "string"
 							}
 						}
@@ -5378,11 +5378,11 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 				name:     "Tag"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}, {
@@ -5396,45 +5396,45 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
 					spec: {
 						description: """
-	ImagePolicySpec defines the parameters for calculating the
-	ImagePolicy.
-	"""
+							ImagePolicySpec defines the parameters for calculating the
+							ImagePolicy.
+							"""
 						properties: {
 							digestReflectionPolicy: {
 								default: "Never"
 								description: """
-	DigestReflectionPolicy governs the setting of the `.status.latestRef.digest` field.
+									DigestReflectionPolicy governs the setting of the `.status.latestRef.digest` field.
 
-	Never: The digest field will always be set to the empty string.
+									Never: The digest field will always be set to the empty string.
 
-	IfNotPresent: The digest field will be set to the digest of the elected
-	latest image if the field is empty and the image did not change.
+									IfNotPresent: The digest field will be set to the digest of the elected
+									latest image if the field is empty and the image did not change.
 
-	Always: The digest field will always be set to the digest of the elected
-	latest image.
+									Always: The digest field will always be set to the digest of the elected
+									latest image.
 
-	Default: Never.
-	"""
+									Default: Never.
+									"""
 								enum: [
 									"Always",
 									"IfNotPresent",
@@ -5444,23 +5444,23 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 							}
 							filterTags: {
 								description: """
-	FilterTags enables filtering for only a subset of tags based on a set of
-	rules. If no rules are provided, all the tags from the repository will be
-	ordered and compared.
-	"""
+									FilterTags enables filtering for only a subset of tags based on a set of
+									rules. If no rules are provided, all the tags from the repository will be
+									ordered and compared.
+									"""
 								properties: {
 									extract: {
 										description: """
-	Extract allows a capture group to be extracted from the specified regular
-	expression pattern, useful before tag evaluation.
-	"""
+											Extract allows a capture group to be extracted from the specified regular
+											expression pattern, useful before tag evaluation.
+											"""
 										type: "string"
 									}
 									pattern: {
 										description: """
-	Pattern specifies a regular expression pattern used to filter for image
-	tags.
-	"""
+											Pattern specifies a regular expression pattern used to filter for image
+											tags.
+											"""
 										type: "string"
 									}
 								}
@@ -5468,9 +5468,9 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 							}
 							imageRepositoryRef: {
 								description: """
-	ImageRepositoryRef points at the object specifying the image
-	being scanned
-	"""
+									ImageRepositoryRef points at the object specifying the image
+									being scanned
+									"""
 								properties: {
 									name: {
 										description: "Name of the referent."
@@ -5482,34 +5482,34 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 									}
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							interval: {
 								description: """
-	Interval is the length of time to wait between
-	refreshing the digest of the latest tag when the
-	reflection policy is set to "Always".
+									Interval is the length of time to wait between
+									refreshing the digest of the latest tag when the
+									reflection policy is set to "Always".
 
-	Defaults to 10m.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Defaults to 10m.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							policy: {
 								description: """
-	Policy gives the particulars of the policy to be followed in
-	selecting the most recent image
-	"""
+									Policy gives the particulars of the policy to be followed in
+									selecting the most recent image
+									"""
 								properties: {
 									alphabetical: {
 										description: "Alphabetical set of rules to use for alphabetical ordering of the tags."
 										properties: order: {
 											default: "asc"
 											description: """
-	Order specifies the sorting order of the tags. Given the letters of the
-	alphabet as tags, ascending order would select Z, and descending order
-	would select A.
-	"""
+												Order specifies the sorting order of the tags. Given the letters of the
+												alphabet as tags, ascending order would select Z, and descending order
+												would select A.
+												"""
 											enum: [
 												"asc",
 												"desc",
@@ -5523,10 +5523,10 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 										properties: order: {
 											default: "asc"
 											description: """
-	Order specifies the sorting order of the tags. Given the integer values
-	from 0 to 9 as tags, ascending order would select 9, and descending order
-	would select 0.
-	"""
+												Order specifies the sorting order of the tags. Given the integer values
+												from 0 to 9 as tags, ascending order would select 9, and descending order
+												would select 0.
+												"""
 											enum: [
 												"asc",
 												"desc",
@@ -5537,27 +5537,27 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 									}
 									semver: {
 										description: """
-	SemVer gives a semantic version range to check against the tags
-	available.
-	"""
+											SemVer gives a semantic version range to check against the tags
+											available.
+											"""
 										properties: range: {
 											description: """
-	Range gives a semver range for the image tag; the highest
-	version within the range that's a tag yields the latest image.
-	"""
+												Range gives a semver range for the image tag; the highest
+												version within the range that's a tag yields the latest image.
+												"""
 											type: "string"
 										}
 										required: ["range"]
-										type: "object"
+										type:     "object"
 									}
 								}
 								type: "object"
 							}
 							suspend: {
 								description: """
-	This flag tells the controller to suspend subsequent policy reconciliations.
-	It does not apply to already started reconciliations. Defaults to false.
-	"""
+									This flag tells the controller to suspend subsequent policy reconciliations.
+									It does not apply to already started reconciliations. Defaults to false.
+									"""
 								type: "boolean"
 							}
 						}
@@ -5584,38 +5584,38 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -5633,7 +5633,7 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -5650,18 +5650,18 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							latestRef: {
 								description: """
-	LatestRef gives the first in the list of images scanned by
-	the image repository, when filtered and ordered according
-	to the policy.
-	"""
+									LatestRef gives the first in the list of images scanned by
+									the image repository, when filtered and ordered according
+									to the policy.
+									"""
 								properties: {
 									digest: {
 										description: "Digest is the image's digest."
@@ -5688,9 +5688,9 @@ customresourcedefinition: "imagepolicies.image.toolkit.fluxcd.io": {
 							}
 							observedPreviousRef: {
 								description: """
-	ObservedPreviousRef is the observed previous LatestRef. It is used
-	to keep track of the previous and current images.
-	"""
+									ObservedPreviousRef is the observed previous LatestRef. It is used
+									to keep track of the previous and current images.
+									"""
 								properties: {
 									digest: {
 										description: "Digest is the image's digest."
@@ -5761,11 +5761,11 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 				name:     "Tags"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}, {
@@ -5784,52 +5784,52 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
 					spec: {
 						description: """
-	ImageRepositorySpec defines the parameters for scanning an image
-	repository, e.g., `fluxcd/flux`.
-	"""
+							ImageRepositorySpec defines the parameters for scanning an image
+							repository, e.g., `fluxcd/flux`.
+							"""
 						properties: {
 							accessFrom: {
 								description: """
-	AccessFrom defines an ACL for allowing cross-namespace references
-	to the ImageRepository object based on the caller's namespace labels.
-	"""
+									AccessFrom defines an ACL for allowing cross-namespace references
+									to the ImageRepository object based on the caller's namespace labels.
+									"""
 								properties: namespaceSelectors: {
 									description: """
-	NamespaceSelectors is the list of namespace selectors to which this ACL applies.
-	Items in this list are evaluated using a logical OR operation.
-	"""
+										NamespaceSelectors is the list of namespace selectors to which this ACL applies.
+										Items in this list are evaluated using a logical OR operation.
+										"""
 									items: {
 										description: """
-	NamespaceSelector selects the namespaces to which this ACL applies.
-	An empty map of MatchLabels matches all namespaces in a cluster.
-	"""
+											NamespaceSelector selects the namespaces to which this ACL applies.
+											An empty map of MatchLabels matches all namespaces in a cluster.
+											"""
 										properties: matchLabels: {
 											additionalProperties: type: "string"
 											description: """
-	MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
-	map is equivalent to an element of matchExpressions, whose key field is "key", the
-	operator is "In", and the values array contains only "value". The requirements are ANDed.
-	"""
+												MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+												map is equivalent to an element of matchExpressions, whose key field is "key", the
+												operator is "In", and the values array contains only "value". The requirements are ANDed.
+												"""
 											type: "object"
 										}
 										type: "object"
@@ -5837,39 +5837,39 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 									type: "array"
 								}
 								required: ["namespaceSelectors"]
-								type: "object"
+								type:     "object"
 							}
 							certSecretRef: {
 								description: """
-	CertSecretRef can be given the name of a Secret containing
-	either or both of
+									CertSecretRef can be given the name of a Secret containing
+									either or both of
 
-	- a PEM-encoded client certificate (`tls.crt`) and private
-	key (`tls.key`);
-	- a PEM-encoded CA certificate (`ca.crt`)
+									- a PEM-encoded client certificate (`tls.crt`) and private
+									key (`tls.key`);
+									- a PEM-encoded CA certificate (`ca.crt`)
 
-	and whichever are supplied, will be used for connecting to the
-	registry. The client cert and key are useful if you are
-	authenticating with a certificate; the CA cert is useful if
-	you are using a self-signed server certificate. The Secret must
-	be of type `Opaque` or `kubernetes.io/tls`.
+									and whichever are supplied, will be used for connecting to the
+									registry. The client cert and key are useful if you are
+									authenticating with a certificate; the CA cert is useful if
+									you are using a self-signed server certificate. The Secret must
+									be of type `Opaque` or `kubernetes.io/tls`.
 
-	Note: Support for the `caFile`, `certFile` and `keyFile` keys has
-	been deprecated.
-	"""
+									Note: Support for the `caFile`, `certFile` and `keyFile` keys has
+									been deprecated.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							exclusionList: {
-								default: ["^.*\\.sig$"]
+								default: [#"^.*\.sig$"#]
 								description: """
-	ExclusionList is a list of regex strings used to exclude certain tags
-	from being stored in the database.
-	"""
+									ExclusionList is a list of regex strings used to exclude certain tags
+									from being stored in the database.
+									"""
 								items: type: "string"
 								maxItems: 25
 								type:     "array"
@@ -5884,18 +5884,18 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 							}
 							interval: {
 								description: """
-	Interval is the length of time to wait between
-	scans of the image repository.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Interval is the length of time to wait between
+									scans of the image repository.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							provider: {
 								default: "generic"
 								description: """
-	The provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
-	When not specified, defaults to 'generic'.
-	"""
+									The provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
+									When not specified, defaults to 'generic'.
+									"""
 								enum: [
 									"generic",
 									"aws",
@@ -5906,54 +5906,54 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 							}
 							proxySecretRef: {
 								description: """
-	ProxySecretRef specifies the Secret containing the proxy configuration
-	to use while communicating with the container registry.
-	"""
+									ProxySecretRef specifies the Secret containing the proxy configuration
+									to use while communicating with the container registry.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							secretRef: {
 								description: """
-	SecretRef can be given the name of a secret containing
-	credentials to use for the image registry. The secret should be
-	created with `kubectl create secret docker-registry`, or the
-	equivalent.
-	"""
+									SecretRef can be given the name of a secret containing
+									credentials to use for the image registry. The secret should be
+									created with `kubectl create secret docker-registry`, or the
+									equivalent.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							serviceAccountName: {
 								description: """
-	ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
-	the image pull, either with the pull secrets attached to the service account or with
-	an object identity.
-	For more information about object identity:
-	https://fluxcd.io/flux/integrations/object-identity/
-	"""
+									ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
+									the image pull, either with the pull secrets attached to the service account or with
+									an object identity.
+									For more information about object identity:
+									https://fluxcd.io/flux/integrations/object-identity/
+									"""
 								maxLength: 253
 								type:      "string"
 							}
 							suspend: {
 								description: """
-	This flag tells the controller to suspend subsequent image scans.
-	It does not apply to already started scans. Defaults to false.
-	"""
+									This flag tells the controller to suspend subsequent image scans.
+									It does not apply to already started scans. Defaults to false.
+									"""
 								type: "boolean"
 							}
 							timeout: {
 								description: """
-	Timeout for image scanning.
-	Defaults to 'Interval' duration.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+									Timeout for image scanning.
+									Defaults to 'Interval' duration.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m))+$"#
 								type:    "string"
 							}
 						}
@@ -5969,10 +5969,10 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 						properties: {
 							canonicalImageName: {
 								description: """
-	CanonicalName is the name of the image repository with all the
-	implied bits made explicit; e.g., `docker.io/library/alpine`
-	rather than `alpine`.
-	"""
+									CanonicalName is the name of the image repository with all the
+									implied bits made explicit; e.g., `docker.io/library/alpine`
+									rather than `alpine`.
+									"""
 								type: "string"
 							}
 							conditions: {
@@ -5981,38 +5981,38 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -6030,7 +6030,7 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -6047,10 +6047,10 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							lastScanResult: {
@@ -6058,10 +6058,10 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 								properties: {
 									latestTags: {
 										description: """
-	LatestTags is a small sample of the tags found in the last scan.
-	It's the first 10 tags when sorting all the tags in descending
-	alphabetical order.
-	"""
+											LatestTags is a small sample of the tags found in the last scan.
+											It's the first 10 tags when sorting all the tags in descending
+											alphabetical order.
+											"""
 										items: type: "string"
 										type: "array"
 									}
@@ -6080,14 +6080,14 @@ customresourcedefinition: "imagerepositories.image.toolkit.fluxcd.io": {
 									}
 								}
 								required: ["tagCount"]
-								type: "object"
+								type:     "object"
 							}
 							observedExclusionList: {
 								description: """
-	ObservedExclusionList is a list of observed exclusion list. It reflects
-	the exclusion rules used for the observed scan result in
-	status.lastScanResult.
-	"""
+									ObservedExclusionList is a list of observed exclusion list. It reflects
+									the exclusion rules used for the observed scan result in
+									status.lastScanResult.
+									"""
 								items: type: "string"
 								type: "array"
 							}
@@ -6139,11 +6139,11 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 		scope: "Namespaced"
 		versions: [{
 			additionalPrinterColumns: [{
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}, {
@@ -6162,21 +6162,21 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -6185,22 +6185,22 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 						properties: {
 							git: {
 								description: """
-	GitSpec contains all the git-specific definitions. This is
-	technically optional, but in practice mandatory until there are
-	other kinds of source allowed.
-	"""
+									GitSpec contains all the git-specific definitions. This is
+									technically optional, but in practice mandatory until there are
+									other kinds of source allowed.
+									"""
 								properties: {
 									checkout: {
 										description: """
-	Checkout gives the parameters for cloning the git repository,
-	ready to make changes. If not present, the `spec.ref` field from the
-	referenced `GitRepository` or its default will be used.
-	"""
+											Checkout gives the parameters for cloning the git repository,
+											ready to make changes. If not present, the `spec.ref` field from the
+											referenced `GitRepository` or its default will be used.
+											"""
 										properties: ref: {
 											description: """
-	Reference gives a branch, tag or commit to clone from the Git
-	repository.
-	"""
+												Reference gives a branch, tag or commit to clone from the Git
+												repository.
+												"""
 											properties: {
 												branch: {
 													description: "Branch to check out, defaults to 'master' if no other field is defined."
@@ -6208,20 +6208,20 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 												}
 												commit: {
 													description: """
-	Commit SHA to check out, takes precedence over all reference fields.
+														Commit SHA to check out, takes precedence over all reference fields.
 
-	This can be combined with Branch to shallow clone the branch, in which
-	the commit is expected to exist.
-	"""
+														This can be combined with Branch to shallow clone the branch, in which
+														the commit is expected to exist.
+														"""
 													type: "string"
 												}
 												name: {
 													description: """
-	Name of the reference to check out; takes precedence over Branch, Tag and SemVer.
+														Name of the reference to check out; takes precedence over Branch, Tag and SemVer.
 
-	It must be a valid Git reference: https://git-scm.com/docs/git-check-ref-format#_description
-	Examples: "refs/heads/main", "refs/tags/v0.1.0", "refs/pull/420/head", "refs/merge-requests/1/head"
-	"""
+														It must be a valid Git reference: https://git-scm.com/docs/git-check-ref-format#_description
+														Examples: "refs/heads/main", "refs/tags/v0.1.0", "refs/pull/420/head", "refs/merge-requests/1/head"
+														"""
 													type: "string"
 												}
 												semver: {
@@ -6236,16 +6236,16 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 											type: "object"
 										}
 										required: ["ref"]
-										type: "object"
+										type:     "object"
 									}
 									commit: {
 										description: "Commit specifies how to commit to the git repository."
 										properties: {
 											author: {
 												description: """
-	Author gives the email and optionally the name to use as the
-	author of commits.
-	"""
+													Author gives the email and optionally the name to use as the
+													author of commits.
+													"""
 												properties: {
 													email: {
 														description: "Email gives the email to provide when making a commit."
@@ -6257,61 +6257,61 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 													}
 												}
 												required: ["email"]
-												type: "object"
+												type:     "object"
 											}
 											messageTemplate: {
 												description: """
-	MessageTemplate provides a template for the commit message,
-	into which will be interpolated the details of the change made.
-	Note: The `Updated` template field has been removed. Use `Changed` instead.
-	"""
+													MessageTemplate provides a template for the commit message,
+													into which will be interpolated the details of the change made.
+													Note: The `Updated` template field has been removed. Use `Changed` instead.
+													"""
 												type: "string"
 											}
 											messageTemplateValues: {
 												additionalProperties: type: "string"
 												description: """
-	MessageTemplateValues provides additional values to be available to the
-	templating rendering.
-	"""
+													MessageTemplateValues provides additional values to be available to the
+													templating rendering.
+													"""
 												type: "object"
 											}
 											signingKey: {
 												description: """
-	SigningKey provides the option to sign commits with an OpenPGP or
-	SSH signing key, referenced from a Secret. See SigningKey.
-	"""
+													SigningKey provides the option to sign commits with an OpenPGP or
+													SSH signing key, referenced from a Secret. See SigningKey.
+													"""
 												properties: {
 													secretRef: {
 														description: """
-	SecretRef references a Secret containing the signing key. For type
-	'gpg', the Secret must contain a 'git.asc' (ASCII-armored OpenPGP
-	keypair) and may contain a 'passphrase'. For type 'ssh', the Secret
-	must contain an 'identity' (an SSH private key in any format
-	golang.org/x/crypto/ssh.ParsePrivateKey accepts; typically the
-	OpenSSH format produced by 'ssh-keygen') and may contain a 'password'
-	(the key's passphrase). The SSH conventions match the GitRepository
-	SSH transport-auth Secret format, allowing a single Secret to serve
-	both transport and signing when the ImageUpdateAutomation lives in
-	the same namespace as the GitRepository.
+															SecretRef references a Secret containing the signing key. For type
+															'gpg', the Secret must contain a 'git.asc' (ASCII-armored OpenPGP
+															keypair) and may contain a 'passphrase'. For type 'ssh', the Secret
+															must contain an 'identity' (an SSH private key in any format
+															golang.org/x/crypto/ssh.ParsePrivateKey accepts; typically the
+															OpenSSH format produced by 'ssh-keygen') and may contain a 'password'
+															(the key's passphrase). The SSH conventions match the GitRepository
+															SSH transport-auth Secret format, allowing a single Secret to serve
+															both transport and signing when the ImageUpdateAutomation lives in
+															the same namespace as the GitRepository.
 
-	The Secret itself must live in the same namespace as the
-	ImageUpdateAutomation.
+															The Secret itself must live in the same namespace as the
+															ImageUpdateAutomation.
 
-	Supported SSH key algorithms: ed25519, ecdsa-sha2-nistp256/384/521,
-	and rsa (>= 2048-bit).
-	"""
+															Supported SSH key algorithms: ed25519, ecdsa-sha2-nistp256/384/521,
+															and rsa (>= 2048-bit).
+															"""
 														properties: name: {
 															description: "Name of the referent."
 															type:        "string"
 														}
 														required: ["name"]
-														type: "object"
+														type:     "object"
 													}
 													type: {
 														description: """
-	Type selects the signing-key format expected in the referenced
-	Secret. When empty, the controller defaults to 'gpg'.
-	"""
+															Type selects the signing-key format expected in the referenced
+															Secret. When empty, the controller defaults to 'gpg'.
+															"""
 														enum: [
 															"gpg",
 															"ssh",
@@ -6320,45 +6320,45 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 													}
 												}
 												required: ["secretRef"]
-												type: "object"
+												type:     "object"
 											}
 										}
 										required: ["author"]
-										type: "object"
+										type:     "object"
 									}
 									push: {
 										description: """
-	Push specifies how and where to push commits made by the
-	automation. If missing, commits are pushed (back) to
-	`.spec.checkout.branch` or its default.
-	"""
+											Push specifies how and where to push commits made by the
+											automation. If missing, commits are pushed (back) to
+											`.spec.checkout.branch` or its default.
+											"""
 										properties: {
 											branch: {
 												description: """
-	Branch specifies that commits should be pushed to the branch
-	named. The branch is created using `.spec.checkout.branch` as the
-	starting point, if it doesn't already exist.
-	"""
+													Branch specifies that commits should be pushed to the branch
+													named. The branch is created using `.spec.checkout.branch` as the
+													starting point, if it doesn't already exist.
+													"""
 												type: "string"
 											}
 											options: {
 												additionalProperties: type: "string"
 												description: """
-	Options specifies the push options that are sent to the Git
-	server when performing a push operation. For details, see:
-	https://git-scm.com/docs/git-push#Documentation/git-push.txt---push-optionltoptiongt
-	"""
+													Options specifies the push options that are sent to the Git
+													server when performing a push operation. For details, see:
+													https://git-scm.com/docs/git-push#Documentation/git-push.txt---push-optionltoptiongt
+													"""
 												type: "object"
 											}
 											refspec: {
 												description: """
-	Refspec specifies the Git Refspec to use for a push operation.
-	If both Branch and Refspec are provided, then the commit is pushed
-	to the branch and also using the specified refspec.
-	Deletion refspecs and refspecs prefixed with '+' are not supported.
-	For more details about Git Refspecs, see:
-	https://git-scm.com/book/en/v2/Git-Internals-The-Refspec
-	"""
+													Refspec specifies the Git Refspec to use for a push operation.
+													If both Branch and Refspec are provided, then the commit is pushed
+													to the branch and also using the specified refspec.
+													Deletion refspecs and refspecs prefixed with '+' are not supported.
+													For more details about Git Refspecs, see:
+													https://git-scm.com/book/en/v2/Git-Internals-The-Refspec
+													"""
 												pattern: "^$|^[^+:]"
 												type:    "string"
 											}
@@ -6367,39 +6367,39 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 									}
 								}
 								required: ["commit"]
-								type: "object"
+								type:     "object"
 							}
 							interval: {
 								description: """
-	Interval gives an lower bound for how often the automation
-	run should be attempted.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Interval gives an lower bound for how often the automation
+									run should be attempted.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							policyChangeDelay: {
 								description: """
-	PolicyChangeDelay delays the run triggered by ImagePolicy changes, so
-	that image updates arriving within the delay are committed together.
-	If PolicySelector is also set, only changes to the selected policies
-	trigger a run. By default, the automation runs as soon as a policy changes.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									PolicyChangeDelay delays the run triggered by ImagePolicy changes, so
+									that image updates arriving within the delay are committed together.
+									If PolicySelector is also set, only changes to the selected policies
+									trigger a run. By default, the automation runs as soon as a policy changes.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							policySelector: {
 								description: """
-	PolicySelector allows to filter applied policies based on labels.
-	By default includes all policies in namespace.
-	"""
+									PolicySelector allows to filter applied policies based on labels.
+									By default includes all policies in namespace.
+									"""
 								properties: {
 									matchExpressions: {
 										description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
 										items: {
 											description: """
-	A label selector requirement is a selector that contains values, a key, and an operator that
-	relates the key and values.
-	"""
+												A label selector requirement is a selector that contains values, a key, and an operator that
+												relates the key and values.
+												"""
 											properties: {
 												key: {
 													description: "key is the label key that the selector applies to."
@@ -6407,18 +6407,18 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 												}
 												operator: {
 													description: """
-	operator represents a key's relationship to a set of values.
-	Valid operators are In, NotIn, Exists and DoesNotExist.
-	"""
+														operator represents a key's relationship to a set of values.
+														Valid operators are In, NotIn, Exists and DoesNotExist.
+														"""
 													type: "string"
 												}
 												values: {
 													description: """
-	values is an array of string values. If the operator is In or NotIn,
-	the values array must be non-empty. If the operator is Exists or DoesNotExist,
-	the values array must be empty. This array is replaced during a strategic
-	merge patch.
-	"""
+														values is an array of string values. If the operator is In or NotIn,
+														the values array must be non-empty. If the operator is Exists or DoesNotExist,
+														the values array must be empty. This array is replaced during a strategic
+														merge patch.
+														"""
 													items: type: "string"
 													type:                     "array"
 													"x-kubernetes-list-type": "atomic"
@@ -6436,10 +6436,10 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 									matchLabels: {
 										additionalProperties: type: "string"
 										description: """
-	matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
-	map is equivalent to an element of matchExpressions, whose key field is "key", the
-	operator is "In", and the values array contains only "value". The requirements are ANDed.
-	"""
+											matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+											map is equivalent to an element of matchExpressions, whose key field is "key", the
+											operator is "In", and the values array contains only "value". The requirements are ANDed.
+											"""
 										type: "object"
 									}
 								}
@@ -6448,9 +6448,9 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 							}
 							sourceRef: {
 								description: """
-	SourceRef refers to the resource giving access details
-	to a git repository.
-	"""
+									SourceRef refers to the resource giving access details
+									to a git repository.
+									"""
 								properties: {
 									apiVersion: {
 										description: "API version of the referent."
@@ -6459,8 +6459,8 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 									kind: {
 										default:     "GitRepository"
 										description: "Kind of the referent."
-										enum: ["GitRepository"]
-										type: "string"
+										enum:        ["GitRepository"]
+										type:        "string"
 									}
 									name: {
 										description: "Name of the referent."
@@ -6479,32 +6479,32 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to not run this automation, until
-	it is unset (or set to false). Defaults to false.
-	"""
+									Suspend tells the controller to not run this automation, until
+									it is unset (or set to false). Defaults to false.
+									"""
 								type: "boolean"
 							}
 							update: {
 								default: strategy: "Setters"
 								description: """
-	Update gives the specification for how to update the files in
-	the repository. This can be left empty, to use the default
-	value.
-	"""
+									Update gives the specification for how to update the files in
+									the repository. This can be left empty, to use the default
+									value.
+									"""
 								properties: {
 									path: {
 										description: """
-	Path to the directory containing the manifests to be updated.
-	Defaults to 'None', which translates to the root path
-	of the GitRepositoryRef.
-	"""
+											Path to the directory containing the manifests to be updated.
+											Defaults to 'None', which translates to the root path
+											of the GitRepositoryRef.
+											"""
 										type: "string"
 									}
 									strategy: {
 										default:     "Setters"
 										description: "Strategy names the strategy to be used."
-										enum: ["Setters"]
-										type: "string"
+										enum:        ["Setters"]
+										type:        "string"
 									}
 								}
 								type: "object"
@@ -6526,38 +6526,38 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -6575,7 +6575,7 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -6592,26 +6592,26 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 							}
 							lastAutomationRunTime: {
 								description: """
-	LastAutomationRunTime records the last time the controller ran
-	this automation through to completion (even if no updates were
-	made).
-	"""
+									LastAutomationRunTime records the last time the controller ran
+									this automation through to completion (even if no updates were
+									made).
+									"""
 								format: "date-time"
 								type:   "string"
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							lastPushCommit: {
 								description: """
-	LastPushCommit records the SHA1 of the last commit made by the
-	controller, for this automation object
-	"""
+									LastPushCommit records the SHA1 of the last commit made by the
+									controller, for this automation object
+									"""
 								type: "string"
 							}
 							lastPushTime: {
@@ -6647,16 +6647,16 @@ customresourcedefinition: "imageupdateautomations.image.toolkit.fluxcd.io": {
 									type: "object"
 								}
 								description: """
-	ObservedPolicies is the list of observed ImagePolicies that were
-	considered by the ImageUpdateAutomation update process.
-	"""
+									ObservedPolicies is the list of observed ImagePolicies that were
+									considered by the ImageUpdateAutomation update process.
+									"""
 								type: "object"
 							}
 							observedSourceRevision: {
 								description: """
-	ObservedSourceRevision is the last observed source revision. This can be
-	used to determine if the source has been updated since last observation.
-	"""
+									ObservedSourceRevision is the last observed source revision. This can be
+									used to determine if the source has been updated since last observation.
+									"""
 								type: "string"
 							}
 						}
@@ -6689,11 +6689,11 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 				"fluxcd",
 				"fluxcd-appliers",
 			]
-			kind:     "Kustomization"
-			listKind: "KustomizationList"
-			plural:   "kustomizations"
+			kind:       "Kustomization"
+			listKind:   "KustomizationList"
+			plural:     "kustomizations"
 			shortNames: ["ks"]
-			singular: "kustomization"
+			singular:   "kustomization"
 		}
 		scope: "Namespaced"
 		versions: [{
@@ -6702,11 +6702,11 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}]
@@ -6716,37 +6716,37 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
 					spec: {
 						description: """
-	KustomizationSpec defines the configuration to calculate the desired state
-	from a Source using Kustomize.
-	"""
+							KustomizationSpec defines the configuration to calculate the desired state
+							from a Source using Kustomize.
+							"""
 						properties: {
 							buildMetadata: {
 								description: """
-	BuildMetadata specifies which kustomize build metadata should be added
-	to the built resources. The allowed values are 'originAnnotations' to
-	annotate resources with their source origin, and 'transformerAnnotations'
-	to annotate resources with the transformers that produced them.
-	"""
+									BuildMetadata specifies which kustomize build metadata should be added
+									to the built resources. The allowed values are 'originAnnotations' to
+									annotate resources with their source origin, and 'transformerAnnotations'
+									to annotate resources with the transformers that produced them.
+									"""
 								items: {
 									description: "BuildMetadataOption defines the supported buildMetadata options."
 									enum: [
@@ -6759,10 +6759,10 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 							}
 							commonMetadata: {
 								description: """
-	CommonMetadata specifies the common labels and annotations that are
-	applied to all resources. Any existing label or annotation will be
-	overridden if its key matches a common one.
-	"""
+									CommonMetadata specifies the common labels and annotations that are
+									applied to all resources. Any existing label or annotation will be
+									overridden if its key matches a common one.
+									"""
 								properties: {
 									annotations: {
 										additionalProperties: type: "string"
@@ -6787,44 +6787,44 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 								properties: {
 									provider: {
 										description: "Provider is the name of the decryption engine."
-										enum: ["sops"]
-										type: "string"
+										enum:        ["sops"]
+										type:        "string"
 									}
 									secretRef: {
 										description: """
-	The secret name containing the private OpenPGP keys used for decryption.
-	A static credential for a cloud provider defined inside the Secret
-	takes priority to secret-less authentication with the ServiceAccountName
-	field.
-	"""
+											The secret name containing the private OpenPGP keys used for decryption.
+											A static credential for a cloud provider defined inside the Secret
+											takes priority to secret-less authentication with the ServiceAccountName
+											field.
+											"""
 										properties: name: {
 											description: "Name of the referent."
 											type:        "string"
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 									serviceAccountName: {
 										description: """
-	ServiceAccountName is the name of the service account used to
-	authenticate with KMS services from cloud providers. If a
-	static credential for a given cloud provider is defined
-	inside the Secret referenced by SecretRef, that static
-	credential takes priority.
-	"""
+											ServiceAccountName is the name of the service account used to
+											authenticate with KMS services from cloud providers. If a
+											static credential for a given cloud provider is defined
+											inside the Secret referenced by SecretRef, that static
+											credential takes priority.
+											"""
 										type: "string"
 									}
 								}
 								required: ["provider"]
-								type: "object"
+								type:     "object"
 							}
 							deletionPolicy: {
 								description: """
-	DeletionPolicy can be used to control garbage collection when this
-	Kustomization is deleted. Valid values are ('MirrorPrune', 'Delete',
-	'WaitForTermination', 'Orphan'). 'MirrorPrune' mirrors the Prune field
-	(orphan if false, delete if true). Defaults to 'MirrorPrune'.
-	"""
+									DeletionPolicy can be used to control garbage collection when this
+									Kustomization is deleted. Valid values are ('MirrorPrune', 'Delete',
+									'WaitForTermination', 'Orphan'). 'MirrorPrune' mirrors the Prune field
+									(orphan if false, delete if true). Defaults to 'MirrorPrune'.
+									"""
 								enum: [
 									"MirrorPrune",
 									"Delete",
@@ -6835,15 +6835,15 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 							}
 							dependsOn: {
 								description: """
-	DependsOn may contain a DependencyReference slice
-	with references to Kustomization resources that must be ready before this
-	Kustomization can be reconciled.
-	"""
+									DependsOn may contain a DependencyReference slice
+									with references to Kustomization resources that must be ready before this
+									Kustomization can be reconciled.
+									"""
 								items: {
 									description: """
-	DependencyReference contains enough information to locate the referenced Kubernetes resource object
-	and optional CEL expression to assess its readiness.
-	"""
+										DependencyReference contains enough information to locate the referenced Kubernetes resource object
+										and optional CEL expression to assess its readiness.
+										"""
 									properties: {
 										name: {
 											description: "Name of the referent."
@@ -6851,41 +6851,41 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 										}
 										namespace: {
 											description: """
-	Namespace of the referent, defaults to the namespace of the resource
-	object that contains the reference.
-	"""
+												Namespace of the referent, defaults to the namespace of the resource
+												object that contains the reference.
+												"""
 											type: "string"
 										}
 										readyExpr: {
 											description: """
-	ReadyExpr is a CEL expression that can be used to assess the readiness
-	of a dependency. When specified, the built-in readiness check
-	is replaced by the logic defined in the CEL expression.
-	To make the CEL expression additive to the built-in readiness check,
-	the feature gate `AdditiveCELDependencyCheck` must be set to `true`.
-	"""
+												ReadyExpr is a CEL expression that can be used to assess the readiness
+												of a dependency. When specified, the built-in readiness check
+												is replaced by the logic defined in the CEL expression.
+												To make the CEL expression additive to the built-in readiness check,
+												the feature gate `AdditiveCELDependencyCheck` must be set to `true`.
+												"""
 											type: "string"
 										}
 									}
 									required: ["name"]
-									type: "object"
+									type:     "object"
 								}
 								type: "array"
 							}
 							force: {
 								default: false
 								description: """
-	Force instructs the controller to recreate resources
-	when patching fails due to an immutable field change.
-	"""
+									Force instructs the controller to recreate resources
+									when patching fails due to an immutable field change.
+									"""
 								type: "boolean"
 							}
 							healthCheckExprs: {
 								description: """
-	HealthCheckExprs is a list of healthcheck expressions for evaluating the
-	health of custom resources using Common Expression Language (CEL).
-	The expressions are evaluated only when Wait or HealthChecks are specified.
-	"""
+									HealthCheckExprs is a list of healthcheck expressions for evaluating the
+									health of custom resources using Common Expression Language (CEL).
+									The expressions are evaluated only when Wait or HealthChecks are specified.
+									"""
 								items: {
 									description: "CustomHealthCheck defines the health check for custom resources."
 									properties: {
@@ -6895,23 +6895,23 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 										}
 										current: {
 											description: """
-	Current is the CEL expression that determines if the status
-	of the custom resource has reached the desired state.
-	"""
+												Current is the CEL expression that determines if the status
+												of the custom resource has reached the desired state.
+												"""
 											type: "string"
 										}
 										failed: {
 											description: """
-	Failed is the CEL expression that determines if the status
-	of the custom resource has failed to reach the desired state.
-	"""
+												Failed is the CEL expression that determines if the status
+												of the custom resource has failed to reach the desired state.
+												"""
 											type: "string"
 										}
 										inProgress: {
 											description: """
-	InProgress is the CEL expression that determines if the status
-	of the custom resource has not yet reached the desired state.
-	"""
+												InProgress is the CEL expression that determines if the status
+												of the custom resource has not yet reached the desired state.
+												"""
 											type: "string"
 										}
 										kind: {
@@ -6931,9 +6931,9 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 								description: "A list of resources to be included in the health assessment."
 								items: {
 									description: """
-	NamespacedObjectKindReference contains enough information to locate the typed referenced Kubernetes resource object
-	in any namespace.
-	"""
+										NamespacedObjectKindReference contains enough information to locate the typed referenced Kubernetes resource object
+										in any namespace.
+										"""
 									properties: {
 										apiVersion: {
 											description: "API version of the referent, if not specified the Kubernetes preferred version will be used."
@@ -6962,64 +6962,64 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 							}
 							ignore: {
 								description: """
-	Ignore is a list of rules for specifying which changes to ignore
-	during drift detection. These rules are applied to the resources managed
-	by the Kustomization and are used to exclude specific JSON pointer paths
-	from the drift detection and apply process.
-	"""
+									Ignore is a list of rules for specifying which changes to ignore
+									during drift detection. These rules are applied to the resources managed
+									by the Kustomization and are used to exclude specific JSON pointer paths
+									from the drift detection and apply process.
+									"""
 								items: {
 									description: """
-	IgnoreRule defines a rule to selectively disregard specific changes during
-	the drift detection process.
-	"""
+										IgnoreRule defines a rule to selectively disregard specific changes during
+										the drift detection process.
+										"""
 									properties: {
 										paths: {
 											description: """
-	Paths is a list of JSON Pointer (RFC 6901) paths to be excluded from
-	consideration in a Kubernetes object.
-	"""
+												Paths is a list of JSON Pointer (RFC 6901) paths to be excluded from
+												consideration in a Kubernetes object.
+												"""
 											items: type: "string"
 											type: "array"
 										}
 										target: {
 											description: """
-	Target is a selector for specifying Kubernetes objects to which this
-	rule applies.
-	If Target is not set, the Paths will be ignored for all Kubernetes
-	objects within the manifest of the Kustomization.
-	"""
+												Target is a selector for specifying Kubernetes objects to which this
+												rule applies.
+												If Target is not set, the Paths will be ignored for all Kubernetes
+												objects within the manifest of the Kustomization.
+												"""
 											properties: {
 												annotationSelector: {
 													description: """
-	AnnotationSelector is a string that follows the label selection expression
-	https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
-	It matches with the resource annotations.
-	"""
+														AnnotationSelector is a string that follows the label selection expression
+														https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
+														It matches with the resource annotations.
+														"""
 													type: "string"
 												}
 												group: {
 													description: """
-	Group is the API group to select resources from.
-	Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+														Group is the API group to select resources from.
+														Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources.
+														https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+														"""
 													type: "string"
 												}
 												kind: {
 													description: """
-	Kind of the API Group to select resources from.
-	Together with Group and Version it is capable of unambiguously
-	identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+														Kind of the API Group to select resources from.
+														Together with Group and Version it is capable of unambiguously
+														identifying and/or selecting resources.
+														https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+														"""
 													type: "string"
 												}
 												labelSelector: {
 													description: """
-	LabelSelector is a string that follows the label selection expression
-	https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
-	It matches with the resource labels.
-	"""
+														LabelSelector is a string that follows the label selection expression
+														https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
+														It matches with the resource labels.
+														"""
 													type: "string"
 												}
 												name: {
@@ -7032,10 +7032,10 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 												}
 												version: {
 													description: """
-	Version of the API Group to select resources from.
-	Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+														Version of the API Group to select resources from.
+														Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources.
+														https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+														"""
 													type: "string"
 												}
 											}
@@ -7043,32 +7043,32 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 										}
 									}
 									required: ["paths"]
-									type: "object"
+									type:     "object"
 								}
 								type: "array"
 							}
 							ignoreMissingComponents: {
 								description: """
-	IgnoreMissingComponents instructs the controller to ignore Components paths
-	not found in source by removing them from the generated kustomization.yaml
-	before running kustomize build.
-	"""
+									IgnoreMissingComponents instructs the controller to ignore Components paths
+									not found in source by removing them from the generated kustomization.yaml
+									before running kustomize build.
+									"""
 								type: "boolean"
 							}
 							images: {
 								description: """
-	Images is a list of (image name, new name, new tag or digest)
-	for changing image names, tags or digests. This can also be achieved with a
-	patch, but this operator is simpler to specify.
-	"""
+									Images is a list of (image name, new name, new tag or digest)
+									for changing image names, tags or digests. This can also be achieved with a
+									patch, but this operator is simpler to specify.
+									"""
 								items: {
 									description: "Image contains an image name, a new name, a new tag or digest, which will replace the original name and tag."
 									properties: {
 										digest: {
 											description: """
-	Digest is the value used to replace the original image tag.
-	If digest is present NewTag value is ignored.
-	"""
+												Digest is the value used to replace the original image tag.
+												If digest is present NewTag value is ignored.
+												"""
 											type: "string"
 										}
 										name: {
@@ -7085,79 +7085,79 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 										}
 									}
 									required: ["name"]
-									type: "object"
+									type:     "object"
 								}
 								type: "array"
 							}
 							interval: {
 								description: """
-	The interval at which to reconcile the Kustomization.
-	This interval is approximate and may be subject to jitter to ensure
-	efficient use of resources.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									The interval at which to reconcile the Kustomization.
+									This interval is approximate and may be subject to jitter to ensure
+									efficient use of resources.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							kubeConfig: {
 								description: """
-	The KubeConfig for reconciling the Kustomization on a remote cluster.
-	When used in combination with KustomizationSpec.ServiceAccountName,
-	forces the controller to act on behalf of that Service Account at the
-	target cluster.
-	If the --default-service-account flag is set, its value will be used as
-	the default for KustomizationSpec.ServiceAccountName when it is empty.
-	"""
+									The KubeConfig for reconciling the Kustomization on a remote cluster.
+									When used in combination with KustomizationSpec.ServiceAccountName,
+									forces the controller to act on behalf of that Service Account at the
+									target cluster.
+									If the --default-service-account flag is set, its value will be used as
+									the default for KustomizationSpec.ServiceAccountName when it is empty.
+									"""
 								properties: {
 									configMapRef: {
 										description: """
-	ConfigMapRef holds an optional name of a ConfigMap that contains
-	the following keys:
+											ConfigMapRef holds an optional name of a ConfigMap that contains
+											the following keys:
 
-	- `provider`: the provider to use. One of `aws`, `azure`, `gcp`, or
-	   `generic`. Required.
-	- `cluster`: the fully qualified resource name of the Kubernetes
-	   cluster in the cloud provider API. Not used by the `generic`
-	   provider. Required when one of `address` or `ca.crt` is not set.
-	- `address`: the address of the Kubernetes API server. Required
-	   for `generic`. For the other providers, if not specified, the
-	   first address in the cluster resource will be used, and if
-	   specified, it must match one of the addresses in the cluster
-	   resource.
-	   If audiences is not set, will be used as the audience for the
-	   `generic` provider.
-	- `ca.crt`: the optional PEM-encoded CA certificate for the
-	   Kubernetes API server. If not set, the controller will use the
-	   CA certificate from the cluster resource.
-	-  `serviceAccountName`: the optional name of the Kubernetes
-	   ServiceAccount in the same namespace that should be used
-	   for authentication. If not specified, the controller
-	   ServiceAccount will be used.
-	- `audiences`: the optional audiences as a list of string separated by
-	   commas and/or whitespaces/newlines for the Kubernetes ServiceAccount
-	   token. Defaults to the `address` for the `generic` provider, or
-	   to specific values for the other providers depending on the
-	   provider.
+											- `provider`: the provider to use. One of `aws`, `azure`, `gcp`, or
+											   `generic`. Required.
+											- `cluster`: the fully qualified resource name of the Kubernetes
+											   cluster in the cloud provider API. Not used by the `generic`
+											   provider. Required when one of `address` or `ca.crt` is not set.
+											- `address`: the address of the Kubernetes API server. Required
+											   for `generic`. For the other providers, if not specified, the
+											   first address in the cluster resource will be used, and if
+											   specified, it must match one of the addresses in the cluster
+											   resource.
+											   If audiences is not set, will be used as the audience for the
+											   `generic` provider.
+											- `ca.crt`: the optional PEM-encoded CA certificate for the
+											   Kubernetes API server. If not set, the controller will use the
+											   CA certificate from the cluster resource.
+											-  `serviceAccountName`: the optional name of the Kubernetes
+											   ServiceAccount in the same namespace that should be used
+											   for authentication. If not specified, the controller
+											   ServiceAccount will be used.
+											- `audiences`: the optional audiences as a list of string separated by
+											   commas and/or whitespaces/newlines for the Kubernetes ServiceAccount
+											   token. Defaults to the `address` for the `generic` provider, or
+											   to specific values for the other providers depending on the
+											   provider.
 
-	Mutually exclusive with SecretRef.
-	"""
+											Mutually exclusive with SecretRef.
+											"""
 										properties: name: {
 											description: "Name of the referent."
 											type:        "string"
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 									secretRef: {
 										description: """
-	SecretRef holds an optional name of a secret that contains a key with
-	the kubeconfig file as the value. If no key is set, the key will default
-	to 'value'. Mutually exclusive with ConfigMapRef.
-	It is recommended that the kubeconfig is self-contained, and the secret
-	is regularly updated if credentials such as a cloud-access-token expire.
-	Cloud specific `cmd-path` auth helpers will not function without adding
-	binaries and credentials to the Pod that is responsible for reconciling
-	Kubernetes resources. Supported only for the generic provider.
-	"""
+											SecretRef holds an optional name of a secret that contains a key with
+											the kubeconfig file as the value. If no key is set, the key will default
+											to 'value'. Mutually exclusive with ConfigMapRef.
+											It is recommended that the kubeconfig is self-contained, and the secret
+											is regularly updated if credentials such as a cloud-access-token expire.
+											Cloud specific `cmd-path` auth helpers will not function without adding
+											binaries and credentials to the Pod that is responsible for reconciling
+											Kubernetes resources. Supported only for the generic provider.
+											"""
 										properties: {
 											key: {
 												description: "Key in the Secret, when not specified an implementation-specific default key is used."
@@ -7169,7 +7169,7 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 											}
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 								}
 								type: "object"
@@ -7192,20 +7192,20 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 							}
 							patches: {
 								description: """
-	Strategic merge and JSON patches, defined as inline YAML objects,
-	capable of targeting objects based on kind, label and annotation selectors.
-	"""
+									Strategic merge and JSON patches, defined as inline YAML objects,
+									capable of targeting objects based on kind, label and annotation selectors.
+									"""
 								items: {
 									description: """
-	Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should
-	be applied to.
-	"""
+										Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should
+										be applied to.
+										"""
 									properties: {
 										patch: {
 											description: """
-	Patch contains an inline StrategicMerge patch or an inline JSON6902 patch with
-	an array of operation objects.
-	"""
+												Patch contains an inline StrategicMerge patch or an inline JSON6902 patch with
+												an array of operation objects.
+												"""
 											type: "string"
 										}
 										target: {
@@ -7213,35 +7213,35 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 											properties: {
 												annotationSelector: {
 													description: """
-	AnnotationSelector is a string that follows the label selection expression
-	https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
-	It matches with the resource annotations.
-	"""
+														AnnotationSelector is a string that follows the label selection expression
+														https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
+														It matches with the resource annotations.
+														"""
 													type: "string"
 												}
 												group: {
 													description: """
-	Group is the API group to select resources from.
-	Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+														Group is the API group to select resources from.
+														Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources.
+														https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+														"""
 													type: "string"
 												}
 												kind: {
 													description: """
-	Kind of the API Group to select resources from.
-	Together with Group and Version it is capable of unambiguously
-	identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+														Kind of the API Group to select resources from.
+														Together with Group and Version it is capable of unambiguously
+														identifying and/or selecting resources.
+														https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+														"""
 													type: "string"
 												}
 												labelSelector: {
 													description: """
-	LabelSelector is a string that follows the label selection expression
-	https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
-	It matches with the resource labels.
-	"""
+														LabelSelector is a string that follows the label selection expression
+														https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#api
+														It matches with the resource labels.
+														"""
 													type: "string"
 												}
 												name: {
@@ -7254,10 +7254,10 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 												}
 												version: {
 													description: """
-	Version of the API Group to select resources from.
-	Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources.
-	https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
-	"""
+														Version of the API Group to select resources from.
+														Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources.
+														https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
+														"""
 													type: "string"
 												}
 											}
@@ -7265,48 +7265,48 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 										}
 									}
 									required: ["patch"]
-									type: "object"
+									type:     "object"
 								}
 								type: "array"
 							}
 							path: {
 								description: """
-	Path to the directory containing the kustomization.yaml file, or the
-	set of plain YAMLs a kustomization.yaml should be generated for.
-	Defaults to 'None', which translates to the root path of the SourceRef.
-	"""
+									Path to the directory containing the kustomization.yaml file, or the
+									set of plain YAMLs a kustomization.yaml should be generated for.
+									Defaults to 'None', which translates to the root path of the SourceRef.
+									"""
 								type: "string"
 							}
 							postBuild: {
 								description: """
-	PostBuild describes which actions to perform on the YAML manifest
-	generated by building the kustomize overlay.
-	"""
+									PostBuild describes which actions to perform on the YAML manifest
+									generated by building the kustomize overlay.
+									"""
 								properties: {
 									substitute: {
 										additionalProperties: type: "string"
 										description: """
-	Substitute holds a map of key/value pairs.
-	The variables defined in your YAML manifests that match any of the keys
-	defined in the map will be substituted with the set value.
-	Includes support for bash string replacement functions
-	e.g. ${var:=default}, ${var:position} and ${var/substring/replacement}.
-	"""
+											Substitute holds a map of key/value pairs.
+											The variables defined in your YAML manifests that match any of the keys
+											defined in the map will be substituted with the set value.
+											Includes support for bash string replacement functions
+											e.g. ${var:=default}, ${var:position} and ${var/substring/replacement}.
+											"""
 										type: "object"
 									}
 									substituteFrom: {
 										description: """
-	SubstituteFrom holds references to ConfigMaps and Secrets containing
-	the variables and their values to be substituted in the YAML manifests.
-	The ConfigMap and the Secret data keys represent the var names, and they
-	must match the vars declared in the manifests for the substitution to
-	happen.
-	"""
+											SubstituteFrom holds references to ConfigMaps and Secrets containing
+											the variables and their values to be substituted in the YAML manifests.
+											The ConfigMap and the Secret data keys represent the var names, and they
+											must match the vars declared in the manifests for the substitution to
+											happen.
+											"""
 										items: {
 											description: """
-	SubstituteReference contains a reference to a resource containing
-	the variables name and value.
-	"""
+												SubstituteReference contains a reference to a resource containing
+												the variables name and value.
+												"""
 											properties: {
 												kind: {
 													description: "Kind of the values referent, valid values are ('Secret', 'ConfigMap')."
@@ -7318,9 +7318,9 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 												}
 												name: {
 													description: """
-	Name of the values referent. Should reside in the same namespace as the
-	referring resource.
-	"""
+														Name of the values referent. Should reside in the same namespace as the
+														referring resource.
+														"""
 													maxLength: 253
 													minLength: 1
 													type:      "string"
@@ -7328,10 +7328,10 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 												optional: {
 													default: false
 													description: """
-	Optional indicates whether the referenced resource must exist, or whether to
-	tolerate its absence. If true and the referenced resource is absent, proceed
-	as if the resource was present but empty, without any variables defined.
-	"""
+														Optional indicates whether the referenced resource must exist, or whether to
+														tolerate its absence. If true and the referenced resource is absent, proceed
+														as if the resource was present but empty, without any variables defined.
+														"""
 													type: "boolean"
 												}
 											}
@@ -7345,14 +7345,14 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 									}
 									substituteStrategy: {
 										description: """
-	SubstituteStrategy defines the strategy for substituting variables in the YAML manifests.
-	Valid values are:
+											SubstituteStrategy defines the strategy for substituting variables in the YAML manifests.
+											Valid values are:
 
-	 - WithVariables (the default): require at least one variable to be defined,
-	   either through the inline map or through the resolved references to ConfigMaps
-	   and Secrets.
-	 - Always: perform the substitution even if no variables are defined.
-	"""
+											 - WithVariables (the default): require at least one variable to be defined,
+											   either through the inline map or through the resolved references to ConfigMaps
+											   and Secrets.
+											 - Always: perform the substitution even if no variables are defined.
+											"""
 										enum: [
 											"WithVariables",
 											"Always",
@@ -7368,18 +7368,18 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 							}
 							retryInterval: {
 								description: """
-	The interval at which to retry a previously failed reconciliation.
-	When not specified, the controller uses the KustomizationSpec.Interval
-	value to retry failures.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									The interval at which to retry a previously failed reconciliation.
+									When not specified, the controller uses the KustomizationSpec.Interval
+									value to retry failures.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							serviceAccountName: {
 								description: """
-	The name of the Kubernetes service account to impersonate
-	when reconciling this Kustomization.
-	"""
+									The name of the Kubernetes service account to impersonate
+									when reconciling this Kustomization.
+									"""
 								type: "string"
 							}
 							sourceRef: {
@@ -7405,9 +7405,9 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 									}
 									namespace: {
 										description: """
-	Namespace of the referent, defaults to the namespace of the Kubernetes
-	resource object that contains the reference.
-	"""
+											Namespace of the referent, defaults to the namespace of the Kubernetes
+											resource object that contains the reference.
+											"""
 										type: "string"
 									}
 								}
@@ -7419,33 +7419,33 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 							}
 							suspend: {
 								description: """
-	This flag tells the controller to suspend subsequent kustomize executions,
-	it does not apply to already started executions. Defaults to false.
-	"""
+									This flag tells the controller to suspend subsequent kustomize executions,
+									it does not apply to already started executions. Defaults to false.
+									"""
 								type: "boolean"
 							}
 							targetNamespace: {
 								description: """
-	TargetNamespace sets or overrides the namespace in the
-	kustomization.yaml file.
-	"""
+									TargetNamespace sets or overrides the namespace in the
+									kustomization.yaml file.
+									"""
 								maxLength: 63
 								minLength: 1
 								type:      "string"
 							}
 							timeout: {
 								description: """
-	Timeout for validation, apply and health checking operations.
-	Defaults to 'Interval' duration.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Timeout for validation, apply and health checking operations.
+									Defaults to 'Interval' duration.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							wait: {
 								description: """
-	Wait instructs the controller to check the health of all the reconciled
-	resources. When enabled, the HealthChecks are ignored. Defaults to false.
-	"""
+									Wait instructs the controller to check the health of all the reconciled
+									resources. When enabled, the HealthChecks are ignored. Defaults to false.
+									"""
 								type: "boolean"
 							}
 						}
@@ -7466,38 +7466,38 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -7515,7 +7515,7 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -7532,14 +7532,14 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 							}
 							history: {
 								description: """
-	History contains a set of snapshots of the last reconciliation attempts
-	tracking the revision, the state and the duration of each attempt.
-	"""
+									History contains a set of snapshots of the last reconciliation attempts
+									tracking the revision, the state and the duration of each attempt.
+									"""
 								items: {
 									description: """
-	Snapshot represents a point-in-time record of a group of resources reconciliation,
-	including timing information, status, and a unique digest identifier.
-	"""
+										Snapshot represents a point-in-time record of a group of resources reconciliation,
+										including timing information, status, and a unique digest identifier.
+										"""
 									properties: {
 										digest: {
 											description: "Digest is the checksum in the format `<algo>:<hex>` of the resources in this snapshot."
@@ -7588,9 +7588,9 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 							}
 							inventory: {
 								description: """
-	Inventory contains the list of Kubernetes resource object references that
-	have been successfully applied.
-	"""
+									Inventory contains the list of Kubernetes resource object references that
+									have been successfully applied.
+									"""
 								properties: entries: {
 									description: "Entries of Kubernetes resource object references."
 									items: {
@@ -7598,9 +7598,9 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 										properties: {
 											id: {
 												description: """
-	ID is the string representation of the Kubernetes resource object's metadata,
-	in the format '<namespace>_<name>_<group>_<kind>'.
-	"""
+													ID is the string representation of the Kubernetes resource object's metadata,
+													in the format '<namespace>_<name>_<group>_<kind>'.
+													"""
 												type: "string"
 											}
 											v: {
@@ -7617,23 +7617,23 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 									type: "array"
 								}
 								required: ["entries"]
-								type: "object"
+								type:     "object"
 							}
 							lastAppliedOriginRevision: {
 								description: """
-	The last successfully applied origin revision.
-	Equals the origin revision of the applied Artifact from the referenced Source.
-	Usually present on the Metadata of the applied Artifact and depends on the
-	Source type, e.g. for OCI it's the value associated with the key
-	"org.opencontainers.image.revision".
-	"""
+									The last successfully applied origin revision.
+									Equals the origin revision of the applied Artifact from the referenced Source.
+									Usually present on the Metadata of the applied Artifact and depends on the
+									Source type, e.g. for OCI it's the value associated with the key
+									"org.opencontainers.image.revision".
+									"""
 								type: "string"
 							}
 							lastAppliedRevision: {
 								description: """
-	The last successfully applied revision.
-	Equals the Revision of the applied Artifact from the referenced Source.
-	"""
+									The last successfully applied revision.
+									Equals the Revision of the applied Artifact from the referenced Source.
+									"""
 								type: "string"
 							}
 							lastAttemptedRevision: {
@@ -7642,10 +7642,10 @@ customresourcedefinition: "kustomizations.kustomize.toolkit.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							observedGeneration: {
@@ -7683,11 +7683,11 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 				"fluxcd",
 				"fluxcd-sources",
 			]
-			kind:     "OCIRepository"
-			listKind: "OCIRepositoryList"
-			plural:   "ocirepositories"
+			kind:       "OCIRepository"
+			listKind:   "OCIRepositoryList"
+			plural:     "ocirepositories"
 			shortNames: ["ocirepo"]
-			singular: "ocirepository"
+			singular:   "ocirepository"
 		}
 		scope: "Namespaced"
 		versions: [{
@@ -7696,11 +7696,11 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 				name:     "URL"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}, {
@@ -7714,21 +7714,21 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -7737,32 +7737,32 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 						properties: {
 							certSecretRef: {
 								description: """
-	CertSecretRef can be given the name of a Secret containing
-	either or both of
+									CertSecretRef can be given the name of a Secret containing
+									either or both of
 
-	- a PEM-encoded client certificate (`tls.crt`) and private
-	key (`tls.key`);
-	- a PEM-encoded CA certificate (`ca.crt`)
+									- a PEM-encoded client certificate (`tls.crt`) and private
+									key (`tls.key`);
+									- a PEM-encoded CA certificate (`ca.crt`)
 
-	and whichever are supplied, will be used for connecting to the
-	registry. The client cert and key are useful if you are
-	authenticating with a certificate; the CA cert is useful if
-	you are using a self-signed server certificate. The Secret must
-	be of type `Opaque` or `kubernetes.io/tls`.
-	"""
+									and whichever are supplied, will be used for connecting to the
+									registry. The client cert and key are useful if you are
+									authenticating with a certificate; the CA cert is useful if
+									you are using a self-signed server certificate. The Secret must
+									be of type `Opaque` or `kubernetes.io/tls`.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							ignore: {
 								description: """
-	Ignore overrides the set of excluded patterns in the .sourceignore format
-	(which is the same as .gitignore). If not provided, a default will be used,
-	consult the documentation for your version to find out what those are.
-	"""
+									Ignore overrides the set of excluded patterns in the .sourceignore format
+									(which is the same as .gitignore). If not provided, a default will be used,
+									consult the documentation for your version to find out what those are.
+									"""
 								type: "string"
 							}
 							insecure: {
@@ -7771,34 +7771,34 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 							}
 							interval: {
 								description: """
-	Interval at which the OCIRepository URL is checked for updates.
-	This interval is approximate and may be subject to jitter to ensure
-	efficient use of resources.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Interval at which the OCIRepository URL is checked for updates.
+									This interval is approximate and may be subject to jitter to ensure
+									efficient use of resources.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							layerSelector: {
 								description: """
-	LayerSelector specifies which layer should be extracted from the OCI artifact.
-	When not specified, the first layer found in the artifact is selected.
-	"""
+									LayerSelector specifies which layer should be extracted from the OCI artifact.
+									When not specified, the first layer found in the artifact is selected.
+									"""
 								properties: {
 									mediaType: {
 										description: """
-	MediaType specifies the OCI media type of the layer
-	which should be extracted from the OCI Artifact. The
-	first layer matching this type is selected.
-	"""
+											MediaType specifies the OCI media type of the layer
+											which should be extracted from the OCI Artifact. The
+											first layer matching this type is selected.
+											"""
 										type: "string"
 									}
 									operation: {
 										description: """
-	Operation specifies how the selected layer should be processed.
-	By default, the layer compressed content is extracted to storage.
-	When the operation is set to 'copy', the layer compressed content
-	is persisted to storage as it is.
-	"""
+											Operation specifies how the selected layer should be processed.
+											By default, the layer compressed content is extracted to storage.
+											When the operation is set to 'copy', the layer compressed content
+											is persisted to storage as it is.
+											"""
 										enum: [
 											"extract",
 											"copy",
@@ -7810,9 +7810,9 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 							}
 							provider: {
 								description: """
-	The provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
-	When not specified, defaults to 'generic'.
-	"""
+									The provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.
+									When not specified, defaults to 'generic'.
+									"""
 								enum: [
 									"generic",
 									"aws",
@@ -7823,34 +7823,34 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 							}
 							proxySecretRef: {
 								description: """
-	ProxySecretRef specifies the Secret containing the proxy configuration
-	to use while communicating with the container registry.
-	"""
+									ProxySecretRef specifies the Secret containing the proxy configuration
+									to use while communicating with the container registry.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							ref: {
 								description: """
-	The OCI reference to pull and monitor for changes,
-	defaults to the latest tag.
-	"""
+									The OCI reference to pull and monitor for changes,
+									defaults to the latest tag.
+									"""
 								properties: {
 									digest: {
 										description: """
-	Digest is the image digest to pull, takes precedence over SemVer.
-	The value should be in the format 'sha256:<HASH>'.
-	"""
+											Digest is the image digest to pull, takes precedence over SemVer.
+											The value should be in the format 'sha256:<HASH>'.
+											"""
 										type: "string"
 									}
 									semver: {
 										description: """
-	SemVer is the range of tags to pull selecting the latest within
-	the range, takes precedence over Tag.
-	"""
+											SemVer is the range of tags to pull selecting the latest within
+											the range, takes precedence over Tag.
+											"""
 										type: "string"
 									}
 									semverFilter: {
@@ -7866,27 +7866,27 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 							}
 							secretRef: {
 								description: """
-	SecretRef contains the secret name containing the registry login
-	credentials to resolve image metadata.
-	The secret must be of type kubernetes.io/dockerconfigjson.
-	"""
+									SecretRef contains the secret name containing the registry login
+									credentials to resolve image metadata.
+									The secret must be of type kubernetes.io/dockerconfigjson.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							serviceAccountName: {
 								description: """
-	ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
-	the image pull, either with the pull secrets attached to the service account or with
-	an object identity.
-	For more information about object identity:
-	https://fluxcd.io/flux/integrations/object-identity/
-	For more information about image pull secrets:
-	https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
-	"""
+									ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
+									the image pull, either with the pull secrets attached to the service account or with
+									an object identity.
+									For more information about object identity:
+									https://fluxcd.io/flux/integrations/object-identity/
+									For more information about image pull secrets:
+									https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
+									"""
 								type: "string"
 							}
 							suspend: {
@@ -7895,51 +7895,51 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 							}
 							timeout: {
 								description: "The timeout for remote OCI Repository operations like pulling, defaults to 60s."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								pattern:     #"^([0-9]+(\.[0-9]+)?(ms|s|m))+$"#
 								type:        "string"
 							}
 							url: {
 								description: """
-	URL is a reference to an OCI artifact repository hosted
-	on a remote container registry.
-	"""
+									URL is a reference to an OCI artifact repository hosted
+									on a remote container registry.
+									"""
 								pattern: "^oci://.*$"
 								type:    "string"
 							}
 							verify: {
 								description: """
-	Verify contains the secret name containing the trusted public keys
-	used to verify the signature and specifies which provider to use to check
-	whether OCI image is authentic.
-	"""
+									Verify contains the secret name containing the trusted public keys
+									used to verify the signature and specifies which provider to use to check
+									whether OCI image is authentic.
+									"""
 								properties: {
 									matchOIDCIdentity: {
 										description: """
-	MatchOIDCIdentity specifies the identity matching criteria to use
-	while verifying an OCI artifact which was signed using Cosign keyless
-	signing. The artifact's identity is deemed to be verified if any of the
-	specified matchers match against the identity.
-	"""
+											MatchOIDCIdentity specifies the identity matching criteria to use
+											while verifying an OCI artifact which was signed using Cosign keyless
+											signing. The artifact's identity is deemed to be verified if any of the
+											specified matchers match against the identity.
+											"""
 										items: {
 											description: """
-	OIDCIdentityMatch specifies options for verifying the certificate identity,
-	i.e. the issuer and the subject of the certificate.
-	"""
+												OIDCIdentityMatch specifies options for verifying the certificate identity,
+												i.e. the issuer and the subject of the certificate.
+												"""
 											properties: {
 												issuer: {
 													description: """
-	Issuer specifies the regex pattern to match against to verify
-	the OIDC issuer in the Fulcio certificate. The pattern must be a
-	valid Go regular expression.
-	"""
+														Issuer specifies the regex pattern to match against to verify
+														the OIDC issuer in the Fulcio certificate. The pattern must be a
+														valid Go regular expression.
+														"""
 													type: "string"
 												}
 												subject: {
 													description: """
-	Subject specifies the regex pattern to match against to verify
-	the identity subject in the Fulcio certificate. The pattern must
-	be a valid Go regular expression.
-	"""
+														Subject specifies the regex pattern to match against to verify
+														the identity subject in the Fulcio certificate. The pattern must
+														be a valid Go regular expression.
+														"""
 													type: "string"
 												}
 											}
@@ -7962,33 +7962,33 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 									}
 									secretRef: {
 										description: """
-	SecretRef specifies the Kubernetes Secret containing the
-	trusted public keys.
-	"""
+											SecretRef specifies the Kubernetes Secret containing the
+											trusted public keys.
+											"""
 										properties: name: {
 											description: "Name of the referent."
 											type:        "string"
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 									trustedRootSecretRef: {
 										description: """
-	TrustedRootSecretRef specifies the Kubernetes Secret containing a
-	Sigstore trusted_root.json file. This enables verification against
-	self-hosted Sigstore infrastructure (custom Fulcio CA, self-hosted
-	Rekor instance). The Secret must contain a key named "trusted_root.json".
-	"""
+											TrustedRootSecretRef specifies the Kubernetes Secret containing a
+											Sigstore trusted_root.json file. This enables verification against
+											self-hosted Sigstore infrastructure (custom Fulcio CA, self-hosted
+											Rekor instance). The Secret must contain a key named "trusted_root.json".
+											"""
 										properties: name: {
 											description: "Name of the referent."
 											type:        "string"
 										}
 										required: ["name"]
-										type: "object"
+										type:     "object"
 									}
 								}
 								required: ["provider"]
-								type: "object"
+								type:     "object"
 							}
 						}
 						type: "object"
@@ -8007,9 +8007,9 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 									}
 									lastUpdateTime: {
 										description: """
-	LastUpdateTime is the timestamp corresponding to the last update of the
-	Artifact.
-	"""
+											LastUpdateTime is the timestamp corresponding to the last update of the
+											Artifact.
+											"""
 										format: "date-time"
 										type:   "string"
 									}
@@ -8020,17 +8020,17 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 									}
 									path: {
 										description: """
-	Path is the relative file path of the Artifact. It can be used to locate
-	the file in the root of the Artifact storage on the local file system of
-	the controller managing the Source.
-	"""
+											Path is the relative file path of the Artifact. It can be used to locate
+											the file in the root of the Artifact storage on the local file system of
+											the controller managing the Source.
+											"""
 										type: "string"
 									}
 									revision: {
 										description: """
-	Revision is a human-readable identifier traceable in the origin source
-	system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
-	"""
+											Revision is a human-readable identifier traceable in the origin source
+											system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
+											"""
 										type: "string"
 									}
 									size: {
@@ -8040,10 +8040,10 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 									}
 									url: {
 										description: """
-	URL is the HTTP address of the Artifact as exposed by the controller
-	managing the Source. It can be used to retrieve the Artifact for
-	consumption, e.g. by another controller applying the Artifact contents.
-	"""
+											URL is the HTTP address of the Artifact as exposed by the controller
+											managing the Source. It can be used to retrieve the Artifact for
+											consumption, e.g. by another controller applying the Artifact contents.
+											"""
 										type: "string"
 									}
 								}
@@ -8063,38 +8063,38 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -8112,7 +8112,7 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -8129,10 +8129,10 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							observedGeneration: {
@@ -8142,32 +8142,32 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 							}
 							observedIgnore: {
 								description: """
-	ObservedIgnore is the observed exclusion patterns used for constructing
-	the source artifact.
-	"""
+									ObservedIgnore is the observed exclusion patterns used for constructing
+									the source artifact.
+									"""
 								type: "string"
 							}
 							observedLayerSelector: {
 								description: """
-	ObservedLayerSelector is the observed layer selector used for constructing
-	the source artifact.
-	"""
+									ObservedLayerSelector is the observed layer selector used for constructing
+									the source artifact.
+									"""
 								properties: {
 									mediaType: {
 										description: """
-	MediaType specifies the OCI media type of the layer
-	which should be extracted from the OCI Artifact. The
-	first layer matching this type is selected.
-	"""
+											MediaType specifies the OCI media type of the layer
+											which should be extracted from the OCI Artifact. The
+											first layer matching this type is selected.
+											"""
 										type: "string"
 									}
 									operation: {
 										description: """
-	Operation specifies how the selected layer should be processed.
-	By default, the layer compressed content is extracted to storage.
-	When the operation is set to 'copy', the layer compressed content
-	is persisted to storage as it is.
-	"""
+											Operation specifies how the selected layer should be processed.
+											By default, the layer compressed content is extracted to storage.
+											When the operation is set to 'copy', the layer compressed content
+											is persisted to storage as it is.
+											"""
 										enum: [
 											"extract",
 											"copy",
@@ -8179,11 +8179,11 @@ customresourcedefinition: "ocirepositories.source.toolkit.fluxcd.io": {
 							}
 							sourceVerificationFingerprint: {
 								description: """
-	SourceVerificationFingerprint is the fingerprint of the verification
-	material used to verify the signature of the current Artifact. It is
-	used to detect changes to the verification policy, such as a key
-	rotation, that require the current revision to be verified again.
-	"""
+									SourceVerificationFingerprint is the fingerprint of the verification
+									material used to verify the signature of the current Artifact. It is
+									used to detect changes to the verification policy, such as a key
+									rotation, that require the current revision to be verified again.
+									"""
 								type: "string"
 							}
 							url: {
@@ -8245,21 +8245,21 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -8268,32 +8268,32 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 						properties: {
 							address: {
 								description: """
-	Address specifies the endpoint, in a generic sense, to where alerts are sent.
-	What kind of endpoint depends on the specific Provider type being used.
-	For the generic Provider, for example, this is an HTTP/S address.
-	For other Provider types this could be a project ID or a namespace.
-	"""
+									Address specifies the endpoint, in a generic sense, to where alerts are sent.
+									What kind of endpoint depends on the specific Provider type being used.
+									For the generic Provider, for example, this is an HTTP/S address.
+									For other Provider types this could be a project ID or a namespace.
+									"""
 								maxLength: 2048
 								type:      "string"
 							}
 							certSecretRef: {
 								description: """
-	CertSecretRef specifies the Secret containing TLS certificates
-	for secure communication.
+									CertSecretRef specifies the Secret containing TLS certificates
+									for secure communication.
 
-	Supported configurations:
-	- CA-only: Server authentication (provide ca.crt only)
-	- mTLS: Mutual authentication (provide ca.crt + tls.crt + tls.key)
-	- Client-only: Client authentication with system CA (provide tls.crt + tls.key only)
+									Supported configurations:
+									- CA-only: Server authentication (provide ca.crt only)
+									- mTLS: Mutual authentication (provide ca.crt + tls.crt + tls.key)
+									- Client-only: Client authentication with system CA (provide tls.crt + tls.key only)
 
-	Legacy keys "caFile", "certFile", "keyFile" are supported but deprecated. Use "ca.crt", "tls.crt", "tls.key" instead.
-	"""
+									Legacy keys "caFile", "certFile", "keyFile" are supported but deprecated. Use "ca.crt", "tls.crt", "tls.key" instead.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							channel: {
 								description: "Channel specifies the destination channel where events should be posted."
@@ -8302,69 +8302,69 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 							}
 							commitStatusExpr: {
 								description: """
-	CommitStatusExpr is a CEL expression that evaluates to a string value
-	that can be used to generate a custom commit status message for use
-	with eligible Provider types (github, gitlab, gitea, bitbucketserver,
-	bitbucket, azuredevops). Supported variables are: event, provider,
-	and alert.
-	"""
+									CommitStatusExpr is a CEL expression that evaluates to a string value
+									that can be used to generate a custom commit status message for use
+									with eligible Provider types (github, gitlab, gitea, bitbucketserver,
+									bitbucket, azuredevops). Supported variables are: event, provider,
+									and alert.
+									"""
 								type: "string"
 							}
 							proxySecretRef: {
 								description: """
-	ProxySecretRef specifies the Secret containing the proxy configuration
-	for this Provider. The Secret should contain an 'address' key with the
-	HTTP/S address of the proxy server. Optional 'username' and 'password'
-	keys can be provided for proxy authentication.
-	"""
+									ProxySecretRef specifies the Secret containing the proxy configuration
+									for this Provider. The Secret should contain an 'address' key with the
+									HTTP/S address of the proxy server. Optional 'username' and 'password'
+									keys can be provided for proxy authentication.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							secretRef: {
 								description: """
-	SecretRef specifies the Secret containing the authentication
-	credentials for this Provider.
-	"""
+									SecretRef specifies the Secret containing the authentication
+									credentials for this Provider.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							serviceAccountName: {
 								description: """
-	ServiceAccountName is the name of the Kubernetes ServiceAccount used to
-	authenticate with cloud provider services through object identity.
-	This enables multi-tenant authentication without storing static credentials.
+									ServiceAccountName is the name of the Kubernetes ServiceAccount used to
+									authenticate with cloud provider services through object identity.
+									This enables multi-tenant authentication without storing static credentials.
 
-	Supported provider types: azureeventhub, azuredevops, googlepubsub
+									Supported provider types: azureeventhub, azuredevops, googlepubsub
 
-	When specified, the controller will:
-	1. Create an OIDC token for the specified ServiceAccount
-	2. Exchange it for cloud provider credentials via STS
-	3. Use the obtained credentials for API authentication
+									When specified, the controller will:
+									1. Create an OIDC token for the specified ServiceAccount
+									2. Exchange it for cloud provider credentials via STS
+									3. Use the obtained credentials for API authentication
 
-	When unspecified, the controller's workload identity is used (single-tenant).
+									When unspecified, the controller's workload identity is used (single-tenant).
 
-	An error is thrown if static credentials are also defined in SecretRef.
-	"""
+									An error is thrown if static credentials are also defined in SecretRef.
+									"""
 								type: "string"
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend subsequent
-	events handling for this Provider.
-	"""
+									Suspend tells the controller to suspend subsequent
+									events handling for this Provider.
+									"""
 								type: "boolean"
 							}
 							timeout: {
 								description: "Timeout for sending alerts to the Provider."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								pattern:     #"^([0-9]+(\.[0-9]+)?(ms|s|m))+$"#
 								type:        "string"
 							}
 							type: {
@@ -8415,7 +8415,7 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 							}
 						}
 						required: ["type"]
-						type: "object"
+						type:     "object"
 						"x-kubernetes-validations": [{
 							message: "spec.commitStatusExpr is only supported for the 'github', 'gitlab', 'gitea', 'bitbucketserver', 'bitbucket', 'azuredevops' provider types"
 							rule:    "self.type == 'github' || self.type == 'gitlab' || self.type == 'gitea' || self.type == 'bitbucketserver' || self.type == 'bitbucket' || self.type == 'azuredevops' || !has(self.commitStatusExpr)"
@@ -8424,8 +8424,8 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 				}
 				type: "object"
 			}
-			served:  true
-			storage: true
+			served:       true
+			storage:      true
 			subresources: {}
 		}, {
 			additionalPrinterColumns: [{
@@ -8441,21 +8441,21 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -8464,32 +8464,32 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 						properties: {
 							address: {
 								description: """
-	Address specifies the endpoint, in a generic sense, to where alerts are sent.
-	What kind of endpoint depends on the specific Provider type being used.
-	For the generic Provider, for example, this is an HTTP/S address.
-	For other Provider types this could be a project ID or a namespace.
-	"""
+									Address specifies the endpoint, in a generic sense, to where alerts are sent.
+									What kind of endpoint depends on the specific Provider type being used.
+									For the generic Provider, for example, this is an HTTP/S address.
+									For other Provider types this could be a project ID or a namespace.
+									"""
 								maxLength: 2048
 								type:      "string"
 							}
 							certSecretRef: {
 								description: """
-	CertSecretRef specifies the Secret containing TLS certificates
-	for secure communication.
+									CertSecretRef specifies the Secret containing TLS certificates
+									for secure communication.
 
-	Supported configurations:
-	- CA-only: Server authentication (provide ca.crt only)
-	- mTLS: Mutual authentication (provide ca.crt + tls.crt + tls.key)
-	- Client-only: Client authentication with system CA (provide tls.crt + tls.key only)
+									Supported configurations:
+									- CA-only: Server authentication (provide ca.crt only)
+									- mTLS: Mutual authentication (provide ca.crt + tls.crt + tls.key)
+									- Client-only: Client authentication with system CA (provide tls.crt + tls.key only)
 
-	Legacy keys "caFile", "certFile", "keyFile" are supported but deprecated. Use "ca.crt", "tls.crt", "tls.key" instead.
-	"""
+									Legacy keys "caFile", "certFile", "keyFile" are supported but deprecated. Use "ca.crt", "tls.crt", "tls.key" instead.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							channel: {
 								description: "Channel specifies the destination channel where events should be posted."
@@ -8498,86 +8498,86 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 							}
 							commitStatusExpr: {
 								description: """
-	CommitStatusExpr is a CEL expression that evaluates to a string value
-	that can be used to generate a custom commit status message for use
-	with eligible Provider types (github, gitlab, gitea, bitbucketserver,
-	bitbucket, azuredevops). Supported variables are: event, provider,
-	and alert.
-	"""
+									CommitStatusExpr is a CEL expression that evaluates to a string value
+									that can be used to generate a custom commit status message for use
+									with eligible Provider types (github, gitlab, gitea, bitbucketserver,
+									bitbucket, azuredevops). Supported variables are: event, provider,
+									and alert.
+									"""
 								type: "string"
 							}
 							interval: {
 								description: """
-	Interval at which to reconcile the Provider with its Secret references.
-	Deprecated and not used in v1beta3.
-	"""
-								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+									Interval at which to reconcile the Provider with its Secret references.
+									Deprecated and not used in v1beta3.
+									"""
+								pattern: #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:    "string"
 							}
 							proxy: {
 								description: """
-	Proxy the HTTP/S address of the proxy server.
-	Deprecated: Use ProxySecretRef instead. Will be removed in v1.
-	"""
+									Proxy the HTTP/S address of the proxy server.
+									Deprecated: Use ProxySecretRef instead. Will be removed in v1.
+									"""
 								maxLength: 2048
 								pattern:   "^(http|https)://.*$"
 								type:      "string"
 							}
 							proxySecretRef: {
 								description: """
-	ProxySecretRef specifies the Secret containing the proxy configuration
-	for this Provider. The Secret should contain an 'address' key with the
-	HTTP/S address of the proxy server. Optional 'username' and 'password'
-	keys can be provided for proxy authentication.
-	"""
+									ProxySecretRef specifies the Secret containing the proxy configuration
+									for this Provider. The Secret should contain an 'address' key with the
+									HTTP/S address of the proxy server. Optional 'username' and 'password'
+									keys can be provided for proxy authentication.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							secretRef: {
 								description: """
-	SecretRef specifies the Secret containing the authentication
-	credentials for this Provider.
-	"""
+									SecretRef specifies the Secret containing the authentication
+									credentials for this Provider.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							serviceAccountName: {
 								description: """
-	ServiceAccountName is the name of the Kubernetes ServiceAccount used to
-	authenticate with cloud provider services through workload identity.
-	This enables multi-tenant authentication without storing static credentials.
+									ServiceAccountName is the name of the Kubernetes ServiceAccount used to
+									authenticate with cloud provider services through workload identity.
+									This enables multi-tenant authentication without storing static credentials.
 
-	Supported provider types: azureeventhub, azuredevops, googlepubsub
+									Supported provider types: azureeventhub, azuredevops, googlepubsub
 
-	When specified, the controller will:
-	1. Create an OIDC token for the specified ServiceAccount
-	2. Exchange it for cloud provider credentials via STS
-	3. Use the obtained credentials for API authentication
+									When specified, the controller will:
+									1. Create an OIDC token for the specified ServiceAccount
+									2. Exchange it for cloud provider credentials via STS
+									3. Use the obtained credentials for API authentication
 
-	When unspecified, controller-level authentication is used (single-tenant).
+									When unspecified, controller-level authentication is used (single-tenant).
 
-	An error is thrown if static credentials are also defined in SecretRef.
-	"""
+									An error is thrown if static credentials are also defined in SecretRef.
+									"""
 								type: "string"
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend subsequent
-	events handling for this Provider.
-	"""
+									Suspend tells the controller to suspend subsequent
+									events handling for this Provider.
+									"""
 								type: "boolean"
 							}
 							timeout: {
 								description: "Timeout for sending alerts to the Provider."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								pattern:     #"^([0-9]+(\.[0-9]+)?(ms|s|m))+$"#
 								type:        "string"
 							}
 							type: {
@@ -8627,7 +8627,7 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 							}
 						}
 						required: ["type"]
-						type: "object"
+						type:     "object"
 						"x-kubernetes-validations": [{
 							message: "spec.commitStatusExpr is only supported for the 'github', 'gitlab', 'gitea', 'bitbucketserver', 'bitbucket', 'azuredevops' provider types"
 							rule:    "self.type == 'github' || self.type == 'gitlab' || self.type == 'gitea' || self.type == 'bitbucketserver' || self.type == 'bitbucket' || self.type == 'azuredevops' || !has(self.commitStatusExpr)"
@@ -8636,8 +8636,8 @@ customresourcedefinition: "providers.notification.toolkit.fluxcd.io": {
 				}
 				type: "object"
 			}
-			served:  true
-			storage: false
+			served:       true
+			storage:      false
 			subresources: {}
 		}]
 	}
@@ -8672,11 +8672,11 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 				name:     "Age"
 				type:     "date"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].status"#
 				name:     "Ready"
 				type:     "string"
 			}, {
-				jsonPath: ".status.conditions[?(@.type==\"Ready\")].message"
+				jsonPath: #".status.conditions[?(@.type=="Ready")].message"#
 				name:     "Status"
 				type:     "string"
 			}]
@@ -8686,21 +8686,21 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 				properties: {
 					apiVersion: {
 						description: """
-	APIVersion defines the versioned schema of this representation of an object.
-	Servers should convert recognized schemas to the latest internal value, and
-	may reject unrecognized values.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-	"""
+							APIVersion defines the versioned schema of this representation of an object.
+							Servers should convert recognized schemas to the latest internal value, and
+							may reject unrecognized values.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+							"""
 						type: "string"
 					}
 					kind: {
 						description: """
-	Kind is a string value representing the REST resource this object represents.
-	Servers may infer this from the endpoint the client submits requests to.
-	Cannot be updated.
-	In CamelCase.
-	More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	"""
+							Kind is a string value representing the REST resource this object represents.
+							Servers may infer this from the endpoint the client submits requests to.
+							Cannot be updated.
+							In CamelCase.
+							More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+							"""
 						type: "string"
 					}
 					metadata: type: "object"
@@ -8709,64 +8709,64 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 						properties: {
 							events: {
 								description: """
-	Events specifies the list of event types to handle,
-	e.g. 'push' for GitHub or 'Push Hook' for GitLab.
-	"""
+									Events specifies the list of event types to handle,
+									e.g. 'push' for GitHub or 'Push Hook' for GitLab.
+									"""
 								items: type: "string"
 								type: "array"
 							}
 							interval: {
 								default:     "10m"
 								description: "Interval at which to reconcile the Receiver with its Secret references."
-								pattern:     "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								pattern:     #"^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$"#
 								type:        "string"
 							}
 							oidcProviders: {
 								description: """
-	OIDCProviders specifies the OIDC providers used to authenticate incoming
-	requests when Type is 'generic-oidc'. The provider whose IssuerURL matches
-	the token's 'iss' claim is used to verify the token signature, expiration
-	and audience, and to evaluate the configured CEL validations against the
-	token claims.
-	"""
+									OIDCProviders specifies the OIDC providers used to authenticate incoming
+									requests when Type is 'generic-oidc'. The provider whose IssuerURL matches
+									the token's 'iss' claim is used to verify the token signature, expiration
+									and audience, and to evaluate the configured CEL validations against the
+									token claims.
+									"""
 								items: {
 									description: """
-	OIDCProvider configures an OIDC issuer used to authenticate requests for a
-	'generic-oidc' Receiver.
-	"""
+										OIDCProvider configures an OIDC issuer used to authenticate requests for a
+										'generic-oidc' Receiver.
+										"""
 									properties: {
 										audience: {
 											description: """
-	Audience is the expected audience ('aud' claim) for tokens issued by
-	this provider. Defaults to 'notification-controller'.
-	"""
+												Audience is the expected audience ('aud' claim) for tokens issued by
+												this provider. Defaults to 'notification-controller'.
+												"""
 											type: "string"
 										}
 										issuerURL: {
 											description: """
-	IssuerURL is the OIDC issuer URL used for provider discovery. It must
-	match the 'iss' claim of tokens issued by this provider.
-	"""
+												IssuerURL is the OIDC issuer URL used for provider discovery. It must
+												match the 'iss' claim of tokens issued by this provider.
+												"""
 											pattern: "^https?://"
 											type:    "string"
 										}
 										validations: {
 											description: """
-	Validations is the list of CEL boolean expressions evaluated against the
-	token claims and the variables. The request is accepted only if all of
-	them evaluate to true; the message of each failing expression is returned
-	to the caller.
+												Validations is the list of CEL boolean expressions evaluated against the
+												token claims and the variables. The request is accepted only if all of
+												them evaluate to true; the message of each failing expression is returned
+												to the caller.
 
-	At least one validation is required. A valid signature alone does not
-	authorize a request: public issuers issue tokens to any caller on the
-	platform, so the validations must constrain the caller's identity claims
-	(e.g. 'repository_owner' for GitHub Actions).
-	"""
+												At least one validation is required. A valid signature alone does not
+												authorize a request: public issuers issue tokens to any caller on the
+												platform, so the validations must constrain the caller's identity claims
+												(e.g. 'repository_owner' for GitHub Actions).
+												"""
 											items: {
 												description: """
-	OIDCValidation is a CEL boolean expression evaluated against the OIDC token
-	claims and variables of a 'generic-oidc' Receiver.
-	"""
+													OIDCValidation is a CEL boolean expression evaluated against the OIDC token
+													claims and variables of a 'generic-oidc' Receiver.
+													"""
 												properties: {
 													expression: {
 														description: "Expression is the CEL boolean expression to evaluate."
@@ -8788,16 +8788,16 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 										}
 										variables: {
 											description: """
-	Variables is an optional list of named CEL expressions, evaluated in order
-	and exposed as 'vars.<name>'. Each expression can read the token claims
-	via 'claims' and any variable defined before it. Use it to share
-	sub-expressions across validations.
-	"""
+												Variables is an optional list of named CEL expressions, evaluated in order
+												and exposed as 'vars.<name>'. Each expression can read the token claims
+												via 'claims' and any variable defined before it. Use it to share
+												sub-expressions across validations.
+												"""
 											items: {
 												description: """
-	OIDCVariable is a named CEL expression evaluated against the OIDC token
-	claims of a 'generic-oidc' Receiver.
-	"""
+													OIDCVariable is a named CEL expression evaluated against the OIDC token
+													claims of a 'generic-oidc' Receiver.
+													"""
 												properties: {
 													expression: {
 														description: "Expression is the CEL expression that defines the variable value."
@@ -8823,32 +8823,32 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 									]
 									type: "object"
 								}
-								type: "array"
+								type:                         "array"
 								"x-kubernetes-list-map-keys": ["issuerURL"]
-								"x-kubernetes-list-type": "map"
+								"x-kubernetes-list-type":     "map"
 							}
 							resourceFilter: {
 								description: """
-	ResourceFilter is a CEL expression expected to return a boolean that is
-	evaluated for each resource referenced in the Resources field when a
-	webhook is received. If the expression returns false then the controller
-	will not request a reconciliation for the resource.
-	The expression can read the resource metadata via 'res' and the webhook
-	request body via 'req'. For generic-oidc receivers, the verified OIDC
-	token claims are also available via 'claims'.
-	When the expression is specified the controller will parse it and mark
-	the object as terminally failed if the expression is invalid or does not
-	return a boolean.
-	"""
+									ResourceFilter is a CEL expression expected to return a boolean that is
+									evaluated for each resource referenced in the Resources field when a
+									webhook is received. If the expression returns false then the controller
+									will not request a reconciliation for the resource.
+									The expression can read the resource metadata via 'res' and the webhook
+									request body via 'req'. For generic-oidc receivers, the verified OIDC
+									token claims are also available via 'claims'.
+									When the expression is specified the controller will parse it and mark
+									the object as terminally failed if the expression is invalid or does not
+									return a boolean.
+									"""
 								type: "string"
 							}
 							resources: {
 								description: "A list of resources to be notified about changes."
 								items: {
 									description: """
-	ReceiverResource references a resource to be notified about changes, with an
-	optional per-resource CEL filter.
-	"""
+										ReceiverResource references a resource to be notified about changes, with an
+										optional per-resource CEL filter.
+										"""
 									properties: {
 										apiVersion: {
 											description: "API version of the referent"
@@ -8856,17 +8856,17 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 										}
 										filter: {
 											description: """
-	Filter is a CEL expression expected to return a boolean that is evaluated
-	for each resource matched by this reference when a webhook is received,
-	in addition to the top-level resourceFilter. A reconciliation is requested
-	only when both expressions (when set) return true.
-	The expression can read the resource metadata via 'res' and the webhook
-	request body via 'req'. For generic-oidc receivers, the verified OIDC
-	token claims are also available via 'claims'.
-	When the expression is specified the controller will parse it and mark
-	the object as terminally failed if the expression is invalid or does not
-	return a boolean.
-	"""
+												Filter is a CEL expression expected to return a boolean that is evaluated
+												for each resource matched by this reference when a webhook is received,
+												in addition to the top-level resourceFilter. A reconciliation is requested
+												only when both expressions (when set) return true.
+												The expression can read the resource metadata via 'res' and the webhook
+												request body via 'req'. For generic-oidc receivers, the verified OIDC
+												token claims are also available via 'claims'.
+												When the expression is specified the controller will parse it and mark
+												the object as terminally failed if the expression is invalid or does not
+												return a boolean.
+												"""
 											type: "string"
 										}
 										kind: {
@@ -8890,18 +8890,18 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 										matchLabels: {
 											additionalProperties: type: "string"
 											description: """
-	MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
-	map is equivalent to an element of matchExpressions, whose key field is "key", the
-	operator is "In", and the values array contains only "value". The requirements are ANDed.
-	MatchLabels requires the name to be set to `*`.
-	"""
+												MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+												map is equivalent to an element of matchExpressions, whose key field is "key", the
+												operator is "In", and the values array contains only "value". The requirements are ANDed.
+												MatchLabels requires the name to be set to `*`.
+												"""
 											type: "object"
 										}
 										name: {
 											description: """
-	Name of the referent
-	If multiple resources are targeted `*` may be set.
-	"""
+												Name of the referent
+												If multiple resources are targeted `*` may be set.
+												"""
 											maxLength: 253
 											minLength: 1
 											type:      "string"
@@ -8923,34 +8923,34 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 							}
 							secretRef: {
 								description: """
-	SecretRef specifies the Secret containing the token used
-	to validate the payload authenticity. The Secret must contain a 'token'
-	key. For GCR receivers, the Secret must also contain an 'email' key
-	with the IAM service account email configured on the Pub/Sub push
-	subscription, and an 'audience' key with the expected OIDC token audience.
+									SecretRef specifies the Secret containing the token used
+									to validate the payload authenticity. The Secret must contain a 'token'
+									key. For GCR receivers, the Secret must also contain an 'email' key
+									with the IAM service account email configured on the Pub/Sub push
+									subscription, and an 'audience' key with the expected OIDC token audience.
 
-	Required for all receiver types except 'generic-oidc', which authenticates
-	requests using the OIDC token instead and must not set this field.
-	"""
+									Required for all receiver types except 'generic-oidc', which authenticates
+									requests using the OIDC token instead and must not set this field.
+									"""
 								properties: name: {
 									description: "Name of the referent."
 									type:        "string"
 								}
 								required: ["name"]
-								type: "object"
+								type:     "object"
 							}
 							suspend: {
 								description: """
-	Suspend tells the controller to suspend subsequent
-	events handling for this receiver.
-	"""
+									Suspend tells the controller to suspend subsequent
+									events handling for this receiver.
+									"""
 								type: "boolean"
 							}
 							type: {
 								description: """
-	Type of webhook sender, used to determine
-	the validation procedure and payload deserialization.
-	"""
+									Type of webhook sender, used to determine
+									the validation procedure and payload deserialization.
+									"""
 								enum: [
 									"generic",
 									"generic-hmac",
@@ -8999,38 +8999,38 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 									properties: {
 										lastTransitionTime: {
 											description: """
-	lastTransitionTime is the last time the condition transitioned from one status to another.
-	This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
-	"""
+												lastTransitionTime is the last time the condition transitioned from one status to another.
+												This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+												"""
 											format: "date-time"
 											type:   "string"
 										}
 										message: {
 											description: """
-	message is a human readable message indicating details about the transition.
-	This may be an empty string.
-	"""
+												message is a human readable message indicating details about the transition.
+												This may be an empty string.
+												"""
 											maxLength: 32768
 											type:      "string"
 										}
 										observedGeneration: {
 											description: """
-	observedGeneration represents the .metadata.generation that the condition was set based upon.
-	For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
-	with respect to the current state of the instance.
-	"""
+												observedGeneration represents the .metadata.generation that the condition was set based upon.
+												For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+												with respect to the current state of the instance.
+												"""
 											format:  "int64"
 											minimum: 0
 											type:    "integer"
 										}
 										reason: {
 											description: """
-	reason contains a programmatic identifier indicating the reason for the condition's last transition.
-	Producers of specific condition types may define expected values and meanings for this field,
-	and whether the values are considered a guaranteed API.
-	The value should be a CamelCase string.
-	This field may not be empty.
-	"""
+												reason contains a programmatic identifier indicating the reason for the condition's last transition.
+												Producers of specific condition types may define expected values and meanings for this field,
+												and whether the values are considered a guaranteed API.
+												The value should be a CamelCase string.
+												This field may not be empty.
+												"""
 											maxLength: 1024
 											minLength: 1
 											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
@@ -9048,7 +9048,7 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 										type: {
 											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
 											maxLength:   316
-											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											pattern:     #"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"#
 											type:        "string"
 										}
 									}
@@ -9065,10 +9065,10 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 							}
 							lastHandledReconcileAt: {
 								description: """
-	LastHandledReconcileAt holds the value of the most recent
-	reconcile request value, so a change of the annotation value
-	can be detected.
-	"""
+									LastHandledReconcileAt holds the value of the most recent
+									reconcile request value, so a change of the annotation value
+									can be detected.
+									"""
 								type: "string"
 							}
 							observedGeneration: {
@@ -9078,9 +9078,9 @@ customresourcedefinition: "receivers.notification.toolkit.fluxcd.io": {
 							}
 							webhookPath: {
 								description: """
-	WebhookPath is the generated incoming webhook address in the format
-	of '/hook/sha256sum(token+name+namespace)'.
-	"""
+									WebhookPath is the generated incoming webhook address in the format
+									of '/hook/sha256sum(token+name+namespace)'.
+									"""
 								type: "string"
 							}
 						}
