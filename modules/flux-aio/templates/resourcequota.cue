@@ -14,7 +14,7 @@ import (
 		scopeSelector: matchExpressions: [{
 			operator:  "In"
 			scopeName: "PriorityClass"
-			values: ["system-node-critical", "system-cluster-critical"]
+			values:    ["system-node-critical", "system-cluster-critical"]
 		}]
 	}
 }

@@ -26,18 +26,10 @@ import (
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
 	kind: "ArtifactGenerator"
 	metadata!: {
-		name!: strings.MaxRunes(253) & strings.MinRunes(1) & {
-			string
-		}
-		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {
-			string
-		}
-		labels?: {
-			[string]: string
-		}
-		annotations?: {
-			[string]: string
-		}
+		name!:      strings.MaxRunes(253) & strings.MinRunes(1) & {string}
+		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {string}
+		labels?: [string]:      string
+		annotations?: [string]: string
 	}
 
 	// ArtifactGeneratorSpec defines the desired state of ArtifactGenerator.
@@ -47,11 +39,11 @@ import (
 // ArtifactGeneratorSpec defines the desired state of ArtifactGenerator.
 #ArtifactGeneratorSpec: {
 	// OutputArtifacts is a list of output artifacts to be generated.
-	artifacts!: list.MaxItems(1000) & [...{
+	artifacts!: list.MaxItems(1000) & list.MinItems(1) & [...{
 		// Copy defines a list of copy operations to perform from the sources to the generated artifact.
 		// The copy operations are performed in the order they are listed with existing files
 		// being overwritten by later copy operations.
-		copy!: [...{
+		copy!: list.MinItems(1) & [...{
 			// Exclude specifies a list of glob patterns to exclude
 			// files and dirs matched by the 'From' field. Patterns are matched
 			// against paths relative to the source alias root or to the non-glob
@@ -62,9 +54,7 @@ import (
 			// From specifies the source (by alias) and the glob pattern to match files.
 			// The format is "@<alias>/<glob-pattern>". When pathPattern is set,
 			// the path may use capture placeholders such as "{app}".
-			from!: strings.MaxRunes(1024) & strings.MinRunes(1) & {
-				=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
-			}
+			from!: strings.MaxRunes(1024) & strings.MinRunes(1) & {=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"}
 
 			// Optional, when set to true, allows the copy operation to silently
 			// skip when the source path or glob pattern matches no files.
@@ -88,16 +78,14 @@ import (
 			to!: strings.MaxRunes(1024) & strings.MinRunes(1) & {
 				=~"^@artifact/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,})(/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,}))*$"
 			}
-		}] & [_, ...]
+		}]
 
 		// InputsFrom specifies a source path to a YAML file whose contents are
 		// exported in the ExternalArtifact .status.exportedInputs field.
 		// The format is "@<alias>/<path>", where <alias> references a source or
 		// "artifact" for the generated artifact itself. When pathPattern is set,
 		// the path may use capture placeholders such as "{module}".
-		inputsFrom?: strings.MaxRunes(1024) & strings.MinRunes(1) & {
-			=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
-		}
+		inputsFrom?: strings.MaxRunes(1024) & strings.MinRunes(1) & {=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"}
 
 		// Name is the name of the generated artifact.
 		// When pathPattern is set, this field may use capture placeholders such as "{app}".
@@ -122,31 +110,23 @@ import (
 		// If the referenced source has an origin revision (e.g. a Git commit SHA),
 		// it will be used to set the annotation on the generated artifact.
 		// If the referenced source does not have an origin revision, the field is ignored.
-		originRevision?: strings.MaxRunes(64) & {
-			=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"
-		}
+		originRevision?: strings.MaxRunes(64) & {=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"}
 
 		// Revision is the revision of the generated artifact.
 		// If specified, it must point to an existing source alias in the format "@<alias>".
 		// If not specified, the revision is automatically set to the digest of the artifact content.
-		revision?: strings.MaxRunes(64) & {
-			=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"
-		}
-	}] & [_, ...]
+		revision?: strings.MaxRunes(64) & {=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"}
+	}]
 
 	// CommonMetadata specifies the common labels and annotations that are
 	// applied to all resources. Any existing label or annotation will be
 	// overridden if its key matches a common one.
 	commonMetadata?: {
 		// Annotations to be added to the object's metadata.
-		annotations?: {
-			[string]: string
-		}
+		annotations?: [string]: string
 
 		// Labels to be added to the object's metadata.
-		labels?: {
-			[string]: string
-		}
+		labels?: [string]: string
 	}
 
 	// ManagedNamespaces defines how the controller manages the namespaces
@@ -160,7 +140,7 @@ import (
 		// expression returns true. The 'default', 'kube-system', 'kube-public'
 		// and 'flux-system' namespaces are always rejected, regardless of the
 		// expressions.
-		allowedNames!: [...string] & [_, ...]
+		allowedNames!: list.MinItems(1) & [...string]
 
 		// Metadata defines how the metadata of the desired namespaces is built,
 		// on top of .spec.commonMetadata.
@@ -169,20 +149,14 @@ import (
 			// namespaces, on top of .spec.commonMetadata and .fromSource.
 			from?: [...{
 				// Annotations to be applied to the namespace.
-				annotations?: {
-					[string]: string
-				}
+				annotations?: [string]: string
 
 				// Labels to be applied to the namespace.
-				labels?: {
-					[string]: string
-				}
+				labels?: [string]: string
 
 				// Namespace is the name of the desired namespace the metadata applies to,
 				// or '*' to apply the metadata to all desired namespaces.
-				namespace!: strings.MaxRunes(63) & {
-					=~"^(\\*|[a-z0-9]([-a-z0-9]*[a-z0-9])?)$"
-				}
+				namespace!: strings.MaxRunes(63) & {=~"^(\\*|[a-z0-9]([-a-z0-9]*[a-z0-9])?)$"}
 
 				// Strategy specifies how the labels and annotations are applied.
 				// 'Reset' clears all the existing labels and annotations before applying
@@ -206,9 +180,7 @@ import (
 				// The expressions are compiled, so a malformed expression or one that
 				// does not return a boolean fails validation at the start of the
 				// reconciliation.
-				allowedAnnotations?: {
-					[string]: string
-				}
+				allowedAnnotations?: [string]: string
 
 				// AllowedLabels is a schema for the labels that the NamespaceMetadata
 				// file is allowed to set. Each key is a label key and each value is a
@@ -219,18 +191,14 @@ import (
 				// The expressions are compiled, so a malformed expression or one that
 				// does not return a boolean fails validation at the start of the
 				// reconciliation.
-				allowedLabels?: {
-					[string]: string
-				}
+				allowedLabels?: [string]: string
 
 				// Path is the path to the NamespaceMetadata file inside a source artifact,
 				// in the format "@<alias>/<path>". When pathPattern is set, the path may
 				// use capture placeholders such as "{namespace}". Only namespace-level
 				// captures are allowed, so that every artifact targeting a namespace
 				// resolves to the same file.
-				path!: strings.MaxRunes(1024) & strings.MinRunes(1) & {
-					=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
-				}
+				path!: strings.MaxRunes(1024) & strings.MinRunes(1) & {=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"}
 			}
 		}
 
@@ -243,9 +211,7 @@ import (
 	// PathPattern specifies a directory traversal pattern to match within the sources.
 	// The format is "@<alias>/<pattern>". Named captures in the pattern (e.g. "{app}")
 	// can be used as placeholders in OutputArtifacts fields.
-	pathPattern?: strings.MaxRunes(1024) & {
-		=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
-	}
+	pathPattern?: strings.MaxRunes(1024) & {=~"^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"}
 
 	// ServiceAccountName is the name of the ServiceAccount used to authorize
 	// the reconciliation of the generated ExternalArtifacts and the managed
@@ -264,378 +230,340 @@ import (
 	// --default-service-account flag must be set; otherwise the reconciliation
 	// fails with a terminal error. The controller performs the namespace
 	// operations with its own credentials.
-	serviceAccountName?: strings.MaxRunes(63) & strings.MinRunes(1) & {
-		=~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
-	}
+	serviceAccountName?: strings.MaxRunes(63) & strings.MinRunes(1) & {=~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"}
 
 	// Sources is a list of references to the Flux source-controller
 	// resources that will be used to generate the artifact.
-	sources!: list.MaxItems(1000) & [...{
+	sources!: list.MaxItems(1000) & list.MinItems(1) & [...{
 		// Alias of the source within the ArtifactGenerator context.
 		// The alias must be unique per ArtifactGenerator, and must consist
 		// of lower case alphanumeric characters, underscores, and hyphens.
 		// It must start and end with an alphanumeric character.
-		alias!: strings.MaxRunes(63) & {
-			=~"^[a-z0-9]([a-z0-9_-]*[a-z0-9])?$"
-		}
+		alias!: strings.MaxRunes(63) & {=~"^[a-z0-9]([a-z0-9_-]*[a-z0-9])?$"}
 
 		// Kind of the source.
 		kind!: "Bucket" | "GitRepository" | "OCIRepository" | "HelmChart" | "ExternalArtifact"
 
 		// Name of the source.
-		name!: strings.MaxRunes(253) & {
-			=~"^[a-z0-9]([a-z0-9-]*[a-z0-9])?$"
-		}
+		name!: strings.MaxRunes(253) & {=~"^[a-z0-9]([a-z0-9-]*[a-z0-9])?$"}
 
 		// Namespace of the source.
 		// If not provided, defaults to the same namespace as the ArtifactGenerator.
-		namespace?: strings.MaxRunes(63) & strings.MinRunes(1) & {
-			=~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
-		}
-	}] & [_, ...]
+		namespace?: strings.MaxRunes(63) & strings.MinRunes(1) & {=~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"}
+	}]
 }
 
 // Original CRD used by 'timoni mod vet' for validation.
 _crd: {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
-	metadata: {
-		name: "artifactgenerators.source.extensions.fluxcd.io"
-	}
+	metadata: name: "artifactgenerators.source.extensions.fluxcd.io"
 	spec: {
 		group: "source.extensions.fluxcd.io"
 		names: {
 			categories: ["all", "fluxcd", "fluxcd-sources"]
-			kind:     "ArtifactGenerator"
-			listKind: "ArtifactGeneratorList"
-			plural:   "artifactgenerators"
+			kind:       "ArtifactGenerator"
+			listKind:   "ArtifactGeneratorList"
+			plural:     "artifactgenerators"
 			shortNames: ["ag"]
-			singular: "artifactgenerator"
+			singular:   "artifactgenerator"
 		}
 		scope: "Namespaced"
 		versions: [{
 			name:    "v1beta1"
 			served:  true
 			storage: true
-			schema: {
-				openAPIV3Schema: {
-					properties: {
-						apiVersion: {
-							type: "string"
-						}
-						kind: {
-							type: "string"
-						}
-						metadata: {
-							type: "object"
-						}
-						spec: {
-							properties: {
-								artifacts: {
-									items: {
-										properties: {
-											copy: {
-												items: {
-													properties: {
-														exclude: {
-															items: {
-																maxLength: 1024
-																type:      "string"
-															}
-															maxItems: 100
-															type:     "array"
-														}
-														from: {
-															maxLength: 1024
-															minLength: 1
-															pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
-															type:      "string"
-														}
-														optional: {
-															type: "boolean"
-														}
-														strategy: {
-															enum: ["Overwrite", "Merge", "Extract"]
-															type: "string"
-														}
-														to: {
-															maxLength: 1024
-															minLength: 1
-															pattern:   "^@artifact/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,})(/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,}))*$"
-															type:      "string"
-														}
-													}
-													required: ["from", "to"]
-													type: "object"
-												}
-												minItems: 1
-												type:     "array"
-											}
-											inputsFrom: {
-												maxLength: 1024
-												minLength: 1
-												pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
-												type:      "string"
-											}
-											name: {
-												maxLength: 1024
-												type:      "string"
-											}
-											namespace: {
-												maxLength: 1024
-												type:      "string"
-											}
-											originRevision: {
-												maxLength: 64
-												pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"
-												type:      "string"
-											}
-											revision: {
-												maxLength: 64
-												pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"
-												type:      "string"
-											}
-										}
-										required: ["copy", "name"]
-										type: "object"
-									}
-									maxItems: 1000
-									minItems: 1
-									type:     "array"
-								}
-								commonMetadata: {
+			schema: openAPIV3Schema: {
+				properties: {
+					apiVersion: type: "string"
+					kind: type:       "string"
+					metadata: type:   "object"
+					spec: {
+						properties: {
+							artifacts: {
+								items: {
 									properties: {
-										annotations: {
-											additionalProperties: {
-												type: "string"
-											}
-											type: "object"
-										}
-										labels: {
-											additionalProperties: {
-												type: "string"
-											}
-											type: "object"
-										}
-									}
-									type: "object"
-								}
-								managedNamespaces: {
-									properties: {
-										allowedNames: {
+										copy: {
 											items: {
-												type: "string"
+												properties: {
+													exclude: {
+														items: {
+															maxLength: 1024
+															type:      "string"
+														}
+														maxItems: 100
+														type:     "array"
+													}
+													from: {
+														maxLength: 1024
+														minLength: 1
+														pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
+														type:      "string"
+													}
+													optional: type: "boolean"
+													strategy: {
+														enum: ["Overwrite", "Merge", "Extract"]
+														type: "string"
+													}
+													to: {
+														maxLength: 1024
+														minLength: 1
+														pattern:
+															"^@artifact/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,})(/([^/]{0,1}|[^./][^/]|[.][^./]|[^/]{3,}))*$"
+														type: "string"
+													}
+												}
+												required: ["from", "to"]
+												type:     "object"
 											}
 											minItems: 1
 											type:     "array"
 										}
-										metadata: {
-											properties: {
-												from: {
-													items: {
-														properties: {
-															annotations: {
-																additionalProperties: {
-																	type: "string"
-																}
-																type: "object"
-															}
-															labels: {
-																additionalProperties: {
-																	type: "string"
-																}
-																type: "object"
-															}
-															namespace: {
-																maxLength: 63
-																pattern:   "^(\\*|[a-z0-9]([-a-z0-9]*[a-z0-9])?)$"
-																type:      "string"
-															}
-															strategy: {
-																enum: ["Reset", "Override", "Merge"]
-																type: "string"
-															}
-														}
-														required: ["namespace", "strategy"]
-														type: "object"
-													}
-													type: "array"
-												}
-												fromSource: {
+										inputsFrom: {
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
+											type:      "string"
+										}
+										name: {
+											maxLength: 1024
+											type:      "string"
+										}
+										namespace: {
+											maxLength: 1024
+											type:      "string"
+										}
+										originRevision: {
+											maxLength: 64
+											pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"
+											type:      "string"
+										}
+										revision: {
+											maxLength: 64
+											pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)$"
+											type:      "string"
+										}
+									}
+									required: ["copy", "name"]
+									type:     "object"
+								}
+								maxItems: 1000
+								minItems: 1
+								type:     "array"
+							}
+							commonMetadata: {
+								properties: {
+									annotations: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+									labels: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+								}
+								type: "object"
+							}
+							managedNamespaces: {
+								properties: {
+									allowedNames: {
+										items: type: "string"
+										minItems: 1
+										type:     "array"
+									}
+									metadata: {
+										properties: {
+											from: {
+												items: {
 													properties: {
-														allowedAnnotations: {
-															additionalProperties: {
-																type: "string"
-															}
+														annotations: {
+															additionalProperties: type: "string"
 															type: "object"
 														}
-														allowedLabels: {
-															additionalProperties: {
-																type: "string"
-															}
+														labels: {
+															additionalProperties: type: "string"
 															type: "object"
 														}
-														path: {
-															maxLength: 1024
-															minLength: 1
-															pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
+														namespace: {
+															maxLength: 63
+															pattern:   "^(\\*|[a-z0-9]([-a-z0-9]*[a-z0-9])?)$"
 															type:      "string"
 														}
+														strategy: {
+															enum: ["Reset", "Override", "Merge"]
+															type: "string"
+														}
 													}
-													required: ["path"]
-													type: "object"
-													"x-kubernetes-validations": [{
-														message: "at least one annotation or label must be set"
-														rule:    "(has(self.allowedAnnotations) && size(self.allowedAnnotations) > 0) || (has(self.allowedLabels) && size(self.allowedLabels) > 0)"
-													}]
+													required: ["namespace", "strategy"]
+													type:     "object"
 												}
+												type: "array"
 											}
-											type: "object"
-											"x-kubernetes-validations": [{
-												message: "either fromSource or at least one from operation must be set"
-												rule:    "has(self.fromSource) || (has(self.from) && size(self.from) > 0)"
-											}]
-										}
-										prune: {
-											type: "boolean"
-										}
-									}
-									required: ["allowedNames", "prune"]
-									type: "object"
-								}
-								pathPattern: {
-									maxLength: 1024
-									pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
-									type:      "string"
-								}
-								serviceAccountName: {
-									maxLength: 63
-									minLength: 1
-									pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
-									type:      "string"
-								}
-								sources: {
-									items: {
-										properties: {
-											alias: {
-												maxLength: 63
-												pattern:   "^[a-z0-9]([a-z0-9_-]*[a-z0-9])?$"
-												type:      "string"
-											}
-											kind: {
-												enum: ["Bucket", "GitRepository", "OCIRepository", "HelmChart", "ExternalArtifact"]
-												type: "string"
-											}
-											name: {
-												maxLength: 253
-												pattern:   "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$"
-												type:      "string"
-											}
-											namespace: {
-												maxLength: 63
-												minLength: 1
-												pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
-												type:      "string"
+											fromSource: {
+												properties: {
+													allowedAnnotations: {
+														additionalProperties: type: "string"
+														type: "object"
+													}
+													allowedLabels: {
+														additionalProperties: type: "string"
+														type: "object"
+													}
+													path: {
+														maxLength: 1024
+														minLength: 1
+														pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
+														type:      "string"
+													}
+												}
+												required: ["path"]
+												type:     "object"
+												"x-kubernetes-validations": [{
+													message: "at least one annotation or label must be set"
+													rule:
+														"(has(self.allowedAnnotations) && size(self.allowedAnnotations) > 0) || (has(self.allowedLabels) && size(self.allowedLabels) > 0)"
+												}]
 											}
 										}
-										required: ["alias", "kind", "name"]
 										type: "object"
+										"x-kubernetes-validations": [{
+											message: "either fromSource or at least one from operation must be set"
+											rule:    "has(self.fromSource) || (has(self.from) && size(self.from) > 0)"
+										}]
 									}
-									maxItems: 1000
-									minItems: 1
-									type:     "array"
+									prune: type: "boolean"
 								}
+								required: ["allowedNames", "prune"]
+								type:     "object"
 							}
-							required: ["artifacts", "sources"]
-							type: "object"
-							"x-kubernetes-validations": [{
-								message: "artifact names must be valid Kubernetes object names when pathPattern is not set"
-								rule:    "has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, a.name.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$') && a.name.size() <= 253)"
-							}, {
-								message: "artifact namespaces must be valid Kubernetes namespaces when pathPattern is not set"
-								rule:    "has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, !has(a.__namespace__) || (a.__namespace__.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?$') && a.__namespace__.size() <= 63))"
-							}]
-						}
-						status: {
-							properties: {
-								conditions: {
-									items: {
-										properties: {
-											lastTransitionTime: {
-												format: "date-time"
-												type:   "string"
-											}
-											message: {
-												maxLength: 32768
-												type:      "string"
-											}
-											observedGeneration: {
-												format:  "int64"
-												minimum: 0
-												type:    "integer"
-											}
-											reason: {
-												maxLength: 1024
-												minLength: 1
-												pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
-												type:      "string"
-											}
-											status: {
-												enum: ["True", "False", "Unknown"]
-												type: "string"
-											}
-											type: {
-												maxLength: 316
-												pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-												type:      "string"
-											}
-										}
-										required: ["lastTransitionTime", "message", "reason", "status", "type"]
-										type: "object"
-									}
-									type: "array"
-								}
-								inventory: {
-									items: {
-										properties: {
-											digest: {
-												type: "string"
-											}
-											filename: {
-												type: "string"
-											}
-											kind: {
-												enum: ["ExternalArtifact", "Namespace"]
-												type: "string"
-											}
-											name: {
-												type: "string"
-											}
-											namespace: {
-												type: "string"
-											}
-										}
-										required: ["digest", "name"]
-										type: "object"
-									}
-									type: "array"
-								}
-								lastHandledReconcileAt: {
-									type: "string"
-								}
-								observedSourcesDigest: {
-									type: "string"
-								}
+							pathPattern: {
+								maxLength: 1024
+								pattern:   "^@([a-z0-9]([a-z0-9_-]*[a-z0-9])?)/(.*)$"
+								type:      "string"
 							}
-							type: "object"
+							serviceAccountName: {
+								maxLength: 63
+								minLength: 1
+								pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+								type:      "string"
+							}
+							sources: {
+								items: {
+									properties: {
+										alias: {
+											maxLength: 63
+											pattern:   "^[a-z0-9]([a-z0-9_-]*[a-z0-9])?$"
+											type:      "string"
+										}
+										kind: {
+											enum: [
+												"Bucket",
+												"GitRepository",
+												"OCIRepository",
+												"HelmChart",
+												"ExternalArtifact",
+											]
+											type: "string"
+										}
+										name: {
+											maxLength: 253
+											pattern:   "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$"
+											type:      "string"
+										}
+										namespace: {
+											maxLength: 63
+											minLength: 1
+											pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+											type:      "string"
+										}
+									}
+									required: ["alias", "kind", "name"]
+									type:     "object"
+								}
+								maxItems: 1000
+								minItems: 1
+								type:     "array"
+							}
 						}
+						required: ["artifacts", "sources"]
+						type:     "object"
+						"x-kubernetes-validations": [{
+							message: "artifact names must be valid Kubernetes object names when pathPattern is not set"
+							rule:
+								"has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, a.name.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$') && a.name.size() <= 253)"
+						}, {
+							message:
+								"artifact namespaces must be valid Kubernetes namespaces when pathPattern is not set"
+							rule:
+								"has(self.pathPattern) && size(self.pathPattern) > 0 || self.artifacts.all(a, !has(a.__namespace__) || (a.__namespace__.matches('^[a-z0-9]([-a-z0-9]*[a-z0-9])?$') && a.__namespace__.size() <= 63))"
+						}]
 					}
-					type: "object"
+					status: {
+						properties: {
+							conditions: {
+								items: {
+									properties: {
+										lastTransitionTime: {
+											format: "date-time"
+											type:   "string"
+										}
+										message: {
+											maxLength: 32768
+											type:      "string"
+										}
+										observedGeneration: {
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											enum: ["True", "False", "Unknown"]
+											type: "string"
+										}
+										type: {
+											maxLength: 316
+											pattern:
+												"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type: "string"
+										}
+									}
+									required: ["lastTransitionTime", "message", "reason", "status", "type"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							inventory: {
+								items: {
+									properties: {
+										digest: type:   "string"
+										filename: type: "string"
+										kind: {
+											enum: ["ExternalArtifact", "Namespace"]
+											type: "string"
+										}
+										name: type:      "string"
+										namespace: type: "string"
+									}
+									required: ["digest", "name"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							lastHandledReconcileAt: type: "string"
+							observedSourcesDigest: type:  "string"
+						}
+						type: "object"
+					}
 				}
+				type: "object"
 			}
-			subresources: {
-				status: {}
-			}
+			subresources: status: {}
 		}]
 	}
 }

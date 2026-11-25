@@ -23,18 +23,10 @@ import "strings"
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
 	kind: "OCIRepository"
 	metadata!: {
-		name!: strings.MaxRunes(253) & strings.MinRunes(1) & {
-			string
-		}
-		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {
-			string
-		}
-		labels?: {
-			[string]: string
-		}
-		annotations?: {
-			[string]: string
-		}
+		name!:      strings.MaxRunes(253) & strings.MinRunes(1) & {string}
+		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {string}
+		labels?: [string]:      string
+		annotations?: [string]: string
 	}
 
 	// OCIRepositorySpec defines the desired state of OCIRepository
@@ -162,289 +154,216 @@ import "strings"
 _crd: {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
-	metadata: {
-		name: "ocirepositories.source.toolkit.fluxcd.io"
-	}
+	metadata: name: "ocirepositories.source.toolkit.fluxcd.io"
 	spec: {
 		group: "source.toolkit.fluxcd.io"
 		names: {
 			categories: ["all", "fluxcd", "fluxcd-sources"]
-			kind:     "OCIRepository"
-			listKind: "OCIRepositoryList"
-			plural:   "ocirepositories"
+			kind:       "OCIRepository"
+			listKind:   "OCIRepositoryList"
+			plural:     "ocirepositories"
 			shortNames: ["ocirepo"]
-			singular: "ocirepository"
+			singular:   "ocirepository"
 		}
 		scope: "Namespaced"
 		versions: [{
 			name:    "v1"
 			served:  true
 			storage: true
-			schema: {
-				openAPIV3Schema: {
-					properties: {
-						apiVersion: {
-							type: "string"
-						}
-						kind: {
-							type: "string"
-						}
-						metadata: {
-							type: "object"
-						}
-						spec: {
-							properties: {
-								certSecretRef: {
-									properties: {
-										name: {
-											type: "string"
-										}
-									}
-									required: ["name"]
-									type: "object"
-								}
-								ignore: {
-									type: "string"
-								}
-								insecure: {
-									type: "boolean"
-								}
-								interval: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-									type:    "string"
-								}
-								layerSelector: {
-									properties: {
-										mediaType: {
-											type: "string"
-										}
-										operation: {
-											enum: ["extract", "copy"]
-											type: "string"
-										}
-									}
-									type: "object"
-								}
-								provider: {
-									enum: ["generic", "aws", "azure", "gcp"]
-									type: "string"
-								}
-								proxySecretRef: {
-									properties: {
-										name: {
-											type: "string"
-										}
-									}
-									required: ["name"]
-									type: "object"
-								}
-								ref: {
-									properties: {
-										digest: {
-											type: "string"
-										}
-										semver: {
-											type: "string"
-										}
-										semverFilter: {
-											type: "string"
-										}
-										tag: {
-											type: "string"
-										}
-									}
-									type: "object"
-								}
-								secretRef: {
-									properties: {
-										name: {
-											type: "string"
-										}
-									}
-									required: ["name"]
-									type: "object"
-								}
-								serviceAccountName: {
-									type: "string"
-								}
-								suspend: {
-									type: "boolean"
-								}
-								timeout: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
-									type:    "string"
-								}
-								url: {
-									pattern: "^oci://.*$"
-									type:    "string"
-								}
-								verify: {
-									properties: {
-										matchOIDCIdentity: {
-											items: {
-												properties: {
-													issuer: {
-														type: "string"
-													}
-													subject: {
-														type: "string"
-													}
-												}
-												required: ["issuer", "subject"]
-												type: "object"
-											}
-											type: "array"
-										}
-										provider: {
-											default: "cosign"
-											enum: ["cosign", "notation"]
-											type: "string"
-										}
-										secretRef: {
-											properties: {
-												name: {
-													type: "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-										}
-										trustedRootSecretRef: {
-											properties: {
-												name: {
-													type: "string"
-												}
-											}
-											required: ["name"]
-											type: "object"
-										}
-									}
-									required: ["provider"]
-									type: "object"
-								}
+			schema: openAPIV3Schema: {
+				properties: {
+					apiVersion: type: "string"
+					kind: type:       "string"
+					metadata: type:   "object"
+					spec: {
+						properties: {
+							certSecretRef: {
+								properties: name: type: "string"
+								required: ["name"]
+								type:     "object"
 							}
-							type: "object"
-						}
-						status: {
-							default: {
-								observedGeneration: -1
+							ignore: type:   "string"
+							insecure: type: "boolean"
+							interval: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
 							}
-							properties: {
-								artifact: {
-									properties: {
-										digest: {
-											pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
-											type:    "string"
+							layerSelector: {
+								properties: {
+									mediaType: type: "string"
+									operation: {
+										enum: ["extract", "copy"]
+										type: "string"
+									}
+								}
+								type: "object"
+							}
+							provider: {
+								enum: ["generic", "aws", "azure", "gcp"]
+								type: "string"
+							}
+							proxySecretRef: {
+								properties: name: type: "string"
+								required: ["name"]
+								type:     "object"
+							}
+							ref: {
+								properties: {
+									digest: type:       "string"
+									semver: type:       "string"
+									semverFilter: type: "string"
+									tag: type:          "string"
+								}
+								type: "object"
+							}
+							secretRef: {
+								properties: name: type: "string"
+								required: ["name"]
+								type:     "object"
+							}
+							serviceAccountName: type: "string"
+							suspend: type:            "boolean"
+							timeout: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								type:    "string"
+							}
+							url: {
+								pattern: "^oci://.*$"
+								type:    "string"
+							}
+							verify: {
+								properties: {
+									matchOIDCIdentity: {
+										items: {
+											properties: {
+												issuer: type:  "string"
+												subject: type: "string"
+											}
+											required: ["issuer", "subject"]
+											type:     "object"
 										}
-										lastUpdateTime: {
+										type: "array"
+									}
+									provider: {
+										default: "cosign"
+										enum:    ["cosign", "notation"]
+										type:    "string"
+									}
+									secretRef: {
+										properties: name: type: "string"
+										required: ["name"]
+										type:     "object"
+									}
+									trustedRootSecretRef: {
+										properties: name: type: "string"
+										required: ["name"]
+										type:     "object"
+									}
+								}
+								required: ["provider"]
+								type:     "object"
+							}
+						}
+						type: "object"
+					}
+					status: {
+						default: observedGeneration: -1
+						properties: {
+							artifact: {
+								properties: {
+									digest: {
+										pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
+										type:    "string"
+									}
+									lastUpdateTime: {
+										format: "date-time"
+										type:   "string"
+									}
+									metadata: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+									path: type:     "string"
+									revision: type: "string"
+									size: {
+										format: "int64"
+										type:   "integer"
+									}
+									url: type: "string"
+								}
+								required: ["digest", "lastUpdateTime", "path", "revision", "url"]
+								type:     "object"
+							}
+							conditions: {
+								items: {
+									properties: {
+										lastTransitionTime: {
 											format: "date-time"
 											type:   "string"
 										}
-										metadata: {
-											additionalProperties: {
-												type: "string"
-											}
-											type: "object"
+										message: {
+											maxLength: 32768
+											type:      "string"
 										}
-										path: {
+										observedGeneration: {
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											enum: ["True", "False", "Unknown"]
 											type: "string"
 										}
-										revision: {
-											type: "string"
-										}
-										size: {
-											format: "int64"
-											type:   "integer"
-										}
-										url: {
-											type: "string"
-										}
-									}
-									required: ["digest", "lastUpdateTime", "path", "revision", "url"]
-									type: "object"
-								}
-								conditions: {
-									items: {
-										properties: {
-											lastTransitionTime: {
-												format: "date-time"
-												type:   "string"
-											}
-											message: {
-												maxLength: 32768
-												type:      "string"
-											}
-											observedGeneration: {
-												format:  "int64"
-												minimum: 0
-												type:    "integer"
-											}
-											reason: {
-												maxLength: 1024
-												minLength: 1
-												pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
-												type:      "string"
-											}
-											status: {
-												enum: ["True", "False", "Unknown"]
-												type: "string"
-											}
-											type: {
-												maxLength: 316
-												pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-												type:      "string"
-											}
-										}
-										required: ["lastTransitionTime", "message", "reason", "status", "type"]
-										type: "object"
-									}
-									type: "array"
-								}
-								lastHandledReconcileAt: {
-									type: "string"
-								}
-								observedGeneration: {
-									format: "int64"
-									type:   "integer"
-								}
-								observedIgnore: {
-									type: "string"
-								}
-								observedLayerSelector: {
-									properties: {
-										mediaType: {
-											type: "string"
-										}
-										operation: {
-											enum: ["extract", "copy"]
+										type: {
+											maxLength: 316
+											pattern:
+												"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
 											type: "string"
 										}
 									}
-									type: "object"
+									required: ["lastTransitionTime", "message", "reason", "status", "type"]
+									type:     "object"
 								}
-								sourceVerificationFingerprint: {
-									type: "string"
-								}
-								url: {
-									type: "string"
-								}
+								type: "array"
 							}
-							type: "object"
+							lastHandledReconcileAt: type: "string"
+							observedGeneration: {
+								format: "int64"
+								type:   "integer"
+							}
+							observedIgnore: type: "string"
+							observedLayerSelector: {
+								properties: {
+									mediaType: type: "string"
+									operation: {
+										enum: ["extract", "copy"]
+										type: "string"
+									}
+								}
+								type: "object"
+							}
+							sourceVerificationFingerprint: type: "string"
+							url: type:                           "string"
 						}
+						type: "object"
 					}
-					type: "object"
-					"x-kubernetes-validations": [{
-						message: "spec.url is required"
-						rule:    "has(self.spec) && has(self.spec.url)"
-					}, {
-						message: "spec.interval is required"
-						rule:    "has(self.spec) && has(self.spec.interval)"
-					}]
 				}
+				type: "object"
+				"x-kubernetes-validations": [{
+					message: "spec.url is required"
+					rule:    "has(self.spec) && has(self.spec.url)"
+				}, {
+					message: "spec.interval is required"
+					rule:    "has(self.spec) && has(self.spec.interval)"
+				}]
 			}
-			subresources: {
-				status: {}
-			}
+			subresources: status: {}
 		}]
 	}
 }

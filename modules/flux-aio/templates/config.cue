@@ -119,7 +119,7 @@ import (
 		allowPrivilegeEscalation: false
 		readOnlyRootFilesystem:   true
 		runAsNonRoot:             true
-		capabilities: drop: ["ALL"]
+		capabilities: drop:   ["ALL"]
 		seccompProfile: type: "RuntimeDefault"
 	} | corev1.#PodSecurityContext
 
@@ -128,7 +128,7 @@ import (
 		matchExpressions: [{
 			key:      "kubernetes.io/os"
 			operator: "In"
-			values: ["linux"]
+			values:   ["linux"]
 		}]
 	}]
 	affinity: podAntiAffinity: requiredDuringSchedulingIgnoredDuringExecution: [{
@@ -136,7 +136,7 @@ import (
 		labelSelector: matchExpressions: [{
 			key:      "app.kubernetes.io/name"
 			operator: "In"
-			values: [metadata.name]
+			values:   [metadata.name]
 		}]
 	}]
 
@@ -154,7 +154,7 @@ import (
 
 // Instance takes the config values and outputs the Kubernetes objects.
 #Instance: {
-	config: #Config
+	config:       #Config
 	containerEnv: #ContainerEnv & {#config: config}
 
 	containers: [
@@ -184,10 +184,10 @@ import (
 	}
 
 	objects: {
-		namespace: #Namespace & {#config: config}
-		resourcequota: #ResourceQuota & {#config: config}
-		serviceaccount: #ServiceAccount & {#config: config}
-		clusterrol: #ClusterRole & {#config: config}
+		namespace:          #Namespace & {#config: config}
+		resourcequota:      #ResourceQuota & {#config: config}
+		serviceaccount:     #ServiceAccount & {#config: config}
+		clusterrol:         #ClusterRole & {#config: config}
 		clusterrolebinding: #ClusterRoleBinding & {#config: config}
 		deployment: #Deployment & {
 			#config:     config

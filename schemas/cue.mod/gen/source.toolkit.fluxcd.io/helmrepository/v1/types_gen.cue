@@ -23,18 +23,10 @@ import "strings"
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
 	kind: "HelmRepository"
 	metadata!: {
-		name!: strings.MaxRunes(253) & strings.MinRunes(1) & {
-			string
-		}
-		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {
-			string
-		}
-		labels?: {
-			[string]: string
-		}
-		annotations?: {
-			[string]: string
-		}
+		name!:      strings.MaxRunes(253) & strings.MinRunes(1) & {string}
+		namespace!: strings.MaxRunes(63) & strings.MinRunes(1) & {string}
+		labels?: [string]:      string
+		annotations?: [string]: string
 	}
 
 	// HelmRepositorySpec specifies the required configuration to produce an
@@ -52,9 +44,7 @@ import "strings"
 			// MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
 			// map is equivalent to an element of matchExpressions, whose key field is "key", the
 			// operator is "In", and the values array contains only "value". The requirements are ANDed.
-			matchLabels?: {
-				[string]: string
-			}
+			matchLabels?: [string]: string
 		}]
 	}
 	certSecretRef?: {
@@ -111,205 +101,160 @@ import "strings"
 _crd: {
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
-	metadata: {
-		name: "helmrepositories.source.toolkit.fluxcd.io"
-	}
+	metadata: name: "helmrepositories.source.toolkit.fluxcd.io"
 	spec: {
 		group: "source.toolkit.fluxcd.io"
 		names: {
 			categories: ["all", "fluxcd", "fluxcd-sources"]
-			kind:     "HelmRepository"
-			listKind: "HelmRepositoryList"
-			plural:   "helmrepositories"
+			kind:       "HelmRepository"
+			listKind:   "HelmRepositoryList"
+			plural:     "helmrepositories"
 			shortNames: ["helmrepo"]
-			singular: "helmrepository"
+			singular:   "helmrepository"
 		}
 		scope: "Namespaced"
 		versions: [{
 			name:    "v1"
 			served:  true
 			storage: true
-			schema: {
-				openAPIV3Schema: {
-					properties: {
-						apiVersion: {
-							type: "string"
-						}
-						kind: {
-							type: "string"
-						}
-						metadata: {
-							type: "object"
-						}
-						spec: {
-							properties: {
-								accessFrom: {
-									properties: {
-										namespaceSelectors: {
-											items: {
-												properties: {
-													matchLabels: {
-														additionalProperties: {
-															type: "string"
-														}
-														type: "object"
-													}
-												}
-												type: "object"
-											}
-											type: "array"
-										}
-									}
-									required: ["namespaceSelectors"]
-									type: "object"
-								}
-								certSecretRef: {
-									properties: {
-										name: {
-											type: "string"
-										}
-									}
-									required: ["name"]
-									type: "object"
-								}
-								insecure: {
-									type: "boolean"
-								}
-								interval: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-									type:    "string"
-								}
-								passCredentials: {
-									type: "boolean"
-								}
-								provider: {
-									default: "generic"
-									enum: ["generic", "aws", "azure", "gcp"]
-									type: "string"
-								}
-								secretRef: {
-									properties: {
-										name: {
-											type: "string"
-										}
-									}
-									required: ["name"]
-									type: "object"
-								}
-								suspend: {
-									type: "boolean"
-								}
-								timeout: {
-									pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
-									type:    "string"
-								}
-								type: {
-									enum: ["default", "oci"]
-									type: "string"
-								}
-								url: {
-									pattern: "^(http|https|oci)://.*$"
-									type:    "string"
-								}
-							}
-							required: ["url"]
-							type: "object"
-						}
-						status: {
-							default: {
-								observedGeneration: -1
-							}
-							properties: {
-								artifact: {
-									properties: {
-										digest: {
-											pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
-											type:    "string"
-										}
-										lastUpdateTime: {
-											format: "date-time"
-											type:   "string"
-										}
-										metadata: {
-											additionalProperties: {
-												type: "string"
-											}
+			schema: openAPIV3Schema: {
+				properties: {
+					apiVersion: type: "string"
+					kind: type:       "string"
+					metadata: type:   "object"
+					spec: {
+						properties: {
+							accessFrom: {
+								properties: namespaceSelectors: {
+									items: {
+										properties: matchLabels: {
+											additionalProperties: type: "string"
 											type: "object"
 										}
-										path: {
-											type: "string"
-										}
-										revision: {
-											type: "string"
-										}
-										size: {
-											format: "int64"
-											type:   "integer"
-										}
-										url: {
-											type: "string"
-										}
-									}
-									required: ["digest", "lastUpdateTime", "path", "revision", "url"]
-									type: "object"
-								}
-								conditions: {
-									items: {
-										properties: {
-											lastTransitionTime: {
-												format: "date-time"
-												type:   "string"
-											}
-											message: {
-												maxLength: 32768
-												type:      "string"
-											}
-											observedGeneration: {
-												format:  "int64"
-												minimum: 0
-												type:    "integer"
-											}
-											reason: {
-												maxLength: 1024
-												minLength: 1
-												pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
-												type:      "string"
-											}
-											status: {
-												enum: ["True", "False", "Unknown"]
-												type: "string"
-											}
-											type: {
-												maxLength: 316
-												pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-												type:      "string"
-											}
-										}
-										required: ["lastTransitionTime", "message", "reason", "status", "type"]
 										type: "object"
 									}
 									type: "array"
 								}
-								lastHandledReconcileAt: {
-									type: "string"
-								}
-								observedGeneration: {
-									format: "int64"
-									type:   "integer"
-								}
-								url: {
-									type: "string"
-								}
+								required: ["namespaceSelectors"]
+								type:     "object"
 							}
-							type: "object"
+							certSecretRef: {
+								properties: name: type: "string"
+								required: ["name"]
+								type:     "object"
+							}
+							insecure: type: "boolean"
+							interval: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+								type:    "string"
+							}
+							passCredentials: type: "boolean"
+							provider: {
+								default: "generic"
+								enum:    ["generic", "aws", "azure", "gcp"]
+								type:    "string"
+							}
+							secretRef: {
+								properties: name: type: "string"
+								required: ["name"]
+								type:     "object"
+							}
+							suspend: type: "boolean"
+							timeout: {
+								pattern: "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
+								type:    "string"
+							}
+							type: {
+								enum: ["default", "oci"]
+								type: "string"
+							}
+							url: {
+								pattern: "^(http|https|oci)://.*$"
+								type:    "string"
+							}
 						}
+						required: ["url"]
+						type:     "object"
 					}
-					type: "object"
+					status: {
+						default: observedGeneration: -1
+						properties: {
+							artifact: {
+								properties: {
+									digest: {
+										pattern: "^[a-z0-9]+(?:[.+_-][a-z0-9]+)*:[a-zA-Z0-9=_-]+$"
+										type:    "string"
+									}
+									lastUpdateTime: {
+										format: "date-time"
+										type:   "string"
+									}
+									metadata: {
+										additionalProperties: type: "string"
+										type: "object"
+									}
+									path: type:     "string"
+									revision: type: "string"
+									size: {
+										format: "int64"
+										type:   "integer"
+									}
+									url: type: "string"
+								}
+								required: ["digest", "lastUpdateTime", "path", "revision", "url"]
+								type:     "object"
+							}
+							conditions: {
+								items: {
+									properties: {
+										lastTransitionTime: {
+											format: "date-time"
+											type:   "string"
+										}
+										message: {
+											maxLength: 32768
+											type:      "string"
+										}
+										observedGeneration: {
+											format:  "int64"
+											minimum: 0
+											type:    "integer"
+										}
+										reason: {
+											maxLength: 1024
+											minLength: 1
+											pattern:   "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+											type:      "string"
+										}
+										status: {
+											enum: ["True", "False", "Unknown"]
+											type: "string"
+										}
+										type: {
+											maxLength: 316
+											pattern:
+												"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type: "string"
+										}
+									}
+									required: ["lastTransitionTime", "message", "reason", "status", "type"]
+									type:     "object"
+								}
+								type: "array"
+							}
+							lastHandledReconcileAt: type: "string"
+							observedGeneration: {
+								format: "int64"
+								type:   "integer"
+							}
+							url: type: "string"
+						}
+						type: "object"
+					}
 				}
+				type: "object"
 			}
-			subresources: {
-				status: {}
-			}
+			subresources: status: {}
 		}]
 	}
 }
